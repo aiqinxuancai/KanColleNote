@@ -14,7 +14,7 @@ namespace KanColleNoteCore
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        static bool RecvPack(Session obj)
+        public static bool RecvPack(Session obj)
         {
             //Pack分发
             //obj.Response.Headers

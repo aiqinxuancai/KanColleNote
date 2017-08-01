@@ -78,6 +78,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\Kan.cs" />
+    <Compile Include="Core\KanBattle.cs" />
+    <Compile Include="Core\KanPort.cs" />
+    <Compile Include="DataRoute.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -117,5 +121,6 @@
       <Name>KanColleNoteCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

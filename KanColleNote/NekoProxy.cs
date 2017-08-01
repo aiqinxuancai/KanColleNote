@@ -21,7 +21,7 @@ namespace KanColleNote
         {
             HttpProxy.Shutdown();
             //HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy);
-            HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy, "127.0.0.1", 8222);
+            HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy, "127.0.0.1", 1080);
             HttpProxy.Startup(37180, false, false);
 
 
@@ -65,6 +65,8 @@ namespace KanColleNote
                 {
                     //数据处理分发
                     //obj.Response.
+                    //KanColleNoteCore.KanColleNoteCore.RecvPack(obj);
+                    DataRoute.RecvPack(obj);
                 }
                 //jsonString = obj.Response.BodyAsString
                 //obj.Request
