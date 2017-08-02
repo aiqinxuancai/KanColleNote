@@ -90,6 +90,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mission\Mission.cs" />
     <Compile Include="Model\KanDataType.cs" />
     <Compile Include="NekoProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

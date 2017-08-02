@@ -41,6 +41,9 @@ namespace KanColleNote
                 case @"/kcsapi/api_port/port": //回到母港
                     KanPort.SetPortData(json);
                     break;
+                case @"/kcsapi/api_start2": //初始化游戏所有数据
+                    KanDataCore.SetGameStartData(json);
+                    break;
                 case @"/kcsapi/api_get_member/questlist": //任务
                     break;
                 case @"/kcsapi/api_get_member/mapinfo": //点击出击后
@@ -56,7 +59,10 @@ namespace KanColleNote
                     break;
                 case @"/kcsapi/api_get_member/ship_deck": //战斗中的船检测
                     break;
+                case @"/kcsapi/api_req_mission/result": //远征结果
 
+                    break;
+                    
 
             }
 
