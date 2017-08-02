@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
+using KanColleNote.Mission;
 namespace KanColleNote
 {
     class DataRoute
@@ -60,7 +60,7 @@ namespace KanColleNote
                 case @"/kcsapi/api_get_member/ship_deck": //战斗中的船检测
                     break;
                 case @"/kcsapi/api_req_mission/result": //远征结果
-
+                    KanMission.SetMissionResult(json);
                     break;
                     
 

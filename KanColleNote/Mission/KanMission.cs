@@ -7,13 +7,17 @@ using System.Threading.Tasks;
 
 namespace KanColleNote.Mission
 {
-    class Mission
+    class KanMission
     {
+
+
+
 
         public static void SetMissionResult(string json)
         {
             JObject root = JObject.Parse(json);
-
+            JArray arr = new JArray();
+            //arr.GetEnumerator
 
 
         }

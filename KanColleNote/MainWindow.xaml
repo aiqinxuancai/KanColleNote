@@ -6,8 +6,45 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:KanColleNote"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
+        Title="MainWindow" Height="412" Width="793" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
     <Grid>
-        
+        <DataGrid x:Name="dataGridMission" HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="264">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding title}" Header="Title" />
+                <DataGridTextColumn Binding="{Binding Artist.Name}" Header="Artist" />
+                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Genre" />
+                <!--<DataGridTemplateColumn Header="Price">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Controls:MetroProgressBar x:Name="PriceProgressBar"
+                                                       Height="20"
+                                                       Margin="5 2"
+                                                       VerticalAlignment="Center"
+                                                       Background="Transparent"
+                                                       Foreground="{DynamicResource AccentColorBrush}"
+                                                       Maximum="20"
+                                                       Minimum="0"
+                                                       Value="{Binding Price}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+            </DataGrid.Columns>
+        </DataGrid>
+        <ListView x:Name="listViewMission" HorizontalAlignment="Left" Height="299" Margin="313,10,0,0" VerticalAlignment="Top" Width="295">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding wowo}" Header="ID" />
+                    <GridViewColumn Header="test" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel  Orientation="Horizontal" >
+                                    <TextBlock Foreground="#FF4D8C51" Text="{Binding wowo}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Controls:MetroWindow>
