@@ -38,5 +38,12 @@ namespace KanColleNote.Core
             }
         }
 
+        
+
+
+
+
+
+
     }
 }

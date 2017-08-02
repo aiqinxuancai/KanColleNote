@@ -15,7 +15,7 @@ namespace KanColleNote.Core
         //public static JObject m_lastStart;
 
 
-        public static int m_lastPoint;
+        //public static int m_lastPoint;
 
 
 
