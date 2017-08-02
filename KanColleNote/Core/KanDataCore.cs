@@ -6,47 +6,23 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KanColleNote.Model;
 
 namespace KanColleNote.Core
 {
+
+
     class KanDataCore
     {
         public static JObject m_start;
 
-        /// <summary>
-        /// 船
-        /// </summary>
-        const string KAN_DATA_TYPE_SHIP = "api_mst_ship";
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_shipgraph"; //船图像，对应的swf
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_slotitem_equiptype"; //道具类型
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_equip_exslot"; //??
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_equip_exslot_ship"; //??
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_stype";    //船类型
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_slotitem"; //装备
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_furniture"; //家具
-
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_furnituregraph";
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_useitem"; //可使用的道具，开发资材，战斗粮食等
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_payitem"; //收费道具，伊良湖等
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_item_shop"; //商店排序，记录两页的显示数据，一般不可使用
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_maparea"; //区域，南方海域...
-
-        
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_mapinfo"; //地图6-3等等api_maparea_id-api_no
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_mapbgm"; //地图BGM
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_mission"; //远征
-
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_const"; //？？？
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_shipupgrade"; //？？？
-        //const string KAN_DATA_TYPE_SHIP = "api_mst_bgm"; //背景音乐，可以取得歌曲的名字
-        
 
         public static bool SetGameStartData(string json)
         {
             try
             {
                 m_start = JObject.Parse(json);
-                KAN_DATA_TYPE_SHIP
+                
                 return true;
             }
             catch (System.Exception ex)
@@ -63,7 +39,7 @@ namespace KanColleNote.Core
         /// <returns></returns>
         public static string GetKanNameWithId(int id)
         {
-            JToken kanMstShip = m_start.SelectToken("api_data.api_mst_ship");
+            JToken kanMstShip = m_start.SelectToken($"api_data.{KanDataType.SHIP}");
 
             if (kanMstShip != null)
             {
@@ -82,7 +58,7 @@ namespace KanColleNote.Core
         /// <returns></returns>
         public static JObject GetKanJsonWithId(int id)
         {
-            JToken kanMstShip = m_start.SelectToken("api_data.api_mst_ship");
+            JToken kanMstShip = m_start.SelectToken($"api_data.{KanDataType.SHIP}");
 
             if (kanMstShip != null)
             {
@@ -95,13 +71,13 @@ namespace KanColleNote.Core
         }
 
         /// <summary>
-        /// 
+        /// 获取道具类型
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>可在api_name中获取</returns>
+        /// <returns></returns>
         public static JObject GetItemJsonWithId(int id)
         {
-            JToken kanMstShip = m_start.SelectToken("api_data.api_mst_slotitem_equiptype");
+            JToken kanMstShip = m_start.SelectToken($"api_data.{KanDataType.SLOTITEM_EQUIPTYPE}");
 
             if (kanMstShip != null)
             {
@@ -114,13 +90,13 @@ namespace KanColleNote.Core
         }
 
         /// <summary>
-        /// 家具
+        /// 获取家具
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public static JObject GetFurnitureWithId(int id)
         {
-            var o = JsonHelper.GetKanDataWithId(m_start, "api_mst_furniture", id);
+            var o = JsonHelper.GetKanDataWithId(m_start, KanDataType.FURNITURE, id);
             return  o;
         }
 
