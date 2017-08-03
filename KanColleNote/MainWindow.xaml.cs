@@ -30,7 +30,7 @@ namespace KanColleNote
 
             JArray array = new JArray();
             JObject test = new JObject();
-            test["wowo"] = "test";
+            test["id"] = 100000000000;
             array.Add(test);
 
             array.Add(test);
@@ -38,7 +38,7 @@ namespace KanColleNote
             array.Add(test);
 
             dataGridMission.ItemsSource = array;
-            listViewMission.ItemsSource = array;
+            //listViewMission.ItemsSource = array;
 
 
             Task.Run(() => {
