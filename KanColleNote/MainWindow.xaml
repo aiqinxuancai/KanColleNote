@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="412" Width="793" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
     <Grid>
-        <DataGrid x:Name="dataGridMission" HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="264">
+        <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="264" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding title}" Header="Title" />
                 <DataGridTextColumn Binding="{Binding Artist.Name}" Header="Artist" />
@@ -34,11 +34,15 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding wowo}" Header="ID" />
-                    <GridViewColumn Header="test" Width="60">
+                    <GridViewColumn Header="test" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel  Orientation="Horizontal" >
+                                <StackPanel  Orientation="Horizontal"  >
                                     <TextBlock Foreground="#FF4D8C51" Text="{Binding wowo}"/>
+                                    <StackPanel  Orientation="Vertical" Margin="5,0,0,0" >
+                                        <TextBlock Foreground="#FF4D8C51" Text="{Binding wowo}"/>
+                                        <TextBlock Foreground="#FF4D8C51" Text="{Binding wowo}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
