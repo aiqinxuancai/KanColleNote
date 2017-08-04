@@ -11,17 +11,20 @@
     <Grid>
         <TabControl Margin="0,0,0,0" TabStripPlacement="Left">
             <TabItem Header="基础" Controls:ControlsHelper.HeaderFontSize="24">
-                <Grid >
-                    <TabControl>
-                        <TabItem Header="远征" Controls:ControlsHelper.HeaderFontSize="18" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="26">
-                            <Grid Background="#FFE5E5E5">
-                                <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" EnableColumnVirtualization="True" Foreground="Black">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{Binding id}" Header="ID" />
-                                        <DataGridTextColumn Binding="{Binding time}" Header="时间" />
-                                        <DataGridTextColumn Binding="{Binding missionName}" Header="远征" />
-                                        <DataGridTextColumn Binding="{Binding GetData}" Header="结果" />
-                                        <!--<DataGridTemplateColumn Header="Price">
+                <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
+                    <Grid >
+
+                        <TabControl>
+                            <TabItem Header="远征" Controls:ControlsHelper.HeaderFontSize="18" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="26">
+                                <Grid Background="#FFE5E5E5">
+                                    <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="0,1,0,0" CornerRadius="0">
+                                    <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF000002" EnableColumnVirtualization="True">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Binding="{Binding id}" Header="ID" />
+                                            <DataGridTextColumn Binding="{Binding time}" Header="时间" />
+                                            <DataGridTextColumn Binding="{Binding missionName}" Header="远征" />
+                                            <DataGridTextColumn Binding="{Binding GetData}" Header="结果" />
+                                            <!--<DataGridTemplateColumn Header="Price">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Controls:MetroProgressBar x:Name="PriceProgressBar"
@@ -36,29 +39,38 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Header="出击" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
-                            <Grid />
-                        </TabItem>
-                        <TabItem Header="剧透" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
-                            <Grid />
-                        </TabItem>
-                    </TabControl>
-                </Grid>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    </Border>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="出击" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
+                                <Grid />
+                            </TabItem>
+                            <TabItem Header="剧透" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
+                                <Grid />
+                            </TabItem>
+                        </TabControl>
+
+                    </Grid>
+                </Border>
             </TabItem>
             <TabItem Header="插件" Controls:ControlsHelper.HeaderFontSize="24">
-                <Grid Background="#FFE5E5E5">
-                    <Label Content="暂未开放" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16"/>
-                </Grid>
+                <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
+                    <Grid >
+                        <Label Content="暂未开放" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16"/>
+                    </Grid>
+                </Border>
             </TabItem>
             <TabItem Header="设定" Controls:ControlsHelper.HeaderFontSize="24">
-                <Grid Background="#FFE5E5E5"/>
+                <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
+                    <Grid />
+                </Border>
             </TabItem>
             <TabItem Header="关于" Controls:ControlsHelper.HeaderFontSize="24">
-                <Grid Background="#FFE5E5E5"/>
+                <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
+                    <Grid />
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>
