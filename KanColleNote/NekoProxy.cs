@@ -1,4 +1,5 @@
-﻿using Nekoxy;
+﻿using KanColleNote.Base;
+using Nekoxy;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,9 +21,22 @@ namespace KanColleNote
         public static void ReLoadNekoxy()
         {
             HttpProxy.Shutdown();
-            //HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy);
-            HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy, "127.0.0.1", 1080);
-            HttpProxy.Startup(37180, false, false);
+            //
+            bool open = SpeedConfig.Get<bool>(ConfigName.CONFIG_PROXY_OPEN, false);
+            string ip = SpeedConfig.Get<string>(ConfigName.CONFIG_PROXY_IP, "127.0.0.1");
+            int port = SpeedConfig.Get<int>(ConfigName.CONFIG_PROXY_PORT, 8123);
+            int selfPort = SpeedConfig.Get<int>(ConfigName.CONFIG_PROXY_SELFPORT, 37180);
+
+            if (open)
+            {
+                HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy, ip, port);
+            }
+            else
+            {
+                HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy);
+            }
+
+            HttpProxy.Startup(selfPort, false, false);
 
 
             //这里要做一下循环的Try，以免中转端口被占用
