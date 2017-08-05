@@ -8,5 +8,7 @@ namespace KanColleNote.Model
 {
     class NotificationType
     {
+
+        public const string kKanMasterNameChange = "KanMasterNameChange";
     }
 }

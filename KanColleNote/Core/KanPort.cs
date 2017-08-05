@@ -21,13 +21,10 @@ namespace KanColleNote.Core
         static KanPort()
         {
             m_port = new JObject();
-            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
+            
         }
 
-        public static void OnKanMasterNameChange(GlobalNotificationMessage msg)
-        {
-            //重新Load
-        }
+
 
         /// <summary>
         /// 设置母港信息
