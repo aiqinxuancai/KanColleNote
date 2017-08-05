@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace KanColleNote
 {
@@ -23,10 +25,25 @@ namespace KanColleNote
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+
+        SeriesCollection data;
         public MainWindow()
         {
 
             InitializeComponent();
+            data = new SeriesCollection
+{
+    new LineSeries
+    {
+        Values = new ChartValues<double> { 3, 5, 7, 4 }
+    },
+    new ColumnSeries
+    {
+        Values = new ChartValues<decimal> { 5, 6, 2, 7 }
+    }
+};
+
+            
 
             JArray array = new JArray();
             JObject test = new JObject();

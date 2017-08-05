@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:KanColleNote"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="300
                       " Width="700" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
@@ -49,6 +50,11 @@
                             </TabItem>
                             <TabItem Header="剧透" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
                                 <Grid />
+                            </TabItem>
+                            <TabItem Header="消耗" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
+                                <Grid >
+                                    <lvc:CartesianChart Series="{Binding data}" />
+                                </Grid>
                             </TabItem>
                         </TabControl>
 
