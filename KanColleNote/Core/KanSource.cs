@@ -25,34 +25,27 @@ namespace KanColleNote.Core
             m_source = new JArray();
             GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
         }
+
+        /// <summary>
+        /// 收到一个玩家名称改变的消息 重载数据 用于多账号的统计
+        /// </summary>
+        /// <param name="msg"></param>
         public static void OnKanMasterNameChange(GlobalNotificationMessage msg)
         {
             //重新Load
             string name = (string)msg.Source;
-
             var savePath = $@"{App.m_runPath}\Data\{name}";
 
             if (Directory.Exists(savePath) == false)
             {
                 Directory.CreateDirectory(savePath);
-                
             }
-
             m_savePath = $@"{savePath}\KanSource.json";
-
             if (File.Exists(m_savePath))
             {
                 m_source = JArray.Parse(File.ReadAllText(m_savePath));
             }
-            
         }
-
-        public static void Reload()
-        {
-            m_source = new JArray();
-
-        }
-
 
         public static void UpdateSource(JArray json)
         {
