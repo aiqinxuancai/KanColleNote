@@ -85,6 +85,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Base\JsonHelper.cs" />
+    <Compile Include="Base\SpeedConfig.cs" />
     <Compile Include="Core\Kan.cs" />
     <Compile Include="Core\KanBattle.cs" />
     <Compile Include="Core\KanDataCore.cs" />
