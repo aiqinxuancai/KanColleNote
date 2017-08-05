@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:KanColleNote"
+        xmlns:ui="clr-namespace:KanColleNote.UI"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300
+        Title="KanColleNote" Height="300
                       " Width="700" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
     <Grid>
         <TabControl Margin="0,0,0,0" TabStripPlacement="Left">
@@ -53,7 +54,7 @@
                             </TabItem>
                             <TabItem Header="消耗" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
                                 <Grid >
-                                    <lvc:CartesianChart Series="{Binding data}" />
+                                    <ui:MissionTable></ui:MissionTable>
                                 </Grid>
                             </TabItem>
                         </TabControl>
