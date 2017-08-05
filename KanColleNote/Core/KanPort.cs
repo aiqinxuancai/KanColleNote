@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using KanColleNote.Base;
+using KanColleNote.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +21,12 @@ namespace KanColleNote.Core
         static KanPort()
         {
             m_port = new JObject();
+            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
+        }
+
+        public static void OnKanMasterNameChange(GlobalNotificationMessage msg)
+        {
+            //重新Load
         }
 
         /// <summary>
@@ -29,6 +37,12 @@ namespace KanColleNote.Core
             try
             {
             	m_port = JObject.Parse(json);
+                //更新名字等信息
+                KanMaster.Update(m_port);
+                //更新资源
+                KanSource.UpdateSource((JArray)m_port.SelectToken("api_data.api_material"));
+
+
                 return true;
             }
             catch (System.Exception ex)
@@ -38,7 +52,7 @@ namespace KanColleNote.Core
             }
         }
 
-        
+
 
 
 
