@@ -17,7 +17,7 @@ namespace KanColleNote.Core
     class KanSource
     {
 
-        public static JArray m_source;
+        public static JObject m_source;
         public static string m_savePath;
 
 
@@ -31,7 +31,7 @@ namespace KanColleNote.Core
 
         public static void Init ()
         {
-            m_source = new JArray();
+            m_source = new JObject();
             GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
         }
 
@@ -52,7 +52,7 @@ namespace KanColleNote.Core
             m_savePath = $@"{savePath}\KanSource.json";
             if (File.Exists(m_savePath))
             {
-                m_source = JArray.Parse(File.ReadAllText(m_savePath));
+                m_source = JObject.Parse(File.ReadAllText(m_savePath));
             }
 
 
@@ -69,32 +69,17 @@ namespace KanColleNote.Core
         {
             if (json != null)
             {
-                //root.SelectToken($"$.api_data.{typeName}.[?(@.api_id == {id})]");
+                //需要重构，存储结构使用date作为key
                 //记录
                 var now = DateTime.Now;
                 var date = now.ToShortDateString();
 
                 JObject root = new JObject();
                 root["date"] = date;
+                root["time"] = now.Ticks / 1000;
                 root["show_date"] = $"{now.Month}.{now.Day}";
                 root["api_material"] = json;
-
-                JToken o = new JObject();
-                if (m_source.Count != 0)
-                {
-                    o = m_source.First(m => ((JObject)m).Property("date") != null && m["date"].Value<string>().Equals(date));
-                }
-                
-                if (o.HasValues)
-                {
-                    m_source.
-                    o = root;
-                }
-                else
-                {
-                    m_source.Add(root);
-                }
-
+                m_source[date] = root;
                 Save();
 
             }
