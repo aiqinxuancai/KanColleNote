@@ -28,5 +28,7 @@ namespace KanColleNote.Base
             return null;
         }
 
+
+
     }
 }

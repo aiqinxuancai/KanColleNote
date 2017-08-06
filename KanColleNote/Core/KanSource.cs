@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace KanColleNote.Core
 {
@@ -20,7 +21,15 @@ namespace KanColleNote.Core
         public static string m_savePath;
 
 
+        
+
         static KanSource()
+        {
+            
+            //GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
+        }
+
+        public static void Init ()
         {
             m_source = new JArray();
             GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
@@ -45,7 +54,16 @@ namespace KanColleNote.Core
             {
                 m_source = JArray.Parse(File.ReadAllText(m_savePath));
             }
+
+
         }
+
+        public static void Save()
+        {
+            File.WriteAllText(m_savePath, m_source.ToString(Formatting.Indented));
+            
+        }
+
 
         public static void UpdateSource(JArray json)
         {
@@ -61,16 +79,23 @@ namespace KanColleNote.Core
                 root["show_date"] = $"{now.Month}.{now.Day}";
                 root["api_material"] = json;
 
-
-                JObject o = (JObject)m_source.SelectToken($"$.[?(@.date == {date})]");
-                if (o != null)
+                JToken o = new JObject();
+                if (m_source.Count != 0)
                 {
+                    o = m_source.First(m => ((JObject)m).Property("date") != null && m["date"].Value<string>().Equals(date));
+                }
+                
+                if (o.HasValues)
+                {
+                    m_source.
                     o = root;
                 }
                 else
                 {
                     m_source.Add(root);
                 }
+
+                Save();
 
             }
         }

@@ -22,11 +22,13 @@ namespace KanColleNote.Core
             JObject master = (JObject)json.SelectToken("api_data.api_basic");
             if (master != null)
             {
+                var nn = json.SelectToken("api_data.api_basic.api_nickname").Value<string>();
 
-                if (json.SelectToken("api_data.api_basic.api_nickname").Value<string>() != nickname)
+                if (nn.Equals(nickname) == false)
                 {
+
                     //名称有变更？ 使用通知？
-                    GlobalNotification.Default.Post(NotificationType.kKanMasterNameChange, json.SelectToken("api_data.api_basic.api_nickname").Value<string>());
+                    GlobalNotification.Default.Post(NotificationType.kKanMasterNameChange, nn);
                 }
 
                 member_id = json.SelectToken("api_data.api_basic.api_member_id").Value<uint>();

@@ -71,7 +71,9 @@
             </TabItem>
             <TabItem Header="设定" Controls:ControlsHelper.HeaderFontSize="24">
                 <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
-                    <Grid />
+                    <Grid >
+                        <ui:SettingPage></ui:SettingPage>
+                    </Grid>
                 </Border>
             </TabItem>
             <TabItem Header="关于" Controls:ControlsHelper.HeaderFontSize="24">

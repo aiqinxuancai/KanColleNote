@@ -1,4 +1,5 @@
-﻿using KanColleNote.Core;
+﻿using KanColleNote.Base;
+using KanColleNote.Core;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,8 +21,10 @@ namespace KanColleNote
         App () 
         {
             m_runPath = Directory.GetCurrentDirectory();
-            NekoProxy.InitNekoxy();
+            SpeedConfig.Load($@"{m_runPath}\Config.json");
 
+            NekoProxy.InitNekoxy();
+            KanSource.Init();
 
 #if DEBUG
             var api_start2 = File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果\636372285289622-kcsapi-api_start2.json");

@@ -1,4 +1,5 @@
 ﻿using KanColleNote.Base;
+using KanColleNote.Model;
 using Nekoxy;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,28 @@ namespace KanColleNote
 {
     class NekoProxy
     {
+
+
+
         public static void InitNekoxy() //使用Nekoxy库来处理封包
         {
             ReLoadNekoxy();
             HttpProxy.AfterReadRequestHeaders += HttpProxy_AfterReadRequestHeaders;
             HttpProxy.AfterReadResponseHeaders += HttpProxy_AfterReadResponseHeaders;
             HttpProxy.AfterSessionComplete += HttpProxy_AfterSessionComplete;
+
+            GlobalNotification.Default.Register(NotificationType.kConfigUpdate, typeof(NekoProxy), OnConfigUpdate);
         }
+
+        /// <summary>
+        /// 接收修改配置项的消息
+        /// </summary>
+        /// <param name="msg"></param>
+        public static void OnConfigUpdate(GlobalNotificationMessage msg)
+        {
+            ReLoadNekoxy();
+        }
+
         public static void ReLoadNekoxy()
         {
             HttpProxy.Shutdown();
@@ -35,6 +51,9 @@ namespace KanColleNote
             {
                 HttpProxy.UpstreamProxyConfig = new ProxyConfig(ProxyConfigType.SpecificProxy);
             }
+
+ 
+            //判断端口是否被占用？
 
             HttpProxy.Startup(selfPort, false, false);
 
