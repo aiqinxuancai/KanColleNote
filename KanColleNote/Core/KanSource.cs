@@ -81,7 +81,7 @@ namespace KanColleNote.Core
                 root["api_material"] = json;
                 m_source[date] = root;
                 Save();
-
+                GlobalNotification.Default.Post(NotificationType.kSourceUpdate, null);
             }
         }
 

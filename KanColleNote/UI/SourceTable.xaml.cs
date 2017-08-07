@@ -38,7 +38,7 @@ namespace KanColleNote.UI
         {
             InitializeComponent();
 
-            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnSourceUpdate);
+            GlobalNotification.Default.Register(NotificationType.kSourceUpdate, typeof(KanPort), OnSourceUpdate);
 
 
             
@@ -52,7 +52,7 @@ namespace KanColleNote.UI
         {
             //重新列表
             var properties = KanSource.m_source.Properties().ToList();
-            properties.Sort((a, b) => { return a["time"].Value<long>() > b["time"].Value<long>() ? 1 : -1; });
+            //properties.Sort((a, b) => { return a["date"].Value<string>().CompareTo(b["time"].Value<string>()); });
             var label = new ArrayList();
             var you = new ArrayList();
             var dan = new ArrayList();
@@ -107,6 +107,8 @@ namespace KanColleNote.UI
                     Color.FromRgb(224,128,49)
                 };
                 DataContext = this;
+                //this.UpdateLayout();
+                //cartesianChart.UpdateLayout();
             }));
 
 
