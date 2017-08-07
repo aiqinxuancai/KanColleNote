@@ -33,7 +33,19 @@ namespace KanColleNote.Core
             m_savePath = $@"{KanMaster.m_masterPath}\KanMission.json";
             if (File.Exists(m_savePath))
             {
-                m_mission = JArray.Parse(File.ReadAllText(m_savePath));
+                try
+                {
+                	m_mission = JArray.Parse(File.ReadAllText(m_savePath));
+                }
+                catch (System.Exception ex)
+                {
+                    m_mission = new JArray();
+                }
+                
+            }
+            else
+            {
+                m_mission = new JArray();
             }
         }
 

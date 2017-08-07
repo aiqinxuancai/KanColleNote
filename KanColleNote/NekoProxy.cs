@@ -75,7 +75,7 @@ namespace KanColleNote
 
         private static void HttpProxy_AfterSessionComplete(Session obj)
         {
-            Task.Run(() => Debug.WriteLine(obj));
+            //Task.Run(() => Debug.WriteLine(obj));
             //执行封包操作
             HttpProxyToOldProc(obj);
         }

@@ -7,6 +7,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,45 @@ using System.Windows.Shapes;
 
 namespace KanColleNote.UI
 {
+
+    //public class SourceTableData : INotifyPropertyChanged
+    //{
+
+
+    //    private SeriesCollection _SeriesCollection;
+    //    private string[] _Labels;
+
+    //    public SeriesCollection SeriesCollection
+    //    {
+    //        get { return _SeriesCollection; }
+    //        set
+    //        {
+    //            if (_SeriesCollection != value)
+    //            {
+    //                _SeriesCollection = value;
+    //                PropertyChanged(this, new PropertyChangedEventArgs("SeriesCollection"));
+    //            }
+    //        }
+    //    }
+
+    //    public string[] Labels
+    //    {
+    //        get { return _Labels; }
+    //        set
+    //        {
+    //            if (_Labels != value)
+    //            {
+    //                _Labels = value;
+    //                PropertyChanged(this, new PropertyChangedEventArgs("Labels"));
+    //            }
+    //        }
+    //    }
+
+
+    //    public event PropertyChangedEventHandler PropertyChanged = delegate { };
+    //}
+
+
     /// <summary>
     /// MissionTable.xaml 的交互逻辑
     /// </summary>
@@ -32,16 +73,14 @@ namespace KanColleNote.UI
         public SeriesCollection SeriesCollection { get; set; }
         public string[] Labels { get; set; }
 
-
+        //public SourceTableData m_data;
 
         public SourceTable()
         {
             InitializeComponent();
-
             GlobalNotification.Default.Register(NotificationType.kSourceUpdate, typeof(KanPort), OnSourceUpdate);
-
-
-            
+            //DataContext = this;
+            //m_data = new SourceTableData();
         }
 
         /// <summary>
@@ -105,7 +144,11 @@ namespace KanColleNote.UI
                     Color.FromRgb(170,170,170),
                     Color.FromRgb(224,128,49)
                 };
+                DataContext = null;
                 DataContext = this;
+     
+                cartesianChart.Update(false, true);
+                Debug.WriteLine("刷新资源图表");
                 //this.UpdateLayout();
                 //cartesianChart.UpdateLayout();
             }));
