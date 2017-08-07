@@ -82,8 +82,8 @@
     <Compile Include="Core\KanMaster.cs" />
     <Compile Include="Core\KanSource.cs" />
     <Compile Include="Model\NotificationType.cs" />
-    <Compile Include="UI\MissionTable.xaml.cs">
-      <DependentUpon>MissionTable.xaml</DependentUpon>
+    <Compile Include="UI\SourceTable.xaml.cs">
+      <DependentUpon>SourceTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
@@ -107,7 +107,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UI\MissionTable.xaml">
+    <Page Include="UI\SourceTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

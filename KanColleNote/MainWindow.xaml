@@ -54,7 +54,7 @@
                             </TabItem>
                             <TabItem Header="消耗" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
                                 <Grid >
-                                    <ui:MissionTable></ui:MissionTable>
+                                    <ui:SourceTable></ui:SourceTable>
                                 </Grid>
                             </TabItem>
                         </TabControl>

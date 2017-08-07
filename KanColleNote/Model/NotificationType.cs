@@ -11,6 +11,6 @@ namespace KanColleNote.Model
 
         public const string kKanMasterNameChange = "KanMasterNameChange";
         public const string kConfigUpdate = "ConfigUpdate";
-        
+        public const string kSourceUpdate = "SourceUpdate";
     }
 }
