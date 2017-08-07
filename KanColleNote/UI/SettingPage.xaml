@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KanColleNote.UI"
              xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="219" >
     <Grid>
         <ScrollViewer PanningMode="HorizontalOnly">
             <Grid >
@@ -19,6 +18,7 @@
                 <TextBox  Custom:TextBoxHelper.Watermark="37180" HorizontalAlignment="Left" Height="23" Margin="73,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="53" Text="{Binding Path=ProxySelfPort.Value}"/>
                 <Button x:Name="buttonSetting" Margin="0,0,10,10" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="80" Content="应用" Click="buttonSetting_Click" FontSize="12"></Button>
                 <Label Content="在你的浏览器中设置代理 127.0.0.1:本地端口 链接到KanColleNote" HorizontalAlignment="Left" Margin="12,98,0,0" VerticalAlignment="Top" Height="26" FontSize="11" Width="342" Foreground="#FF646464"/>
+                <Button Style="{StaticResource LinkButton}" Margin="102,11,0,0" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="79" Content="自动设置"></Button>
             </Grid>
 
 

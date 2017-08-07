@@ -11,7 +11,7 @@
         <Setter Property="Cursor"
                 Value="Hand" />
         <Setter Property="Foreground"
-                Value="{StaticResource LinkButtonForeground}" />
+                Value="Orange" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -23,7 +23,7 @@
             <Trigger Property="IsMouseOver"
                      Value="true">
                 <Setter Property="Foreground"
-                        Value="{StaticResource LinkButtonForegroundHighlighted}" />
+                        Value="Orange" />
             </Trigger>
         </Style.Triggers>
     </Style>
