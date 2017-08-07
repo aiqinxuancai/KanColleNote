@@ -1,8 +1,10 @@
 ﻿using KanColleNote.Base;
 using KanColleNote.Model;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +24,11 @@ namespace KanColleNote.Core
             m_mission = new JArray();
             GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
         }
+        public static void Save()
+        {
+            File.WriteAllText(m_savePath, m_mission.ToString(Formatting.Indented));
 
+        }
         /// <summary>
         /// 收到一个玩家名称改变的消息 重载数据 用于多账号的统计
         /// </summary>
@@ -56,6 +62,8 @@ namespace KanColleNote.Core
             root["api_time"] = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
             root["api_id"] = m_mission.Count + 1;
             m_mission.AddFirst(root);
+            Save();
+            Debug.WriteLine(root);
         }
 
 
