@@ -42,20 +42,11 @@ namespace KanColleNote.Core
         public static void OnKanMasterNameChange(GlobalNotificationMessage msg)
         {
             //重新Load
-            string name = (string)msg.Source;
-            var savePath = $@"{App.m_runPath}\Data\{name}";
-
-            if (Directory.Exists(savePath) == false)
-            {
-                Directory.CreateDirectory(savePath);
-            }
-            m_savePath = $@"{savePath}\KanSource.json";
+            m_savePath = $@"{KanMaster.m_masterPath}\KanSource.json";
             if (File.Exists(m_savePath))
             {
                 m_source = JObject.Parse(File.ReadAllText(m_savePath));
             }
-
-
         }
 
         public static void Save()

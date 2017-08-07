@@ -50,24 +50,23 @@ namespace KanColleNote.UI
         /// <param name="msg"></param>
         void OnSourceUpdate(GlobalNotificationMessage msg)
         {
-            //重新列表
+            //更新资源图表数据
             var properties = KanSource.m_source.Properties().ToList();
-            //properties.Sort((a, b) => { return a["date"].Value<string>().CompareTo(b["time"].Value<string>()); });
             var label = new ArrayList();
-            var you = new ArrayList();
-            var dan = new ArrayList();
-            var gang = new ArrayList();
-            var lv = new ArrayList();
+            var source1 = new ArrayList(); //油
+            var source2 = new ArrayList(); //蛋
+            var source3 = new ArrayList(); //钢
+            var source4 = new ArrayList(); //铝
 
             foreach (var item in properties)
             {
                 label.Add(item.Value["show_date"].ToObject<string>());
-                you.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 1)["api_value"].ToObject<int>());
-                dan.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 2)["api_value"].ToObject<int>());
-                gang.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 3)["api_value"].ToObject<int>());
-                lv.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 4)["api_value"].ToObject<int>());
-
+                source1.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 1)["api_value"].ToObject<int>());
+                source2.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 2)["api_value"].ToObject<int>());
+                source3.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 3)["api_value"].ToObject<int>());
+                source4.Add(item.Value["api_material"].First(a => a["api_id"].Value<int>() == 4)["api_value"].ToObject<int>());
             }
+
             Labels = (string[])label.ToArray(typeof(string));
             this.Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -78,25 +77,25 @@ namespace KanColleNote.UI
                     {
                         Title = "油",
                         PointForeground =  new SolidColorBrush(Color.FromRgb(84,168,72)),
-                        Values = new ChartValues<int>((int[])you.ToArray(typeof(int)))
+                        Values = new ChartValues<int>((int[])source1.ToArray(typeof(int)))
                     },
                     new LineSeries
                     {
                         Title = "弹",
                         PointForeground =  new SolidColorBrush(Color.FromRgb(255,83,67)),
-                        Values = new ChartValues<int>((int[])dan.ToArray(typeof(int)))
+                        Values = new ChartValues<int>((int[])source2.ToArray(typeof(int)))
                     },
                     new LineSeries
                     {
                         Title = "钢",
                         PointForeground =  new SolidColorBrush(Color.FromRgb(190,190,190)),
-                        Values = new ChartValues<int>((int[])gang.ToArray(typeof(int)))
+                        Values = new ChartValues<int>((int[])source3.ToArray(typeof(int)))
                     },
                     new LineSeries
                     {
                         Title = "铝",
                         PointForeground =  new SolidColorBrush(Color.FromRgb(244,148,69)),
-                        Values = new ChartValues<int>((int[])lv.ToArray(typeof(int)))
+                        Values = new ChartValues<int>((int[])source4.ToArray(typeof(int)))
                     }
                 };
 

@@ -45,7 +45,7 @@ namespace KanColleNote
             array.Add(test);
             array.Add(test);
 
-            dataGridMission.ItemsSource = array;
+            //dataGridMission.ItemsSource = array;
             //listViewMission.ItemsSource = array;
 
 

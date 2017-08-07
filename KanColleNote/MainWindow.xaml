@@ -20,29 +20,7 @@
                             <TabItem Header="远征" Controls:ControlsHelper.HeaderFontSize="18" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="26">
                                 <Grid Background="#FFE5E5E5">
                                     <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="0,1,0,0" CornerRadius="0">
-                                    <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF000002" EnableColumnVirtualization="True">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Binding="{Binding id}" Header="ID" />
-                                            <DataGridTextColumn Binding="{Binding time}" Header="时间" />
-                                            <DataGridTextColumn Binding="{Binding missionName}" Header="远征" />
-                                            <DataGridTextColumn Binding="{Binding GetData}" Header="结果" />
-                                            <!--<DataGridTemplateColumn Header="Price">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Controls:MetroProgressBar x:Name="PriceProgressBar"
-                                                       Height="20"
-                                                       Margin="5 2"
-                                                       VerticalAlignment="Center"
-                                                       Background="Transparent"
-                                                       Foreground="{DynamicResource AccentColorBrush}"
-                                                       Maximum="20"
-                                                       Minimum="0"
-                                                       Value="{Binding Price}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
-                                        </DataGrid.Columns>
-                                    </DataGrid>
+                                        <ui:MissionTable></ui:MissionTable>
                                     </Border>
                                 </Grid>
                             </TabItem>
