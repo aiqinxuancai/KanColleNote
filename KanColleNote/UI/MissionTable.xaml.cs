@@ -21,13 +21,25 @@ using System.Windows.Shapes;
 namespace KanColleNote.UI
 {
 
+
+
+    public class MissionData
+    {
+        public string api_id { get; set; }
+        public string api_time { get; set; }
+        public string api_quest_name { get; set; }
+        [JsonProperty("api_get_material")]
+        public List<int> Material { get; set; }
+    }
+
+
     /// <summary>
     /// MissionTable.xaml 的交互逻辑
     /// </summary>
     public partial class MissionTable : UserControl
     {
 
-        dynamic root;
+        List<MissionData> root;
 
         public MissionTable()
         {
@@ -47,8 +59,9 @@ namespace KanColleNote.UI
             this.Dispatcher.BeginInvoke(new Action(() =>
             {
                 dataGridMission.ItemsSource = null;
-                root = JsonConvert.DeserializeObject<dynamic>(KanMission.m_mission.ToString());
-                Debug.WriteLine(KanMission.m_mission);
+
+                root = JsonConvert.DeserializeObject<List<MissionData>>(KanMission.m_mission.ToString());
+
                 dataGridMission.ItemsSource = root;
 
             })); 
