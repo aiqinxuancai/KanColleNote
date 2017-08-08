@@ -78,7 +78,7 @@ namespace KanColleNote.UI
         public SourceTable()
         {
             InitializeComponent();
-            GlobalNotification.Default.Register(NotificationType.kSourceUpdate, typeof(KanPort), OnSourceUpdate);
+            GlobalNotification.Default.Register(NotificationType.kSourceUpdate, typeof(SourceTable), OnSourceUpdate);
             //DataContext = this;
             //m_data = new SourceTableData();
         }

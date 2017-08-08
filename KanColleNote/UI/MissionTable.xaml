@@ -10,13 +10,22 @@
         <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF000002" EnableColumnVirtualization="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding api_id}" Header="ID" />
-                <DataGridTextColumn Binding="{Binding api_time}" Header="时间" />
-                <DataGridTextColumn Binding="{Binding api_data.api_quest_name}" Header="远征" />
-                <DataGridTextColumn Binding="{Binding result}" Header="结果" />
-                <!--<DataGridTemplateColumn Header="Price">
+                <DataGridTextColumn Binding="{Binding api_time}" Header="时间" MinWidth="120" />
+                <DataGridTextColumn Binding="{Binding api_quest_name}" Header="远征" MinWidth="120" />
+                <DataGridTemplateColumn Header="资源">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Controls:MetroProgressBar x:Name="PriceProgressBar"
+                            <StackPanel Orientation="Horizontal" >
+                                <Label Content="油" />
+                                <Label Content="{Binding Path=api_get_material.[0], Mode=OneWay}" />
+                                <Label Content="弹" />
+                                <Label Content="{Binding api_get_material[1]}" />
+                                <Label Content="钢" />
+                                <Label Content="{Binding api_get_material[2]}" />
+                                <Label Content="铝" />
+                                <Label Content="{Binding api_get_material[3]}" />
+                            </StackPanel>
+                            <!--<Controls:MetroProgressBar x:Name="PriceProgressBar"
                                                        Height="20"
                                                        Margin="5 2"
                                                        VerticalAlignment="Center"
@@ -24,10 +33,10 @@
                                                        Foreground="{DynamicResource AccentColorBrush}"
                                                        Maximum="20"
                                                        Minimum="0"
-                                                       Value="{Binding Price}" />
+                                                       Value="{Binding Price}" />-->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

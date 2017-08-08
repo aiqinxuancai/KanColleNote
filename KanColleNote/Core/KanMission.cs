@@ -42,6 +42,7 @@ namespace KanColleNote.Core
                 try
                 {
                 	m_mission = JArray.Parse(File.ReadAllText(m_savePath));
+                    GlobalNotification.Default.Post(NotificationType.kMissionUpdate, null);
                 }
                 catch (System.Exception ex)
                 {
@@ -63,7 +64,9 @@ namespace KanColleNote.Core
             root["api_id"] = m_mission.Count + 1;
             m_mission.AddFirst(root);
             Save();
+            Debug.WriteLine("得到远征结果");
             Debug.WriteLine(root);
+            GlobalNotification.Default.Post(NotificationType.kMissionUpdate, null);
         }
 
 
