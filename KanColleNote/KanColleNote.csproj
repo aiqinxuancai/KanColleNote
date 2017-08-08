@@ -83,6 +83,7 @@
     <Compile Include="Core\KanShowDataBase.cs" />
     <Compile Include="Core\KanSource.cs" />
     <Compile Include="Model\NotificationType.cs" />
+    <Compile Include="Services\AutoProxyService.cs" />
     <Compile Include="UI\MissionTable.xaml.cs">
       <DependentUpon>MissionTable.xaml</DependentUpon>
     </Compile>
@@ -159,6 +160,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GetProxyProcess\GetProxyProcess.csproj">
+      <Project>{74f20fe4-5ded-403c-b72b-e9735da0a1e9}</Project>
+      <Name>GetProxyProcess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KanColleNoteCore\KanColleNoteCore.csproj">
       <Project>{ae3d65da-1907-41bc-9204-b9ed51de474f}</Project>
       <Name>KanColleNoteCore</Name>

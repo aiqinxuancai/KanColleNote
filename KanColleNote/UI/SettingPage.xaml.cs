@@ -1,9 +1,11 @@
 ﻿using KanColleNote.Base;
+using KanColleNote.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,5 +45,13 @@ namespace KanColleNote.UI
             SpeedConfig.Save();
         }
 
+        private async void buttonAutoSetProxy_Click(object sender, RoutedEventArgs e)
+        {
+            AutoProxyService auto = new AutoProxyService();
+            await auto.AutoSetting();
+            Debug.WriteLine("运行完毕");
+            
+
+        }
     }
 }
