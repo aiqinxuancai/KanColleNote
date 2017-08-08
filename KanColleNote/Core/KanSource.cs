@@ -32,7 +32,7 @@ namespace KanColleNote.Core
         public static void Init ()
         {
             m_source = new JObject();
-            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
+            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanSource), OnKanMasterNameChange);
         }
 
         /// <summary>

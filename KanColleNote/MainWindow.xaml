@@ -8,7 +8,7 @@
         xmlns:ui="clr-namespace:KanColleNote.UI"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="KanColleNote" Height="300
+        Title="KanColleNote Alpha" Height="300
                       " Width="700" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
     <Grid>
         <TabControl Margin="0,0,0,0" TabStripPlacement="Left">

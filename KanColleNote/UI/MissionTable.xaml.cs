@@ -29,7 +29,7 @@ namespace KanColleNote.UI
         public string api_time { get; set; }
         public string api_quest_name { get; set; }
         [JsonProperty("api_get_material")]
-        public List<int> Material { get; set; }
+        public List<int> api_get_material { get; set; }
     }
 
 

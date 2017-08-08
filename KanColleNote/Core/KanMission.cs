@@ -22,7 +22,7 @@ namespace KanColleNote.Core
         public static void Init()
         {
             m_mission = new JArray();
-            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanPort), OnKanMasterNameChange);
+            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(KanMission), OnKanMasterNameChange);
         }
         public static void Save()
         {

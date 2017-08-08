@@ -17,13 +17,13 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" >
                                 <Label Content="油" />
-                                <Label Content="{Binding Path=Material[0]}" />
+                                <Label Content="{Binding Path=api_get_material[0]}" />
                                 <Label Content="弹" />
-                                <Label Content="{Binding Path=Material[1]}" />
+                                <Label Content="{Binding Path=api_get_material[1]}" />
                                 <Label Content="钢" />
-                                <Label Content="{Binding Path=Material[2]}" />
+                                <Label Content="{Binding Path=api_get_material[2]}" />
                                 <Label Content="铝" />
-                                <Label Content="{Binding Path=Material[3]}" />
+                                <Label Content="{Binding Path=api_get_material[3]}" />
                             </StackPanel>
                             <!--<Controls:MetroProgressBar x:Name="PriceProgressBar"
                                                        Height="20"
