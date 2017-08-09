@@ -26,6 +26,7 @@ namespace KanColleNote
             NekoProxy.InitNekoxy();
             KanSource.Init();
             KanMission.Init();
+            KanBattleResult.Init();
 
 #if DEBUG
             var api_start2 = File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果\636372285289622-kcsapi-api_start2.json");

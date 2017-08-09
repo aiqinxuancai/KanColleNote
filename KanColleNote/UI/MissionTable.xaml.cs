@@ -25,8 +25,11 @@ namespace KanColleNote.UI
 
     public class MissionData
     {
+        [JsonProperty("api_id")]
         public string api_id { get; set; }
+        [JsonProperty("api_time")]
         public string api_time { get; set; }
+        [JsonProperty("api_quest_name")]
         public string api_quest_name { get; set; }
         [JsonProperty("api_get_material")]
         public List<int> api_get_material { get; set; }

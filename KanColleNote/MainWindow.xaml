@@ -9,7 +9,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="KanColleNote Alpha" Height="300
-                      " Width="700" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
+                      " Width="800" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
     <Grid>
         <TabControl Margin="0,0,0,0" TabStripPlacement="Left">
             <TabItem Header="基础" Controls:ControlsHelper.HeaderFontSize="24">
@@ -25,7 +25,13 @@
                                 </Grid>
                             </TabItem>
                             <TabItem Header="出击" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
-                                <Grid />
+                                <Grid >
+                                    <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="0,1,0,0" CornerRadius="0">
+                                        <ui:BattleTable></ui:BattleTable>
+                                    </Border>
+                                    
+                                    
+                                </Grid>
                             </TabItem>
                             <TabItem Header="剧透" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
                                 <Grid />

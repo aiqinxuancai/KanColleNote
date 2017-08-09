@@ -13,5 +13,6 @@ namespace KanColleNote.Model
         public const string kConfigUpdate = "ConfigUpdate";
         public const string kSourceUpdate = "SourceUpdate";
         public const string kMissionUpdate = "MissionUpdate";
+        public const string kBattleResultUpdate = "BattleResultUpdate";
     }
 }

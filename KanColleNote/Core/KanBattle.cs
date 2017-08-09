@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using KanColleNote.UI;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,11 +10,20 @@ using System.Threading.Tasks;
 
 namespace KanColleNote.Core
 {
+
+
+
+
     class KanBattle
     {
         public static JObject m_lastStart;
         public static JObject m_lastBattle;
         public static JObject m_lastBattleResult;
+
+        
+
+
+        //需要在读取名字时重新载入battle数据
 
 
         public static bool SetStartData(string json)
@@ -100,6 +111,26 @@ namespace KanColleNote.Core
 
                 m_lastBattleResult = JObject.Parse(json);
                 Debug.WriteLine("战斗结果");
+
+                Debug.WriteLine($"{m_lastStart["api_data"]["api_maparea_id"]}-{m_lastStart["api_data"]["api_mapinfo_no"]} {m_lastStart["api_data"]["api_no"]}");
+                Debug.WriteLine($"{m_lastBattleResult["api_data"]["api_win_rank"]}");
+                Debug.WriteLine($"{m_lastBattleResult["api_data"]["api_quest_name"]}");
+                Debug.WriteLine($"{m_lastBattleResult["api_data"]["api_deck_name"]}");
+                Debug.WriteLine($"{m_lastBattleResult["api_data"]["api_deck_name"]}");
+
+
+                var shipName = m_lastBattleResult.SelectToken("api_data.api_get_ship.api_ship_name").Value<string>();
+
+                BattleData data = new BattleData() {
+                    Map = $"{m_lastStart["api_data"]["api_maparea_id"]}-{m_lastStart["api_data"]["api_mapinfo_no"]} {m_lastStart["api_data"]["api_quest_name"]}",
+                    MapPoint = $"{m_lastStart["api_data"]["api_no"]}",
+                    Ship = shipName,
+                    WinRank = $"{m_lastBattleResult["api_data"]["api_win_rank"]}",
+                    DeckName = $"{m_lastBattleResult["api_data"]["api_enemy_info"]["api_deck_name"]}",
+                };
+
+                KanBattleResult.SetBattleResult(data);
+
                 return true;
             }
             catch (System.Exception ex)
