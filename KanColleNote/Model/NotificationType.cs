@@ -9,7 +9,7 @@ namespace KanColleNote.Model
     class NotificationType
     {
 
-        public const string kKanMasterNameChange = "KanMasterNameChange";
+        public const string kKanMasterIdChange = "KanMasterIdChange";
         public const string kConfigUpdate = "ConfigUpdate";
         public const string kSourceUpdate = "SourceUpdate";
         public const string kMissionUpdate = "MissionUpdate";

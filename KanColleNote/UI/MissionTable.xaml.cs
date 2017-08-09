@@ -45,14 +45,9 @@ namespace KanColleNote.UI
         {
             InitializeComponent();
             GlobalNotification.Default.Register(NotificationType.kMissionUpdate, typeof(MissionTable), OnMissionUpdate);
-            GlobalNotification.Default.Register(NotificationType.kKanMasterNameChange, typeof(MissionTable), OnKanMasterNameChange);
             //dataGridMission.ItemsSource = KanMission.m_mission;
         }
 
-        void OnKanMasterNameChange(GlobalNotificationMessage msg)
-        {
-            //dataGridMission.ItemsSource = KanMission.m_mission;
-        }
 
         void OnMissionUpdate(GlobalNotificationMessage msg)
         {

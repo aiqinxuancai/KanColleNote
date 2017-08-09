@@ -47,23 +47,35 @@ namespace KanColleNote
                     break;
                 case @"/kcsapi/api_get_member/questlist": //任务
                     break;
-                case @"/kcsapi/api_get_member/mapinfo": //点击出击后
+                case @"/kcsapi/api_get_member/mapinfo": //点击出击后 可用于更新地图信息
                     break;
                 case @"/kcsapi/api_req_map/start": //出击开始
                     KanBattle.SetStartData(json);
                     break;
                 case @"/kcsapi/api_req_sortie/battleresult": //战斗结果
+                    KanBattle.SetBattleResultData(json);
                     break;
                 case @"/kcsapi/api_req_sortie/battle": //战斗
+                    KanBattle.SetBattleData(json);
                     break;
                 case @"/kcsapi/api_req_map/next": //Next （可以合并更新到start里面去？）
+                    KanBattle.SetNextData(json);
                     break;
                 case @"/kcsapi/api_get_member/ship_deck": //战斗中的船检测
+                    KanPort.UpdateShipDeck(json); 
+                    break;
+                case @"/kcsapi/api_get_member/slot_item": //战斗结束 更新道具
+                    KanPort.SetSlotitemData(json); 
+                    break;
+                case @"/kcsapi/api_get_member/useitem":   //战斗结束 更新使用道具
+                    KanPort.SetUseitemData(json); 
+                    break;
+                case @"/kcsapi/api_get_member/unsetslot": //战斗结束 道具更新？？？？？
+                    KanPort.SetUnsetslotData(json);
                     break;
                 case @"/kcsapi/api_req_mission/result": //远征结果
                     KanMission.SetMissionResult(json);
                     break;
-                    
 
             }
 
