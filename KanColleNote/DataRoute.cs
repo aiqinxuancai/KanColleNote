@@ -58,10 +58,10 @@ namespace KanColleNote
                 case @"/kcsapi/api_req_sortie/battle": //战斗
                     KanBattle.SetBattleData(json);
                     break;
-                case @"/kcsapi/api_req_map/next": //Next （可以合并更新到start里面去？）
+                case @"/kcsapi/api_req_map/next": //Next （合并更新到start里面去）
                     KanBattle.SetNextData(json);
                     break;
-                case @"/kcsapi/api_get_member/ship_deck": //战斗中的船检测
+                case @"/kcsapi/api_get_member/ship_deck": //战斗中的船状态刷新
                     KanPort.UpdateShipDeck(json); 
                     break;
                 case @"/kcsapi/api_get_member/slot_item": //战斗结束 更新道具
