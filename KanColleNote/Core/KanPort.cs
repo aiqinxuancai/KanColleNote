@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,13 +35,16 @@ namespace KanColleNote.Core
             try
             {
                 var port = JObject.Parse(json);
-                m_port.Merge(port);
+                JsonMergeSettings setting = new JsonMergeSettings();
+                setting.MergeArrayHandling = MergeArrayHandling.Replace;
+  
+                m_port.Merge(port, setting);
                 //更新名字等信息
                 KanMaster.Update(m_port);
                 //更新当前的资源情况
                 KanSource.UpdateSource((JArray)m_port.SelectToken("api_data.api_material"));
 
-
+                File.WriteAllText(Directory.GetCurrentDirectory() + $@"\Merge{DateTime.Now.Ticks/1000/1000}.json", m_port.ToString());
                 return true;
             }
             catch (System.Exception ex)
@@ -60,7 +64,9 @@ namespace KanColleNote.Core
             try
             {
                 var requireInfo = JObject.Parse(json);
-                m_port.Merge(requireInfo);
+                JsonMergeSettings setting = new JsonMergeSettings();
+                setting.MergeArrayHandling = MergeArrayHandling.Replace;
+                m_port.Merge(requireInfo, setting);
                 //更新名字等信息
                 KanMaster.StartUpdate(m_port);
                 return true;

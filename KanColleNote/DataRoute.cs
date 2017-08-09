@@ -36,7 +36,7 @@ namespace KanColleNote
             var fileName = App.m_runPath + @"\pack\"  + DateTime.Now.Ticks / 1000 + obj.Request.PathAndQuery.Replace("/", "-") + ".json";
 
             File.WriteAllText(fileName, json);
-
+            Debug.WriteLine(obj.Request.PathAndQuery);
             switch (obj.Request.PathAndQuery)
             {
                 case @"/kcsapi/api_port/port": //回到母港
