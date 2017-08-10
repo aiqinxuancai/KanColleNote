@@ -7,19 +7,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="600">
     <Grid>
-        <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF000002" EnableColumnVirtualization="True">
+        <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF323232" EnableColumnVirtualization="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding api_id}" Header="ID" />
-                <DataGridTextColumn Binding="{Binding api_time}" Header="时间" MinWidth="120" />
-                <DataGridTextColumn Binding="{Binding api_quest_name}" Header="远征" MinWidth="120" />
+                <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                <DataGridTextColumn Binding="{Binding Time}" Header="时间" MinWidth="120" />
+                <DataGridTextColumn Binding="{Binding QuestName}" Header="远征" MinWidth="120" />
                 <DataGridTemplateColumn Header="资源">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" >
-                                <Label Content="{Binding Path=api_get_material[0]}" />
-                                <Label Content="{Binding Path=api_get_material[1]}" />
-                                <Label Content="{Binding Path=api_get_material[2]}" />
-                                <Label Content="{Binding Path=api_get_material[3]}" />
+                                <Label Content="{Binding Path=Material[0]}" />
+                                <Label Content="{Binding Path=Material[1]}" />
+                                <Label Content="{Binding Path=Material[2]}" />
+                                <Label Content="{Binding Path=Material[3]}" />
                             </StackPanel>
                             <!--<Controls:MetroProgressBar x:Name="PriceProgressBar"
                                                        Height="20"

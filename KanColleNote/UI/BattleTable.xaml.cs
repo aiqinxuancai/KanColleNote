@@ -30,12 +30,12 @@ namespace KanColleNote.UI
         public BattleTable()
         {
             InitializeComponent();
-            GlobalNotification.Default.Register(NotificationType.kBattleResultUpdate, typeof(BattleTable), OnMissionUpdate);
+            GlobalNotification.Default.Register(NotificationType.kBattleResultBindingUpdate, typeof(BattleTable), OnBattleResultBindingUpdate);
         }
 
 
 
-        void OnMissionUpdate(GlobalNotificationMessage msg)
+        void OnBattleResultBindingUpdate(GlobalNotificationMessage msg)
         {
             this.Dispatcher.BeginInvoke(new Action(() =>
             {

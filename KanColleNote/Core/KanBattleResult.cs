@@ -69,7 +69,13 @@ namespace KanColleNote.Core
             {
                 m_battle = new ArrayList();
             }
+
+            //通知界面更新绑定
+            GlobalNotification.Default.Post(NotificationType.kBattleResultBindingUpdate, null);
         }
+
+
+
         public static void SetBattleResult(BattleData data)
         {
             data.Time = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
@@ -78,7 +84,7 @@ namespace KanColleNote.Core
             Save();
             Debug.WriteLine("得到战斗结果");
             Debug.WriteLine(data);
-            GlobalNotification.Default.Post(NotificationType.kBattleResultUpdate, null);
+            
         }
     }
 }
