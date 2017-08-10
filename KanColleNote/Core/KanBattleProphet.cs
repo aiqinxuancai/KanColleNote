@@ -107,12 +107,14 @@ namespace KanColleNote.Core
                 nowhps.UpdateSelfHP(api_fdam);
                 nowhps.UpdateEnemyHP(api_edam);
             }
-            
-            //是否有支援
+
+            //是否有支援 估计是统一的掉血
             int support = JsonHelper.SelectTokenInt(root, "api_data.api_support_flag");
 
-            //路基支援
-            //开幕反潜
+            //路基支援 估计是统一的掉血 N轮次
+
+
+            //开幕反潜 估计和炮击战相似
 
             //是否有开幕雷击
             int opening = JsonHelper.SelectTokenInt(root, "api_data.api_opening_flag");
@@ -148,14 +150,19 @@ namespace KanColleNote.Core
             }
 
             //是否有闭幕雷击
-            int ending = houraiFlag[3];
-            if (ending == 1)
+            int raigeki = houraiFlag[3];
+            if (raigeki == 1)
             {
                 List<int> api_fdam = root.SelectToken("api_data.api_raigeki.api_fdam").ToObject<List<int>>();
                 List<int> api_edam = root.SelectToken("api_data.api_raigeki.api_edam").ToObject<List<int>>();
                 nowhps.UpdateSelfHP(api_fdam);
                 nowhps.UpdateEnemyHP(api_edam);
             }
+
+
+
+
+
         }
 
 
