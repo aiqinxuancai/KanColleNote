@@ -44,7 +44,7 @@ namespace KanColleNote.Core
                 //更新当前的资源情况
                 KanSource.UpdateSource((JArray)m_port.SelectToken("api_data.api_material"));
 
-                File.WriteAllText(Directory.GetCurrentDirectory() + $@"\Merge{DateTime.Now.Ticks/1000/1000}.json", m_port.ToString());
+                //File.WriteAllText(Directory.GetCurrentDirectory() + $@"\Merge{DateTime.Now.Ticks/1000/1000}.json", m_port.ToString());
                 return true;
             }
             catch (System.Exception ex)

@@ -16,6 +16,7 @@ namespace KanColleNote.Core
 
     class KanBattle
     {
+        public static JObject m_lastStartCopy;
         public static JObject m_lastStart;
         public static JObject m_lastBattle;
         public static JObject m_lastBattleResult;
@@ -31,6 +32,7 @@ namespace KanColleNote.Core
             try
             {
                 m_lastStart = JObject.Parse(json);
+                m_lastStartCopy = JObject.Parse(json);
                 Debug.WriteLine("开始一场战斗");
                 return true;
             }
@@ -121,9 +123,11 @@ namespace KanColleNote.Core
                 JToken shipNameTouken = m_lastBattleResult.SelectToken("api_data.api_get_ship.api_ship_name");
                 var shipName = shipNameTouken == null ? "" : shipNameTouken.Value<string>();
 
+                var point = m_lastStart["api_data"]["api_no"].Value<int>();
+
                 BattleData data = new BattleData() {
                     Map = $"{m_lastStart["api_data"]["api_maparea_id"]}-{m_lastStart["api_data"]["api_mapinfo_no"]} {m_lastBattleResult["api_data"]["api_quest_name"]}",
-                    MapPoint = $"{m_lastStart["api_data"]["api_no"]} {m_lastBattleResult["api_data"]["api_enemy_info"]["api_deck_name"]}",
+                    MapPoint = $"{point} {m_lastBattleResult["api_data"]["api_enemy_info"]["api_deck_name"]}",
                     Ship = shipName,
                     WinRank = $"{m_lastBattleResult["api_data"]["api_win_rank"]}",
                     DeckName = $"{m_lastBattleResult["api_data"]["api_enemy_info"]["api_deck_name"]}",
