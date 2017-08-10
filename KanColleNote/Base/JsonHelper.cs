@@ -41,8 +41,32 @@ namespace KanColleNote.Base
                 return null;
             }
         }
-        
 
+        public static int SelectTokenInt(JObject root, string path, int def = 0)
+        {
+            try
+            {
+                return root.SelectToken(path).Value<int>(); ;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return def;
+            }
+        }
+
+        public static string SelectTokenString(JObject root, string path, string def = "")
+        {
+            try
+            {
+                return root.SelectToken(path).Value<string>();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return def;
+            }
+        }
 
     }
 }
