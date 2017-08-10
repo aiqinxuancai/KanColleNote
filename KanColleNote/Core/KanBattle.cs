@@ -118,12 +118,12 @@ namespace KanColleNote.Core
                 Debug.WriteLine($"{m_lastBattleResult["api_data"]["api_deck_name"]}");
                 Debug.WriteLine($"{m_lastBattleResult["api_data"]["api_deck_name"]}");
 
-
-                var shipName = m_lastBattleResult.SelectToken("api_data.api_get_ship.api_ship_name").Value<string>();
+                JToken shipNameTouken = m_lastBattleResult.SelectToken("api_data.api_get_ship.api_ship_name");
+                var shipName = shipNameTouken == null ? "" : shipNameTouken.Value<string>();
 
                 BattleData data = new BattleData() {
-                    Map = $"{m_lastStart["api_data"]["api_maparea_id"]}-{m_lastStart["api_data"]["api_mapinfo_no"]} {m_lastStart["api_data"]["api_quest_name"]}",
-                    MapPoint = $"{m_lastStart["api_data"]["api_no"]}",
+                    Map = $"{m_lastStart["api_data"]["api_maparea_id"]}-{m_lastStart["api_data"]["api_mapinfo_no"]} {m_lastBattleResult["api_data"]["api_quest_name"]}",
+                    MapPoint = $"{m_lastStart["api_data"]["api_no"]} {m_lastBattleResult["api_data"]["api_enemy_info"]["api_deck_name"]}",
                     Ship = shipName,
                     WinRank = $"{m_lastBattleResult["api_data"]["api_win_rank"]}",
                     DeckName = $"{m_lastBattleResult["api_data"]["api_enemy_info"]["api_deck_name"]}",

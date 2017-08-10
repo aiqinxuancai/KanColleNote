@@ -9,7 +9,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="KanColleNote Alpha" Height="300
-                      " Width="800" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal">
+                      " Width="800" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal" Loaded="MetroWindow_Loaded">
     <Grid>
         <TabControl Margin="0,0,0,0" TabStripPlacement="Left">
             <TabItem Header="基础" Controls:ControlsHelper.HeaderFontSize="24">

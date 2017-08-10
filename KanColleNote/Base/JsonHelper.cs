@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,19 @@ namespace KanColleNote.Base
             return null;
         }
 
+        public static JToken SelectTokenPath(JObject root, string path)
+        {
+            try
+            {
+            	return root.SelectToken(path);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
+        }
+        
 
 
     }

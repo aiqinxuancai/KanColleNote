@@ -85,6 +85,7 @@
     <Compile Include="Core\KanSource.cs" />
     <Compile Include="Model\NotificationType.cs" />
     <Compile Include="Services\AutoProxyService.cs" />
+    <Compile Include="Test\KanTest.cs" />
     <Compile Include="UI\BattleTable.xaml.cs">
       <DependentUpon>BattleTable.xaml</DependentUpon>
     </Compile>

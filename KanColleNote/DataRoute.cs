@@ -37,7 +37,16 @@ namespace KanColleNote
 
             File.WriteAllText(fileName, json);
             Debug.WriteLine(obj.Request.PathAndQuery);
-            switch (obj.Request.PathAndQuery)
+
+            RecvRoute(obj.Request.PathAndQuery, json);
+            return false;
+
+        }
+
+
+        public static bool RecvRoute(string path, string json)
+        {
+            switch (path)
             {
                 case @"/kcsapi/api_port/port": //回到母港
                     KanPort.SetPortData(json);
@@ -62,13 +71,13 @@ namespace KanColleNote
                     KanBattle.SetNextData(json);
                     break;
                 case @"/kcsapi/api_get_member/ship_deck": //战斗中的船状态刷新
-                    KanPort.UpdateShipDeck(json); 
+                    KanPort.UpdateShipDeck(json);
                     break;
                 case @"/kcsapi/api_get_member/slot_item": //战斗结束 更新道具
-                    KanPort.SetSlotitemData(json); 
+                    KanPort.SetSlotitemData(json);
                     break;
                 case @"/kcsapi/api_get_member/useitem":   //战斗结束 更新使用道具
-                    KanPort.SetUseitemData(json); 
+                    KanPort.SetUseitemData(json);
                     break;
                 case @"/kcsapi/api_get_member/unsetslot": //战斗结束 道具更新？？？？？
                     KanPort.SetUnsetslotData(json);
@@ -78,16 +87,10 @@ namespace KanColleNote
                     break;
 
             }
-
-
-
-
-
-
-
-            return false;
-
+            return true;
         }
+
+
 
     }
 }

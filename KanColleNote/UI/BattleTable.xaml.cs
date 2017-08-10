@@ -1,4 +1,6 @@
-﻿using KanColleNote.Core;
+﻿using KanColleNote.Base;
+using KanColleNote.Core;
+using KanColleNote.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +30,19 @@ namespace KanColleNote.UI
         public BattleTable()
         {
             InitializeComponent();
-            dataGridMission.ItemsSource = KanBattleResult.m_battle;
+            GlobalNotification.Default.Register(NotificationType.kBattleResultUpdate, typeof(BattleTable), OnMissionUpdate);
+        }
+
+
+
+        void OnMissionUpdate(GlobalNotificationMessage msg)
+        {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                dataGridBattle.ItemsSource = null;
+                dataGridBattle.ItemsSource = KanBattleResult.m_battle;
+            }));
+
         }
     }
 }
