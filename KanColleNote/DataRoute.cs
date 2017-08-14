@@ -38,7 +38,7 @@ namespace KanColleNote
             File.WriteAllText(fileName, json);
             Debug.WriteLine(obj.Request.PathAndQuery);
 
-            RecvRoute(obj.Request.PathAndQuery, json);
+            //RecvRoute(obj.Request.PathAndQuery, json);
             return false;
 
         }

@@ -68,5 +68,18 @@ namespace KanColleNote.Base
             }
         }
 
+        public static List<int> SelectTokenIntList(JObject root, string path, List<int> def = null)
+        {
+            try
+            {
+                return root.SelectToken(path).ToObject<List<int>>(); ;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return def;
+            }
+        }
+
     }
 }

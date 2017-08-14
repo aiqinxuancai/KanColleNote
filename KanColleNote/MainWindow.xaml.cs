@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Wpf;
+using KanColleNote.Core;
 
 namespace KanColleNote
 {
@@ -73,7 +74,8 @@ namespace KanColleNote
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
 #if DEBUG
-            Test.KanTest.StartTest();
+            //Test.KanTest.StartTest();
+            KanBattleProphet.test();
 #endif
 
         }
