@@ -12,14 +12,14 @@ namespace KanColleNote.Base
     {
         public static JObject GetKanDataWithId(JObject root, string typeName, int id)
         {
-            JToken kanMstShipTest = root.SelectToken($"$.api_data.{typeName}.[?(@.api_id == {id})]");
+            JToken kanMstShipTest = root.SelectToken($"$.api_data.{typeName}.[?(@.api_id == {id})]", false);
             return (JObject)kanMstShipTest;
         }
 
 
         public static JObject GetKanDataWithId2(JObject root, string typeName, int id)
         {
-            JToken kanMstShip = root.SelectToken($"api_data.{typeName}");
+            JToken kanMstShip = root.SelectToken($"api_data.{typeName}", false);
             if (kanMstShip != null)
             {
                 JArray kanMstShipArray = (JArray)kanMstShip;
@@ -33,7 +33,12 @@ namespace KanColleNote.Base
         {
             try
             {
-            	return root.SelectToken(path);
+                JToken touken = root.SelectToken(path, false);
+                if (touken != null)
+                {
+                    return touken;
+                }
+                return null;
             }
             catch (System.Exception ex)
             {
@@ -46,7 +51,12 @@ namespace KanColleNote.Base
         {
             try
             {
-                return root.SelectToken(path).Value<int>(); ;
+                JToken touken = root.SelectToken(path, false);
+                if (touken != null)
+                {
+                    return touken.Value<int>(); ;
+                }
+                return def;
             }
             catch (System.Exception ex)
             {
@@ -59,7 +69,12 @@ namespace KanColleNote.Base
         {
             try
             {
-                return root.SelectToken(path).Value<string>();
+                JToken touken = root.SelectToken(path, false);
+                if (touken != null)
+                {
+                    return touken.Value<string>(); ;
+                }
+                return def;
             }
             catch (System.Exception ex)
             {
@@ -72,7 +87,12 @@ namespace KanColleNote.Base
         {
             try
             {
-                return root.SelectToken(path).ToObject<List<int>>(); ;
+                JToken touken = root.SelectToken(path, false);
+                if (touken != null)
+                {
+                    return touken.ToObject<List<int>>(); ;
+                }
+                return def;
             }
             catch (System.Exception ex)
             {

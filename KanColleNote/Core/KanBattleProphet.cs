@@ -26,8 +26,12 @@ namespace KanColleNote.Core
             if (nowhps_combined != null)
             {
                 m_nowhps_combined = nowhps_combined;
+
                 m_nowhpsSelf.AddRange(m_nowhps_combined.GetRange(1, 6));
-                m_nowhpsEnemy.AddRange(m_nowhps_combined.GetRange(7, 6));
+                if (m_nowhps_combined.Count == 13)
+                {
+                    m_nowhpsEnemy.AddRange(m_nowhps_combined.GetRange(7, 6));
+                }
             }
         }
 
@@ -117,18 +121,66 @@ namespace KanColleNote.Core
         /// <param name="df">谁攻击了谁</param>
         /// <param name="damage">造成伤害</param>
         /// <returns></returns>
-        public void UpdateHouGeKiHP(JArray df, JArray damage) //api_hougeki1
+        public void UpdateHouGeKiHP(JArray df, JArray damage, List<int> eflag = null, int selfTeamId = 1, int enemyTeamId = 1) //api_hougeki1
         {
             for (int i = 0; i < df.Count; i++)
             {
                 var target = df[i];
+                //子数组 比如二连则是俩 普通攻击则是一个
                 if (target.Type == JTokenType.Array)
                 {
                     JArray targetArray = (JArray)target;
                     for (int x = 0; x < targetArray.Count; x++)
                     {
-                        Debug.WriteLine("炮击："  + targetArray[x].Value<int>() + " 减去 " + damage[i][x].Value<int>());
-                        m_nowhps[targetArray[x].Value<int>()] -= damage[i][x].Value<int>();
+                        int targetId = targetArray[x].Value<int>(); //攻击到谁
+                        int damageHp = damage[i][x].Value<int>();   //减少多少血量
+
+                        if (eflag != null) //有eflag的处理方式 联合舰队
+                        {
+                            //联合舰队战斗
+                            if (eflag[i]  == 0) //由我方发起的攻击 减少对面的血量
+                            {
+                                m_nowhpsEnemy[targetId - 1] -= damageHp;
+                                if (damageHp > 0)
+                                {
+                                    Debug.WriteLine($@"炮击 敌方：{targetId} 减去 {damageHp}");
+                                }
+                                
+                            }
+                            else if (eflag[i] == 1) //由敌方发起
+                            {
+                                m_nowhpsSelf[targetId - 1] -= damageHp;
+                                if (damageHp > 0)
+                                {
+                                    Debug.WriteLine($@"炮击 我方：{targetId} 减去 {damageHp}");
+                                }
+                                
+                            }
+                        }
+                        else
+                        {
+                            //普通战斗
+                            if (targetId >= 1 && targetId <= 6)
+                            {
+                                //我方第一队伍
+                                m_nowhpsSelf[targetId - 1 + (selfTeamId - 1) * 6] -= damageHp;
+                                if (damageHp > 0)
+                                {
+                                    Debug.WriteLine($@"炮击 我方：{targetId} 减去 {damageHp}");
+                                }
+
+                            }
+                            if (targetId >= 7 && targetId <= 12)
+                            {
+                                //敌方第一队伍
+                                m_nowhpsEnemy[targetId - 7 + (enemyTeamId - 1) * 6] -= damageHp;
+                                if (damageHp > 0)
+                                {
+                                    Debug.WriteLine($@"炮击 敌方：{targetId - 6} 减去 {damageHp}");
+                                }
+                            }
+                        }
+                        //m_nowhps[targetId] -= damageHp;
                     }
                 }
             }
@@ -145,7 +197,7 @@ namespace KanColleNote.Core
     {
         public static void test()
         {
-            SetBattle(JObject.Parse(File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\PackData\packE5出击\636382390877392-kcsapi-api_req_combined_battle-ec_battle.json")));
+            SetBattle(JObject.Parse(File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\bin\Debug\pack配合录像115743\636383957358084-kcsapi-api_req_combined_battle-ec_midnight_battle.json")));
         }
 
         public static void SetBattle(JObject root)
@@ -168,6 +220,7 @@ namespace KanColleNote.Core
 
                 for (int i = 0; i < api_air_base_attack_array.Count; i++)
                 {
+                    Debug.WriteLine($"第{i+1}轮路基");
                     JObject air_base = (JObject)api_air_base_attack_array[i];
                     if (air_base.SelectToken("api_stage3.api_edam") != null)
                     {
@@ -211,9 +264,19 @@ namespace KanColleNote.Core
                 nowhps.UpdateEnemyHP(api_damage);
             }
 
-
-
             //开幕反潜 估计和炮击战相似
+            Debug.WriteLine("开幕反潜");
+            int taisen = JsonHelper.SelectTokenInt(root, "api_data.api_opening_taisen_flag");
+            if (taisen == 1)
+            {
+                JArray api_df_list = (JArray)root.SelectToken("api_data.api_opening_taisen.api_df_list");
+                JArray api_damage = (JArray)root.SelectToken("api_data.api_opening_taisen.api_damage");
+                nowhps.UpdateHouGeKiHP(api_df_list, api_damage);
+            }
+
+
+
+
             Debug.WriteLine("开幕雷击");
             //是否有开幕雷击
             int opening = JsonHelper.SelectTokenInt(root, "api_data.api_opening_flag");
@@ -226,44 +289,77 @@ namespace KanColleNote.Core
             }
 
             //炮击回合 0-2  闭幕雷击 3
-            List<int> houraiFlag = root.SelectToken("api_data.api_hourai_flag").ToObject<List<int>>();
-            if (houraiFlag[0] == 1) //第一回合
-            {
-                Debug.WriteLine("第一回合");
-                JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki1.api_df_list");
-                JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki1.api_damage");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage);
-            }
+            List<int> houraiFlag = JsonHelper.SelectTokenIntList(root, "api_data.api_hourai_flag");
 
-            if (houraiFlag[1] == 1) //第二回合
+            if (houraiFlag != null) //白天的战斗
             {
-                Debug.WriteLine("第二回合");
-                JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki2.api_df_list");
-                JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki2.api_damage");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage);
-            }
+                if (houraiFlag[0] == 1) //第一回合
+                {
+                    Debug.WriteLine("第一回合");
+                    JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki1.api_df_list");
+                    JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki1.api_damage");
+                    List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki1.api_at_eflag");
 
-            if (houraiFlag[2] == 1) //第三回合
+                    nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag);
+                }
+
+                if (houraiFlag[1] == 1) //第二回合
+                {
+                    Debug.WriteLine("第二回合");
+                    JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki2.api_df_list");
+                    JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki2.api_damage");
+                    List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki2.api_at_eflag");
+                    nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag);
+                }
+
+                if (houraiFlag[2] == 1) //第三回合
+                {
+                    Debug.WriteLine("第三回合");
+                    JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki3.api_df_list");
+                    JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki3.api_damage");
+                    List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki3.api_at_eflag");
+                    nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag);
+                }
+            }
+            else
             {
-                Debug.WriteLine("第三回合");
-                JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki3.api_df_list");
-                JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki3.api_damage");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage);
+                Debug.WriteLine("夜战炮击");
+                List<int> api_active_deck = JsonHelper.SelectTokenIntList(root, "api_data.api_active_deck");
+                if (api_active_deck != null)
+                {
+                    //联合舰队夜战
+                    JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list");
+                    JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage");
+                    List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki.api_at_eflag");
+                    nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag, api_active_deck[0], api_active_deck[1]);
+                }
+                else
+                {
+                    //夜战 普通的大概 没测
+                    JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list");
+                    JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage");
+                    List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki.api_at_eflag");
+                    nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag);
+                }
             }
 
             Debug.WriteLine("闭幕雷击");
             //是否有闭幕雷击
-            int raigeki = houraiFlag[3];
-            if (raigeki == 1)
+            if (houraiFlag != null)
             {
-                List<int> api_fdam = root.SelectToken("api_data.api_raigeki.api_fdam").ToObject<List<int>>();
-                List<int> api_edam = root.SelectToken("api_data.api_raigeki.api_edam").ToObject<List<int>>();
-                nowhps.UpdateSelfHP(api_fdam);
-                nowhps.UpdateEnemyHP(api_edam);
+                int raigeki = houraiFlag[3];
+                if (raigeki == 1)
+                {
+                    List<int> api_fdam = root.SelectToken("api_data.api_raigeki.api_fdam").ToObject<List<int>>();
+                    List<int> api_edam = root.SelectToken("api_data.api_raigeki.api_edam").ToObject<List<int>>();
+                    nowhps.UpdateSelfHP(api_fdam);
+                    nowhps.UpdateEnemyHP(api_edam);
+                }
             }
 
-            Debug.WriteLine(nowhps.m_nowhpsSelf);
-            Debug.WriteLine(nowhps.m_nowhpsEnemy);
+
+            Debug.WriteLine(nowhps.m_nowhpsSelf.ToString());
+            Debug.WriteLine(nowhps.m_nowhpsEnemy.ToString());
 
 
         }
