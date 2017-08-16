@@ -43,6 +43,8 @@ namespace KanColleNote
 
         }
 
+        //const string BATTLE_TYPE_BATTLE
+
 
         public static bool RecvRoute(string path, string json)
         {
@@ -64,8 +66,21 @@ namespace KanColleNote
                 case @"/kcsapi/api_req_sortie/battleresult": //战斗结果
                     KanBattle.SetBattleResultData(json);
                     break;
-                case @"/kcsapi/api_req_sortie/battle": //战斗
+                case @"/kcsapi/api_req_sortie/battle": //普通战斗
                     KanBattle.SetBattleData(json);
+                    KanBattleProphet.SetBattle(json, "battle");
+                    break;
+                case @"/kcsapi/api_req_combined_battle/battle_water": //水打 对面为单舰队 //第三回合需要特殊处理？？
+                    KanBattle.SetBattleData(json);
+                    KanBattleProphet.SetBattle(json, "battle_water"); 
+                    break;
+                case @"/kcsapi/api_req_combined_battle/each_battle_water": //水打x联合舰队
+                    KanBattle.SetBattleData(json);
+                    KanBattleProphet.SetBattle(json, "each_battle_water");
+                    break;
+                case @"/kcsapi/api_req_combined_battle/ec_midnight_battle": //水打夜战 联合舰队夜战？
+                    KanBattle.SetBattleData(json);
+                    KanBattleProphet.SetBattle(json, "each_battle_water");
                     break;
                 case @"/kcsapi/api_req_map/next": //Next （合并更新到start里面去）
                     KanBattle.SetNextData(json);

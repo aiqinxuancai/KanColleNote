@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KanColleNote.Model;
+using System.IO;
 
 namespace KanColleNote.Core
 {
@@ -22,7 +23,29 @@ namespace KanColleNote.Core
             try
             {
                 m_start = JObject.Parse(json);
-                
+                File.WriteAllText(App.m_runPath + @"\Data\api_start2.json", json);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 从本地加载全局数据
+        /// </summary>
+        /// <returns></returns>
+        public static bool LoadStartData()
+        {
+            try
+            {
+                if (File.Exists(App.m_runPath + @"\Data\api_start2.json"))
+                {
+                    var json = File.ReadAllText(App.m_runPath + @"\Data\api_start2.json");
+                    m_start = JObject.Parse(json);
+                }
                 return true;
             }
             catch (System.Exception ex)

@@ -42,6 +42,10 @@ namespace KanColleNote.Core
         /// <returns></returns>
         public void UpdateSelfHP(List<int> updateHps)
         {
+            if (updateHps == null)
+            {
+                return;
+            }
             updateHps = HPListCheck(updateHps);
             for (int i = 0; i < updateHps.Count; i++)
             {
@@ -59,6 +63,10 @@ namespace KanColleNote.Core
         /// <param name="updateHps"></param>
         public void UpdateSelfHPCombined(List<int> updateHps)
         {
+            if (updateHps == null)
+            {
+                return;
+            }
             updateHps = HPListCheck(updateHps);
             for (int i = 6; i < m_nowhpsSelf.Count; i++)
             {
@@ -77,6 +85,10 @@ namespace KanColleNote.Core
         /// <returns></returns>
         public void UpdateEnemyHP(List<int> updateHps)
         {
+            if (updateHps == null)
+            {
+                return;
+            }
             updateHps = HPListCheck(updateHps);
             for (int i = 0; i < updateHps.Count; i++)
             {
@@ -94,6 +106,10 @@ namespace KanColleNote.Core
         /// <param name="updateHps"></param>
         public void UpdateEnemyHPCombined(List<int> updateHps)
         {
+            if (updateHps == null)
+            {
+                return;
+            }
             updateHps = HPListCheck(updateHps);
             for (int i = 6; i < m_nowhpsEnemy.Count; i++)
             {
@@ -197,10 +213,16 @@ namespace KanColleNote.Core
     {
         public static void test()
         {
-            SetBattle(JObject.Parse(File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\bin\Debug\pack配合录像115743\636383957358084-kcsapi-api_req_combined_battle-ec_midnight_battle.json")));
+            SetBattle(JObject.Parse(File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\bin\Debug\pack配合录像115743\636383951710070-kcsapi-api_req_combined_battle-battle_water.json")));
         }
 
-        public static void SetBattle(JObject root)
+
+        public static void SetBattle(string root, string from = "")
+        {
+            JObject json = JObject.Parse(root);
+            SetBattle(json, from);
+        }
+        public static void SetBattle(JObject root, string from = "")
         {
             //初始血量
 
@@ -249,8 +271,8 @@ namespace KanColleNote.Core
 
                 if (root.SelectToken("api_data.api_kouku.api_stage3_combined.api_fdam") != null)
                 {
-                    List<int> api_fdam_combined = root.SelectToken("api_data.api_kouku.api_stage3_combined.api_fdam").ToObject<List<int>>();
-                    List<int> api_edam_combined = root.SelectToken("api_data.api_kouku.api_stage3_combined.api_edam").ToObject<List<int>>();
+                    List<int> api_fdam_combined = JsonHelper.SelectTokenIntList(root, "api_data.api_kouku.api_stage3_combined.api_fdam");
+                    List<int> api_edam_combined = JsonHelper.SelectTokenIntList(root, "api_data.api_kouku.api_stage3_combined.api_edam");
                     nowhps.UpdateSelfHPCombined(api_fdam_combined);
                     nowhps.UpdateEnemyHPCombined(api_edam_combined);
                 }
