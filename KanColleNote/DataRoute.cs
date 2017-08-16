@@ -48,6 +48,14 @@ namespace KanColleNote
 
         public static bool RecvRoute(string path, string json)
         {
+            var subPaths = path.Split(@"/".ToCharArray());
+            var subPath = "";
+            if (subPaths.Length > 0)
+            {
+                subPath = subPaths[subPaths.Length - 1]; //如api_start2这样的字串
+            }
+
+
             switch (path)
             {
                 case @"/kcsapi/api_port/port": //回到母港
@@ -68,19 +76,19 @@ namespace KanColleNote
                     break;
                 case @"/kcsapi/api_req_sortie/battle": //普通战斗
                     KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, "battle");
+                    KanBattleProphet.SetBattle(json, subPath);
                     break;
                 case @"/kcsapi/api_req_combined_battle/battle_water": //水打 对面为单舰队 //第三回合需要特殊处理？？
                     KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, "battle_water"); 
+                    KanBattleProphet.SetBattle(json, subPath); 
                     break;
                 case @"/kcsapi/api_req_combined_battle/each_battle_water": //水打x联合舰队
                     KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, "each_battle_water");
+                    KanBattleProphet.SetBattle(json, subPath);
                     break;
                 case @"/kcsapi/api_req_combined_battle/ec_midnight_battle": //水打夜战 联合舰队夜战？
                     KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, "each_battle_water");
+                    KanBattleProphet.SetBattle(json, subPath);
                     break;
                 case @"/kcsapi/api_req_map/next": //Next （合并更新到start里面去）
                     KanBattle.SetNextData(json);

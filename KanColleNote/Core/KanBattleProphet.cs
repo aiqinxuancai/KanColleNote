@@ -226,6 +226,7 @@ namespace KanColleNote.Core
         {
             //初始血量
 
+
            
 
             List<int> nowhpsList = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps");
