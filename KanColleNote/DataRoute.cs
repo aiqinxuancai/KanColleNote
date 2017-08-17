@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
+using KanColleNote.Core.Prophet;
 
 namespace KanColleNote
 {
@@ -36,9 +36,26 @@ namespace KanColleNote
             var fileName = App.m_runPath + @"\pack\"  + DateTime.Now.Ticks / 1000 + obj.Request.PathAndQuery.Replace("/", "-") + ".json";
 
             File.WriteAllText(fileName, json);
-            Debug.WriteLine(obj.Request.PathAndQuery);
 
-            //RecvRoute(obj.Request.PathAndQuery, json);
+            Debug.WriteLine(obj.Request.PathAndQuery);
+            Debug.WriteLine(fileName);
+
+            Task.Run(() => {
+
+
+                try
+                {
+                	RecvRoute(obj.Request.PathAndQuery, json);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.WriteLine("处理错误:" + fileName);
+                    Debug.WriteLine(ex);
+                }
+
+            });
+
+            //
             return false;
 
         }
@@ -54,6 +71,71 @@ namespace KanColleNote
             {
                 subPath = subPaths[subPaths.Length - 1]; //如api_start2这样的字串
             }
+
+            switch (path) //战斗包处理
+            {
+                case @"/kcsapi/api_req_sortie/battle": //普通战斗 ok
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/battle": //激动舰队x单舰队 第二队伤害单独计算
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/battle_water": //水打舰队x单舰队 第二队伤害单独计算
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/ec_battle": //单舰队x联合舰队 ok 
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/each_battle_water": //水打x联合舰队 ok
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/each_battle": //机动x联合舰队 ok
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/ec_midnight_battle": //联合舰队夜战 ok
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                case @"/kcsapi/api_req_battle_midnight/battle": //戦闘(夜戦) 
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_battle_midnight/sp_midnight": //戦闘(夜戦)
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_sortie/night_to_day": //夜战->昼战
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                case @"/kcsapi/api_req_sortie/airbattle": //航空战
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_sortie/ld_airbattle": //长距离航空战 
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/airbattle": //航空战
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                case @"/kcsapi/api_req_combined_battle/ld_airbattle": //长距离航空战
+                    KanBattle.SetBattleData(json);
+                    BattleProphet.SetBattle(json, subPath);
+                    return true;
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            }
+
 
 
             switch (path)
@@ -74,21 +156,8 @@ namespace KanColleNote
                 case @"/kcsapi/api_req_sortie/battleresult": //战斗结果
                     KanBattle.SetBattleResultData(json);
                     break;
-                case @"/kcsapi/api_req_sortie/battle": //普通战斗
-                    KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, subPath);
-                    break;
-                case @"/kcsapi/api_req_combined_battle/battle_water": //水打 对面为单舰队 //第三回合需要特殊处理？？
-                    KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, subPath); 
-                    break;
-                case @"/kcsapi/api_req_combined_battle/each_battle_water": //水打x联合舰队
-                    KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, subPath);
-                    break;
-                case @"/kcsapi/api_req_combined_battle/ec_midnight_battle": //水打夜战 联合舰队夜战？
-                    KanBattle.SetBattleData(json);
-                    KanBattleProphet.SetBattle(json, subPath);
+                case @"/kcsapi/api_req_combined_battle/battleresult": //战斗结果 联合舰队
+                    KanBattle.SetBattleResultData(json);
                     break;
                 case @"/kcsapi/api_req_map/next": //Next （合并更新到start里面去）
                     KanBattle.SetNextData(json);

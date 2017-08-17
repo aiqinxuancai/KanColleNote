@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Wpf;
 using KanColleNote.Core;
+using KanColleNote.Core.Prophet;
 
 namespace KanColleNote
 {
@@ -75,7 +76,7 @@ namespace KanColleNote
         {
 #if DEBUG
             //Test.KanTest.StartTest();
-            KanBattleProphet.test();
+            BattleProphet.test();
 #endif
 
         }
