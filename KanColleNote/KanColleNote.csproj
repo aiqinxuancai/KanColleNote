@@ -84,7 +84,7 @@
     <Compile Include="Core\KanMaster.cs" />
     <Compile Include="Core\KanShowDataBase.cs" />
     <Compile Include="Core\KanSource.cs" />
-    <Compile Include="Core\Prophet\BattleProphetHP.cs" />
+    <Compile Include="Core\Prophet\BattleHPManager.cs" />
     <Compile Include="Model\NotificationType.cs" />
     <Compile Include="Services\AutoProxyService.cs" />
     <Compile Include="Test\KanTest.cs" />
