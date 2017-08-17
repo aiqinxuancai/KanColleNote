@@ -166,13 +166,13 @@ namespace KanColleNote
                     KanPort.UpdateShipDeck(json);
                     break;
                 case @"/kcsapi/api_get_member/slot_item": //战斗结束 更新道具
-                    KanPort.SetSlotitemData(json);
+                    KanPort.UpdateSlotitemData(json);
                     break;
                 case @"/kcsapi/api_get_member/useitem":   //战斗结束 更新使用道具
-                    KanPort.SetUseitemData(json);
+                    KanPort.UpdateUseitemData(json);
                     break;
                 case @"/kcsapi/api_get_member/unsetslot": //战斗结束 道具更新？？？？？
-                    KanPort.SetUnsetslotData(json);
+                    KanPort.UpdateUnsetslotData(json);
                     break;
                 case @"/kcsapi/api_req_mission/result": //远征结果
                     KanMission.SetMissionResult(json);

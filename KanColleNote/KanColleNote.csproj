@@ -79,6 +79,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Base\GlobalNotification.cs" />
+    <Compile Include="Core\Prophet\BattleBase.cs" />
     <Compile Include="Core\Prophet\BattleProphet.cs" />
     <Compile Include="Core\KanBattleResult.cs" />
     <Compile Include="Core\KanMaster.cs" />

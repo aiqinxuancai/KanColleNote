@@ -59,7 +59,7 @@ namespace KanColleNote.Core
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static bool SetRequireInfoData(string json)
+        public static bool UpdateRequireInfoData(string json)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace KanColleNote.Core
             }
         }
 
-        public static bool SetUnsetslotData(string json)
+        public static bool UpdateUnsetslotData(string json)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace KanColleNote.Core
             }
         }
 
-        public static bool SetUseitemData(string json)
+        public static bool UpdateUseitemData(string json)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace KanColleNote.Core
             }
         }
 
-        public static bool SetSlotitemData(string json)
+        public static bool UpdateSlotitemData(string json)
         {
             try
             {
@@ -176,15 +176,25 @@ namespace KanColleNote.Core
                 //JToken kanMstShipTest = m_port.SelectToken($"$.api_data.{rootKeyName}.[?(@.api_id == {apiId})]");
                 //m_port.SelectToken("").Path
             }
-
             return true;
-
-
-
         }
 
-        
+        /// <summary>
+        /// 获取自己的一艘船
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static JToken GetShip(int id)
+        {
+            JToken kanShip = m_port.SelectToken($"$.api_data.api_ship.[?(@.api_id == {id})]", false);
+            return kanShip;
+        }
 
+        public static JToken GetTeam(int id)
+        {
+            JToken kanShip = m_port.SelectToken($"$.api_data.api_ship.[?(@.api_id == {id})]", false);
+            return kanShip;
+        }
 
 
 
