@@ -67,70 +67,72 @@ namespace KanColleNote
         {
             var subPaths = path.Split(@"/".ToCharArray());
             var subPath = "";
-            if (subPaths.Length > 0)
+            var subType = "";
+            if (subPaths.Length > 1)
             {
                 subPath = subPaths[subPaths.Length - 1]; //如api_start2这样的字串
+                subType = subPaths[subPaths.Length - 2]; //如api_req_sortie这样的字串
             }
 
             switch (path) //战斗包处理
             {
                 case @"/kcsapi/api_req_sortie/battle": //普通战斗 ok
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/battle": //激动舰队x单舰队 第二队伤害单独计算
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/battle_water": //水打舰队x单舰队 第二队伤害单独计算
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/ec_battle": //单舰队x联合舰队 ok 
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/each_battle_water": //水打x联合舰队 ok
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/each_battle": //机动x联合舰队 ok
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/ec_midnight_battle": //联合舰队夜战 ok
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case @"/kcsapi/api_req_battle_midnight/battle": //戦闘(夜戦) 
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_battle_midnight/sp_midnight": //戦闘(夜戦)
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_sortie/night_to_day": //夜战->昼战
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case @"/kcsapi/api_req_sortie/airbattle": //航空战
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_sortie/ld_airbattle": //长距离航空战 
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/airbattle": //航空战
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 case @"/kcsapi/api_req_combined_battle/ld_airbattle": //长距离航空战
                     KanBattle.SetBattleData(json);
-                    BattleProphet.SetBattle(json, subPath);
+                    BattleProphet.SetBattle(json, subType, subPath);
                     return true;
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

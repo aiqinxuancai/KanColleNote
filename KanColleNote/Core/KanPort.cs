@@ -192,8 +192,18 @@ namespace KanColleNote.Core
 
         public static JToken GetTeam(int id)
         {
-            JToken kanShip = m_port.SelectToken($"$.api_data.api_ship.[?(@.api_id == {id})]", false);
-            return kanShip;
+            JObject kanTeam = (JObject)m_port.SelectToken($"$.api_data.api_deck_port.[?(@.api_id == {id})]", false);
+            JArray kanShips = (JArray)kanTeam["api_ship"];
+            JArray kanShipData = new JArray();
+            for (int i=0; i < kanShips.Count; i ++)
+            {
+                JToken ship = GetShip(kanShips[0].Value<int>());
+                ship["api_ship_data"] = KanDataCore.GetKanJsonWithId(ship["api_ship_id"].Value<int>());
+                kanShipData.Add(ship);
+            }
+            kanTeam["api_ship_full"] = kanShipData;
+
+            return kanTeam;
         }
 
 
