@@ -95,6 +95,12 @@
     <Compile Include="UI\MissionTable.xaml.cs">
       <DependentUpon>MissionTable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\ProphetCell.xaml.cs">
+      <DependentUpon>ProphetCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ProphetTable.xaml.cs">
+      <DependentUpon>ProphetTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\SourceTable.xaml.cs">
       <DependentUpon>SourceTable.xaml</DependentUpon>
     </Compile>
@@ -125,6 +131,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\MissionTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ProphetCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ProphetTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
