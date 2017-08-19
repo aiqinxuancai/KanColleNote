@@ -6,19 +6,30 @@
              xmlns:local="clr-namespace:KanColleNote.UI"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="195">
+             d:DesignHeight="35" d:DesignWidth="98" MinWidth="98">
     <Grid>
-        <StackPanel HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="195">
-            <Label Content="长门改二" Padding="0,3,0,0" />
-            <Controls:MetroProgressBar x:Name="PriceProgressBar"
-                                                       Height="1"
-                                                       Margin="0 6 0 0"
+        <StackPanel >
+            <Label Content="{Binding name}" Padding="0,3,0,0" MinHeight="16" />
+
+            
+
+            <Grid>
+                <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
+                    <Controls:MetroProgressBar x:Name="PriceProgressBar"
+                                                       Height="15"
+                                                       Margin="0 0 0 0"
                                                        VerticalAlignment="Center"
                                                        Background="Transparent"
                                                        Foreground="{DynamicResource AccentColorBrush}"
                                                        Maximum="100"
                                                        Minimum="0"
                                                        Value="60" />
+
+                </Border>
+                <Label Content="{Binding hp}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
+            </Grid>
+            
+
         </StackPanel>
 
     </Grid>

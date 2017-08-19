@@ -34,7 +34,9 @@
                                 </Grid>
                             </TabItem>
                             <TabItem Header="剧透" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
-                                <Grid />
+                                <Grid >
+                                    <ui:ProphetTable></ui:ProphetTable>
+                                </Grid>
                             </TabItem>
                             <TabItem Header="消耗" Controls:ControlsHelper.HeaderFontSize="18" Height="26">
                                 <Grid >

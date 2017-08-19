@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,20 @@ namespace KanColleNote.UI
         public ProphetTable()
         {
             InitializeComponent();
+
+            JArray arr = new JArray();
+            JObject root = new JObject();
+            root["name"] = "长门改二";
+            root["hp"] = "60/90";
+            arr.Add(root);
+            arr.Add(root);
+            arr.Add(root);
+            arr.Add(root);
+            arr.Add(root);
+            arr.Add(root);
+            dataGridSlef1.ItemsSource = arr;
+            //dataGridSlef1.DataContext = arr;
+            //负责数据源
         }
     }
 }
