@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using KanColleNote.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,21 +14,64 @@ namespace KanColleNote.Core.Prophet
         public List<int> m_nowhpsSelf;
         public List<int> m_nowhpsEnemy;
 
-        public List<int> m_nowhps;
-        public List<int> m_nowhps_combined;
+        public JArray m_shipEnemy; //敌方的船具体名字等 按照顺序6或12只
+        public JArray m_shipShip; //我方的船具体名字等 按照顺序6或12只
+
+
+
         public BattleHPManager(List<int> nowhps, List<int> nowhps_combined = null)
         {
-            m_nowhps = nowhps;
-            m_nowhpsSelf = m_nowhps.GetRange(1, 6);
-            m_nowhpsEnemy = m_nowhps.GetRange(7, 6);
+            m_shipEnemy = new JArray();
+            m_nowhpsSelf = nowhps.GetRange(1, 6);
+            m_nowhpsEnemy = nowhps.GetRange(7, 6);
             if (nowhps_combined != null)
             {
-                m_nowhps_combined = nowhps_combined;
-
-                m_nowhpsSelf.AddRange(m_nowhps_combined.GetRange(1, 6));
-                if (m_nowhps_combined.Count == 13)
+                m_nowhpsSelf.AddRange(nowhps_combined.GetRange(1, 6));
+                if (nowhps_combined.Count == 13)
                 {
-                    m_nowhpsEnemy.AddRange(m_nowhps_combined.GetRange(7, 6));
+                    m_nowhpsEnemy.AddRange(nowhps_combined.GetRange(7, 6));
+                }
+            }
+        }
+
+        public void InitSelfShip(int api_deck_id)
+        {
+            if (m_nowhpsSelf.Count == 6)
+            {
+                //api_deck_id
+                KanPort.GetTeam(api_deck_id);
+            }
+            if (m_nowhpsSelf.Count == 12)
+            {
+                //取舰队1-2
+                KanPort.GetTeam(1);
+                KanPort.GetTeam(2);
+            }
+        }
+
+
+        /// <summary>
+        /// 初始化敌方船的数据
+        /// </summary>
+        /// <param name="api_ship_ke"></param>
+        /// <param name="api_ship_ke_combined"></param>
+        public void InitEnemyShip(List<int> api_ship_ke, List<int> api_ship_ke_combined)
+        {
+            if (api_ship_ke != null)
+            {
+                for (int i = 1; i < api_ship_ke.Count; i++)
+                {
+
+                    var shipData = KanDataCore.GetAnyWithId(KanDataType.SHIP, api_ship_ke[i]);
+                    m_shipEnemy.Add(shipData);
+                }
+            }
+            if (api_ship_ke_combined != null)
+            {
+                for (int i = 1; i < api_ship_ke_combined.Count; i++)
+                {
+                    var shipData = KanDataCore.GetAnyWithId(KanDataType.SHIP, api_ship_ke_combined[i]);
+                    m_shipEnemy.Add(shipData);
                 }
             }
         }

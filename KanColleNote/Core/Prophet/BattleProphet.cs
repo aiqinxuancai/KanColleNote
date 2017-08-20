@@ -19,7 +19,7 @@ namespace KanColleNote.Core.Prophet
     {
         public static void test()
         {
-            var file = @"D:\git\KanColleNote\KanColleNote\PackData\packE5出击\636382390877392-kcsapi-api_req_combined_battle-ec_battle.json";
+            var file = @"D:\git\KanColleNote\KanColleNote\PackData\packE5出击\636382390186510-kcsapi-api_req_sortie-ld_airbattle.json";
 
             SetBattle(JObject.Parse(File.ReadAllText(file)), "api_req_combined_battle", "ec_battle");
         }
@@ -40,6 +40,10 @@ namespace KanColleNote.Core.Prophet
             List<int> nowhpsListCombined = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps_combined");
 
             BattleHPManager nowhps = new BattleHPManager(nowhpsList, nowhpsListCombined);
+            List<int> api_ship_ke = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke");
+            List<int> api_ship_ke_combined = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke_combined");
+            nowhps.InitEnemyShip(api_ship_ke, api_ship_ke_combined);
+            nowhps.InitSelfShip(JsonHelper.SelectTokenInt(root, "api_data.api_deck_id"));
 
             Debug.WriteLine("路基支援");
             //路基支援 估计是统一的掉血 N轮次
