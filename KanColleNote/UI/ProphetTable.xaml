@@ -9,7 +9,7 @@
              d:DesignHeight="250" d:DesignWidth="800">
     <Grid>
         <StackPanel Orientation="Horizontal">
-            <DataGrid x:Name="dataGridSlef1" Width="100" IsReadOnly="True" HeadersVisibility="None" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" SelectionUnit="Cell" IsEnabled="False">
+            <DataGrid x:Name="dataGridSlef1" Width="100" IsReadOnly="True" HeadersVisibility="None" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" SelectionUnit="Cell">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="资源">
                         <DataGridTemplateColumn.CellTemplate>

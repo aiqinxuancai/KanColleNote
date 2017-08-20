@@ -7,7 +7,9 @@
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="35" d:DesignWidth="98" MinWidth="98">
+
     <Grid>
+
         <StackPanel >
             <Label Content="{Binding name}" Padding="0,3,0,0" MinHeight="16" />
 
@@ -15,15 +17,34 @@
 
             <Grid>
                 <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
+                    <!--Foreground="{DynamicResource AccentColorBrush}"-->
                     <Controls:MetroProgressBar x:Name="PriceProgressBar"
                                                        Height="15"
                                                        Margin="0 0 0 0"
                                                        VerticalAlignment="Center"
                                                        Background="Transparent"
-                                                       Foreground="{DynamicResource AccentColorBrush}"
+                                                       
                                                        Maximum="100"
                                                        Minimum="0"
-                                                       Value="60" />
+                                                       Value="60" >
+                        <Controls:MetroProgressBar.Resources>
+                            <local:CutoffConverter x:Key="AgeConverter"  />
+                        </Controls:MetroProgressBar.Resources>
+                        <Controls:MetroProgressBar.Style>
+                            <!--BasedOn="{StaticResource MetroProgressBar}"-->
+                            <Style TargetType="{x:Type Controls:MetroProgressBar}">
+                                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding now, Converter={StaticResource AgeConverter}, ConverterParameter=666}" Value="True">
+                                        <Setter Property="Foreground" Value="Red" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Controls:MetroProgressBar.Style>
+
+
+
+                    </Controls:MetroProgressBar>
 
                 </Border>
                 <Label Content="{Binding hp}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />

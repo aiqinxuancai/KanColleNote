@@ -29,6 +29,7 @@ namespace KanColleNote.UI
             JObject root = new JObject();
             root["name"] = "长门改二";
             root["hp"] = "60/90";
+            root["now"] = 20;
             arr.Add(root);
             arr.Add(root);
             arr.Add(root);
