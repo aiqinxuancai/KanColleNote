@@ -15,8 +15,9 @@ namespace KanColleNote.Core.Prophet
         public List<int> m_nowhpsEnemy;
 
         public JArray m_shipEnemy; //敌方的船具体名字等 按照顺序6或12只
-        public JArray m_shipShip; //我方的船具体名字等 按照顺序6或12只
 
+        public JObject m_shipShip1; //我方的队伍1
+        public JObject m_shipShip2; //我方的队伍2
 
 
         public BattleHPManager(List<int> nowhps, List<int> nowhps_combined = null)
@@ -39,15 +40,54 @@ namespace KanColleNote.Core.Prophet
             if (m_nowhpsSelf.Count == 6)
             {
                 //api_deck_id
-                KanPort.GetTeam(api_deck_id);
+                m_shipShip1 = (JObject)KanPort.GetTeam(api_deck_id);
             }
             if (m_nowhpsSelf.Count == 12)
             {
                 //取舰队1-2
-                KanPort.GetTeam(1);
-                KanPort.GetTeam(2);
+                m_shipShip1 = (JObject)KanPort.GetTeam(1);
+                m_shipShip2 = (JObject)KanPort.GetTeam(2);
             }
         }
+
+
+        public enum Faction { SELF = 0, ENEMY = 1 };
+
+        public void HPChangeEvent(Faction faction, int shipIndexId, int hp)
+        {
+            
+            //记录一套日志
+            if (faction == Faction.ENEMY)
+            {
+                string name = "";
+                if (m_shipEnemy != null)
+                {
+                    name = m_shipEnemy[shipIndexId]["api_name"].Value<string>();
+                }
+                Debug.WriteLine(faction.ToString() + $" {name}({shipIndexId}) {hp}");
+            }
+            else if (faction == Faction.SELF)
+            {
+                string name = "";
+                if (shipIndexId >= 1 && shipIndexId <=6)
+                {
+                    if (m_shipShip1 != null)
+                    {
+                        name = m_shipShip1["api_ship_data"][shipIndexId]["api_name"].Value<string>();
+                    }
+                }
+                else
+                {
+                    if (m_shipShip2 != null)
+                    {
+                        name = m_shipShip2["api_ship_data"][shipIndexId]["api_name"].Value<string>();
+                    }
+                }
+                Debug.WriteLine(faction.ToString() + $" {name}({shipIndexId}) {hp}");
+            }
+        }
+
+
 
 
         /// <summary>
@@ -61,7 +101,6 @@ namespace KanColleNote.Core.Prophet
             {
                 for (int i = 1; i < api_ship_ke.Count; i++)
                 {
-
                     var shipData = KanDataCore.GetAnyWithId(KanDataType.SHIP, api_ship_ke[i]);
                     m_shipEnemy.Add(shipData);
                 }
@@ -91,10 +130,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 0; i < updateHps.Count; i++)
             {
                 m_nowhpsSelf[i] -= updateHps[i];
-                if (updateHps[i] != 0)
-                {
-                    Debug.WriteLine($"我方{i} - {updateHps[i]}");
-                }
+                HPChangeEvent(Faction.SELF, i, updateHps[i]);
             }
         }
 
@@ -112,10 +148,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 6; i < m_nowhpsSelf.Count; i++)
             {
                 m_nowhpsSelf[i] -= updateHps[i - 6];
-                if (updateHps[i - 6] != 0)
-                {
-                    Debug.WriteLine($"我方{i} - {updateHps[i - 6]}");
-                }
+                HPChangeEvent(Faction.SELF, i, updateHps[i]);
             }
         }
 
@@ -134,10 +167,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 0; i < updateHps.Count; i++)
             {
                 m_nowhpsEnemy[i] -= updateHps[i];
-                if (updateHps[i] != 0)
-                {
-                    Debug.WriteLine($"敌方{i} - {updateHps[i]}");
-                }
+                HPChangeEvent(Faction.ENEMY, i, updateHps[i]);
             }
         }
 
@@ -155,10 +185,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 6; i < m_nowhpsEnemy.Count; i++)
             {
                 m_nowhpsEnemy[i] -= updateHps[i - 6];
-                if (updateHps[i - 6] != 0)
-                {
-                    Debug.WriteLine($"敌方{i} - {updateHps[i - 6]}");
-                }
+                HPChangeEvent(Faction.ENEMY, i, updateHps[i]);
             }
         }
 
@@ -198,20 +225,12 @@ namespace KanColleNote.Core.Prophet
                             if (eflag[i] == 0) //由我方发起的攻击 减少对面的血量
                             {
                                 m_nowhpsEnemy[targetId - 1] -= damageHp;
-                                if (damageHp > 0)
-                                {
-                                    Debug.WriteLine($@"炮击 敌方：{targetId} 减去 {damageHp}");
-                                }
-
+                                HPChangeEvent(Faction.ENEMY, targetId, damageHp);
                             }
                             else if (eflag[i] == 1) //由敌方发起
                             {
                                 m_nowhpsSelf[targetId - 1] -= damageHp;
-                                if (damageHp > 0)
-                                {
-                                    Debug.WriteLine($@"炮击 我方：{targetId} 减去 {damageHp}");
-                                }
-
+                                HPChangeEvent(Faction.SELF, targetId, damageHp);
                             }
                         }
                         else
@@ -220,21 +239,16 @@ namespace KanColleNote.Core.Prophet
                             if (targetId >= 1 && targetId <= 6)
                             {
                                 //我方第一队伍
-                                m_nowhpsSelf[targetId - 1 + (selfTeamId - 1) * 6] -= damageHp;
-                                if (damageHp > 0)
-                                {
-                                    Debug.WriteLine($@"炮击 我方：{targetId} 减去 {damageHp}");
-                                }
-
+                                int id = targetId - 1 + (selfTeamId - 1) * 6;
+                                m_nowhpsSelf[id] -= damageHp;
+                                HPChangeEvent(Faction.SELF, id, damageHp);
                             }
                             if (targetId >= 7 && targetId <= 12)
                             {
                                 //敌方第一队伍
-                                m_nowhpsEnemy[targetId - 7 + (enemyTeamId - 1) * 6] -= damageHp;
-                                if (damageHp > 0)
-                                {
-                                    Debug.WriteLine($@"炮击 敌方：{targetId - 6} 减去 {damageHp}");
-                                }
+                                int id = targetId - 7 + (enemyTeamId - 1) * 6;
+                                m_nowhpsEnemy[id] -= damageHp;
+                                HPChangeEvent(Faction.ENEMY, id, damageHp);
                             }
                         }
                         //m_nowhps[targetId] -= damageHp;
