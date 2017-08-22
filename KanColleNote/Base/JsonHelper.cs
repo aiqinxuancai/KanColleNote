@@ -65,7 +65,7 @@ namespace KanColleNote.Base
             }
         }
 
-        public static string SelectTokenString(JObject root, string path, string def = "")
+        public static string SelectTokenString(JToken root, string path, string def = "")
         {
             try
             {

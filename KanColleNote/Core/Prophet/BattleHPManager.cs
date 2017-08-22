@@ -1,6 +1,8 @@
-﻿using KanColleNote.Model;
+﻿using KanColleNote.Base;
+using KanColleNote.Model;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,16 +11,41 @@ using System.Threading.Tasks;
 
 namespace KanColleNote.Core.Prophet
 {
+    /// <summary>
+    /// 战斗单位
+    /// </summary>
+    class BattleUnit
+    {
+        public BattleUnit()
+        {
+        }
+        public string name { set; get; }
+        public int maxHP { set; get; }
+        public int nowHP { set; get; }
+        public List<string> changeHP { set; get; }
+
+        public void ChangeHP(int hp)
+        {
+            nowHP -= hp;
+        }
+    }
+
+    public enum Faction { SELF = 0, ENEMY = 1 };
+
     class BattleHPManager
     {
+        public List<BattleUnit> m_self;
+        public List<BattleUnit> m_enemy;
+
         public List<int> m_nowhpsSelf;
         public List<int> m_nowhpsEnemy;
+        
+        public JArray m_shipEnemy; //敌方的船具体名字等 按照顺序6或12只 api_name
 
-        public JArray m_shipEnemy; //敌方的船具体名字等 按照顺序6或12只
+        public JObject m_shipShip1; //我方的队伍1数据
+        public JObject m_shipShip2; //我方的队伍2数据
 
-        public JObject m_shipShip1; //我方的队伍1
-        public JObject m_shipShip2; //我方的队伍2
-
+        public string m_eventName; 
 
         public BattleHPManager(List<int> nowhps, List<int> nowhps_combined = null)
         {
@@ -34,6 +61,74 @@ namespace KanColleNote.Core.Prophet
                 }
             }
         }
+
+
+        public BattleHPManager(JObject root)
+        {
+            //当前血量
+            List<int> nowhpsList = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps"); 
+            List<int> nowhpsListCombined = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps_combined");
+            //最大血量
+            List<int> maxhpsList = JsonHelper.SelectTokenIntList(root, "api_data.api_maxhps");
+            List<int> maxhpsListCombined = JsonHelper.SelectTokenIntList(root, "api_data.api_maxhps_combined");
+            //敌方ID
+            List<int> api_ship_ke = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke");
+            List<int> api_ship_ke_combined = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke_combined");
+;
+
+            List<int> maxhpsSelf;
+            List<int> maxhpsEnemy;
+
+            m_shipEnemy = new JArray();
+            m_nowhpsSelf = nowhpsList.GetRange(1, 6);
+            m_nowhpsEnemy = nowhpsList.GetRange(7, 6);
+            maxhpsSelf = maxhpsList.GetRange(1, 6);
+            maxhpsEnemy = maxhpsList.GetRange(7, 6);
+            if (nowhpsListCombined != null)
+            {
+                m_nowhpsSelf.AddRange(nowhpsListCombined.GetRange(1, 6));
+                maxhpsSelf.AddRange(maxhpsListCombined.GetRange(1, 6));
+
+                if (nowhpsListCombined.Count == 13)
+                {
+                    m_nowhpsEnemy.AddRange(nowhpsListCombined.GetRange(7, 6));
+                    maxhpsEnemy.AddRange(maxhpsListCombined.GetRange(7, 6));
+                }
+            }
+
+            InitEnemyShip(api_ship_ke, api_ship_ke_combined);
+            InitSelfShip(JsonHelper.SelectTokenInt(root, "api_data.api_deck_id"));
+
+
+
+            for (int i = 0; i < m_nowhpsEnemy.Count; i++)
+            {
+                BattleUnit item = new BattleUnit();
+                item.nowHP = m_nowhpsEnemy[i];
+                item.maxHP = maxhpsEnemy[i];
+                item.name = JsonHelper.SelectTokenString(m_shipEnemy, $"[{i}].api_name", "");
+                m_enemy.Add(item);
+            }
+
+            for (int i = 0; i < m_nowhpsSelf.Count; i++)
+            {
+                BattleUnit item = new BattleUnit();
+                item.nowHP = m_nowhpsSelf[i];
+                item.maxHP = maxhpsSelf[i];
+                if (i >= 0 && i <= 5)
+                {
+                    item.name = JsonHelper.SelectTokenString(m_shipShip1, $"$.api_ship_full[{i}].api_name", "");
+                }
+                else
+                {
+                    item.name = JsonHelper.SelectTokenString(m_shipShip2, $"$.api_ship_full[{i - 6}].api_name", "");
+                }
+
+
+                m_self.Add(item);
+            }
+        }
+
 
         public void InitSelfShip(int api_deck_id)
         {
@@ -51,7 +146,10 @@ namespace KanColleNote.Core.Prophet
         }
 
 
-        public enum Faction { SELF = 0, ENEMY = 1 };
+        public void SetEventName(string name)
+        {
+            m_eventName = name;
+        }
 
         public void HPChangeEvent(Faction faction, int shipIndexId, int hp)
         {
@@ -62,7 +160,7 @@ namespace KanColleNote.Core.Prophet
                 string name = "";
                 if (m_shipEnemy != null)
                 {
-                    name = m_shipEnemy[shipIndexId]["api_name"].Value<string>();
+                    name = JsonHelper.SelectTokenString(m_shipEnemy, $"[{shipIndexId}].api_name");
                 }
                 Debug.WriteLine(faction.ToString() + $" {name}({shipIndexId}) {hp}");
             }
@@ -73,14 +171,16 @@ namespace KanColleNote.Core.Prophet
                 {
                     if (m_shipShip1 != null)
                     {
-                        name = m_shipShip1["api_ship_data"][shipIndexId]["api_name"].Value<string>();
+                        //name = m_shipShip1["api_ship_data"][shipIndexId]["api_name"].Value<string>();
+                        name = JsonHelper.SelectTokenString(m_shipShip1, $"$.api_ship_data[{shipIndexId}].api_name");
                     }
                 }
                 else
                 {
                     if (m_shipShip2 != null)
                     {
-                        name = m_shipShip2["api_ship_data"][shipIndexId]["api_name"].Value<string>();
+                        //name = m_shipShip2["api_ship_data"][shipIndexId]["api_name"].Value<string>();
+                        name = JsonHelper.SelectTokenString(m_shipShip2, $"$.api_ship_data[{shipIndexId}].api_name");
                     }
                 }
                 Debug.WriteLine(faction.ToString() + $" {name}({shipIndexId}) {hp}");
@@ -207,6 +307,7 @@ namespace KanColleNote.Core.Prophet
         /// <returns></returns>
         public void UpdateHouGeKiHP(JArray df, JArray damage, List<int> eflag = null, int selfTeamId = 1, int enemyTeamId = 1) //api_hougeki1
         {
+            if (df == null || damage == null) return;
             for (int i = 0; i < df.Count; i++)
             {
                 var target = df[i];
