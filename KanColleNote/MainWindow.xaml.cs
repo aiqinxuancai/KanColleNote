@@ -75,8 +75,8 @@ namespace KanColleNote
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
 #if DEBUG
-            //Test.KanTest.StartTest();
-            BattleProphet.test();
+            Test.KanTest.StartTest();
+            //BattleProphet.test();
 #endif
 
         }

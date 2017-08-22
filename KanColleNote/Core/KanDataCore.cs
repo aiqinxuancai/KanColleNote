@@ -18,6 +18,9 @@ namespace KanColleNote.Core
         public static JObject m_start;
 
 
+
+
+
         public static bool SetGameStartData(string json)
         {
             try

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace KanColleNote.Test
 {
@@ -15,7 +16,16 @@ namespace KanColleNote.Test
 
         public static void StartTest ()
         {
-            PackReload(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果");
+            //PackReload(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果");
+
+            Task.Run(() => {
+                PackReload(@" D:\git\KanColleNote\KanColleNote\bin\Debug\pack");
+
+            });
+
+
+            
+           
         }
 
 
@@ -32,6 +42,7 @@ namespace KanColleNote.Test
                     var filePath = matchs[1].Value.Replace("-", "/");
                     Debug.WriteLine(filePath);
                     DataRoute.RecvRoute(filePath, File.ReadAllText(item));
+                    Thread.Sleep(200);
                 }
             }
 

@@ -205,8 +205,12 @@ namespace KanColleNote.Core
             JArray kanShipData = new JArray();
             for (int i=0; i < kanShips.Count; i ++)
             {
-                JToken ship = GetShip(kanShips[0].Value<int>());
-                ship["api_ship_data"] = KanDataCore.GetKanJsonWithId(ship["api_ship_id"].Value<int>());
+                JToken ship = GetShip(kanShips[i].Value<int>());
+                if (ship != null)
+                {
+                    ship["api_ship_data"] = KanDataCore.GetKanJsonWithId(ship["api_ship_id"].Value<int>());
+                }
+                
                 kanShipData.Add(ship);
             }
             kanTeam["api_ship_full"] = kanShipData;

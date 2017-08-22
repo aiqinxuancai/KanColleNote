@@ -35,6 +35,9 @@ namespace KanColleNote
             Debug.WriteLine(name);
 #endif
 
+
+            KanDataCore.LoadStartData();
+
         }
 
 

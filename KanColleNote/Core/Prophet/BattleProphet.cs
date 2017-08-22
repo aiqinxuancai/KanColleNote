@@ -21,7 +21,7 @@ namespace KanColleNote.Core.Prophet
         {
             var file = @"D:\git\KanColleNote\KanColleNote\PackData\packE5出击\636382390186510-kcsapi-api_req_sortie-ld_airbattle.json";
 
-            SetBattle(JObject.Parse(File.ReadAllText(file)), "api_req_combined_battle", "ec_battle");
+            //SetBattle(JObject.Parse(File.ReadAllText(file)), "api_req_combined_battle", "ec_battle");
         }
 
 
@@ -36,16 +36,15 @@ namespace KanColleNote.Core.Prophet
         public static void SetBattle(JObject root, string type = "", string from = "")
         {
             //初始血量
-            List<int> nowhpsList = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps");
-            List<int> nowhpsListCombined = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps_combined");
+            if (KanDataCore.m_start == null || KanPort.m_port == null)
+            {
+                return;
+            }
 
-            BattleHPManager nowhps = new BattleHPManager(nowhpsList, nowhpsListCombined);
-            List<int> api_ship_ke = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke");
-            List<int> api_ship_ke_combined = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke_combined");
-            nowhps.InitEnemyShip(api_ship_ke, api_ship_ke_combined);
-            nowhps.InitSelfShip(JsonHelper.SelectTokenInt(root, "api_data.api_deck_id"));
+            BattleHPManager nowhps = new BattleHPManager(root);
 
-            Debug.WriteLine("路基支援");
+
+            nowhps.SetEventName("路基支援");
             //路基支援 估计是统一的掉血 N轮次
             JToken api_air_base_attack = root.SelectToken("api_data.api_air_base_attack");
             if (api_air_base_attack != null && api_air_base_attack.Type == JTokenType.Array)
@@ -54,7 +53,7 @@ namespace KanColleNote.Core.Prophet
 
                 for (int i = 0; i < api_air_base_attack_array.Count; i++)
                 {
-                    Debug.WriteLine($"第{i+1}轮路基");
+                    nowhps.SetEventName("第{i+1}轮路基");
                     JObject air_base = (JObject)api_air_base_attack_array[i];
                     if (air_base.SelectToken("api_stage3.api_edam") != null)
                     {
@@ -70,7 +69,7 @@ namespace KanColleNote.Core.Prophet
                 }
             }
 
-            Debug.WriteLine("航空战");
+            nowhps.SetEventName("航空战");
             //航空战 是否造成伤害
             int stage = JsonHelper.SelectTokenInt(root, "api_data.api_stage_flag[2]");
             if (stage == 1)
@@ -90,8 +89,7 @@ namespace KanColleNote.Core.Prophet
                 }
             }
 
-
-            Debug.WriteLine("支援射击");
+            nowhps.SetEventName("支援射击");
             //是否有支援 估计是统一的掉血
             int support = JsonHelper.SelectTokenInt(root, "api_data.api_support_flag");
             if (support == 1 || support == 2)
@@ -101,16 +99,18 @@ namespace KanColleNote.Core.Prophet
             }
 
             //开幕反潜 估计和炮击战相似
-            Debug.WriteLine("开幕反潜");
+            nowhps.SetEventName("开幕反潜");
             int taisen = JsonHelper.SelectTokenInt(root, "api_data.api_opening_taisen_flag");
             if (taisen == 1)
             {
-                JArray api_df_list = (JArray)root.SelectToken("api_data.api_opening_taisen.api_df_list");
-                JArray api_damage = (JArray)root.SelectToken("api_data.api_opening_taisen.api_damage");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage);
+                JArray api_df_list = (JArray)root.SelectToken("api_data.api_opening_taisen.api_df_list", false);
+                JArray api_damage = (JArray)root.SelectToken("api_data.api_opening_taisen.api_damage", false);
+                JArray api_at_list = (JArray)root.SelectToken("api_data.api_opening_taisen.api_at_list", false);
+                JArray api_at_type = (JArray)root.SelectToken("api_data.api_opening_taisen.api_at_type", false);
+                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type);
             }
 
-            Debug.WriteLine("开幕雷击");
+            nowhps.SetEventName("开幕雷击");
             //是否有开幕雷击
             int opening = JsonHelper.SelectTokenInt(root, "api_data.api_opening_flag");
             if (opening == 1)
@@ -254,33 +254,40 @@ namespace KanColleNote.Core.Prophet
 
         public static void HoGeKiBase(JObject root, BattleHPManager nowhps, int round, int selfTeamId = 1)
         {
-            Debug.WriteLine($"第{round}回合");
-            JArray api_df_list = (JArray)root.SelectToken($"api_data.api_hougeki{round}.api_df_list");
-            JArray api_damage = (JArray)root.SelectToken($"api_data.api_hougeki{round}.api_damage");
+            nowhps.SetEventName($"第{round}回合炮击");
+            JArray api_df_list = (JArray)root.SelectToken($"api_data.api_hougeki{round}.api_df_list", false);
+            JArray api_damage = (JArray)root.SelectToken($"api_data.api_hougeki{round}.api_damage", false);
+            JArray api_at_list = (JArray)root.SelectToken($"api_data.api_hougeki{round}.api_at_list", false);
+            JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki{round}.api_at_type", false);
+
             List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, $"api_data.api_hougeki{round}.api_at_eflag");
-            nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag, selfTeamId);
+            nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, api_at_eflag, selfTeamId);
         }
 
 
         public static void HoGeKiNight(JObject root, BattleHPManager nowhps)
         {
-            Debug.WriteLine("夜战炮击");
+            nowhps.SetEventName($"夜战炮击");
             List<int> api_active_deck = JsonHelper.SelectTokenIntList(root, "api_data.api_active_deck");
             if (api_active_deck != null)
             {
                 //联合舰队夜战
-                JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list");
-                JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage");
+                JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list", false);
+                JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage", false);
+                JArray api_at_list = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_list", false);
+                JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_type", false);
                 List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki.api_at_eflag");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag, api_active_deck[0], api_active_deck[1]);
+                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, api_at_eflag, api_active_deck[0], api_active_deck[1]);
             }
             else
             {
                 //夜战 普通的大概 没测
-                JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list");
-                JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage");
+                JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list", false);
+                JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage", false);
+                JArray api_at_list = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_list", false);
+                JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_type", false);
                 List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki.api_at_eflag");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_eflag);
+                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, api_at_eflag);
             }
         }
 

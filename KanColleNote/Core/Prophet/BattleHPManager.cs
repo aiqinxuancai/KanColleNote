@@ -30,7 +30,16 @@ namespace KanColleNote.Core.Prophet
         }
     }
 
-    public enum Faction { SELF = 0, ENEMY = 1 };
+    public enum Faction {
+        /// <summary>
+        /// 我方
+        /// </summary>
+        SELF = 0,
+        /// <summary>
+        /// 敌方
+        /// </summary>
+        ENEMY = 1
+    };
 
     class BattleHPManager
     {
@@ -62,9 +71,16 @@ namespace KanColleNote.Core.Prophet
             }
         }
 
-
+        /// <summary>
+        /// 初始化所有数据 
+        /// </summary>
+        /// <param name="root"></param>
         public BattleHPManager(JObject root)
         {
+            Debug.WriteLine("初始化BattleHPManager");
+
+            m_self = new List<BattleUnit>();
+            m_enemy = new List<BattleUnit>();
             //当前血量
             List<int> nowhpsList = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps"); 
             List<int> nowhpsListCombined = JsonHelper.SelectTokenIntList(root, "api_data.api_nowhps_combined");
@@ -78,7 +94,7 @@ namespace KanColleNote.Core.Prophet
 
             List<int> maxhpsSelf;
             List<int> maxhpsEnemy;
-
+            Debug.WriteLine("初始化血量");
             m_shipEnemy = new JArray();
             m_nowhpsSelf = nowhpsList.GetRange(1, 6);
             m_nowhpsEnemy = nowhpsList.GetRange(7, 6);
@@ -95,12 +111,13 @@ namespace KanColleNote.Core.Prophet
                     maxhpsEnemy.AddRange(maxhpsListCombined.GetRange(7, 6));
                 }
             }
-
+            Debug.WriteLine("获取船数据");
             InitEnemyShip(api_ship_ke, api_ship_ke_combined);
-            InitSelfShip(JsonHelper.SelectTokenInt(root, "api_data.api_deck_id"));
 
 
+            InitSelfShip(JsonHelper.SelectTokenInt(root, "api_data.api_dock_id"));
 
+            Debug.WriteLine("创建BattleUnit-m_nowhpsEnemy");
             for (int i = 0; i < m_nowhpsEnemy.Count; i++)
             {
                 BattleUnit item = new BattleUnit();
@@ -109,7 +126,7 @@ namespace KanColleNote.Core.Prophet
                 item.name = JsonHelper.SelectTokenString(m_shipEnemy, $"[{i}].api_name", "");
                 m_enemy.Add(item);
             }
-
+            Debug.WriteLine("创建BattleUnit-m_nowhpsSelf");
             for (int i = 0; i < m_nowhpsSelf.Count; i++)
             {
                 BattleUnit item = new BattleUnit();
@@ -117,16 +134,18 @@ namespace KanColleNote.Core.Prophet
                 item.maxHP = maxhpsSelf[i];
                 if (i >= 0 && i <= 5)
                 {
-                    item.name = JsonHelper.SelectTokenString(m_shipShip1, $"$.api_ship_full[{i}].api_name", "");
+                    item.name = JsonHelper.SelectTokenString(m_shipShip1, $"$.api_ship_full[{i}].api_ship_data.api_name", "");
                 }
                 else
                 {
-                    item.name = JsonHelper.SelectTokenString(m_shipShip2, $"$.api_ship_full[{i - 6}].api_name", "");
+                    item.name = JsonHelper.SelectTokenString(m_shipShip2, $"$.api_ship_full[{i - 6}].api_ship_data.api_name", "");
                 }
 
 
                 m_self.Add(item);
             }
+
+            Debug.WriteLine("初始化BattleHPManager完毕");
         }
 
 
@@ -136,6 +155,7 @@ namespace KanColleNote.Core.Prophet
             {
                 //api_deck_id
                 m_shipShip1 = (JObject)KanPort.GetTeam(api_deck_id);
+                Debug.WriteLine(m_shipShip1);
             }
             if (m_nowhpsSelf.Count == 12)
             {
@@ -149,46 +169,25 @@ namespace KanColleNote.Core.Prophet
         public void SetEventName(string name)
         {
             m_eventName = name;
+            Debug.WriteLine(name);
         }
 
         public void HPChangeEvent(Faction faction, int shipIndexId, int hp)
         {
-            
             //记录一套日志
             if (faction == Faction.ENEMY)
             {
-                string name = "";
-                if (m_shipEnemy != null)
-                {
-                    name = JsonHelper.SelectTokenString(m_shipEnemy, $"[{shipIndexId}].api_name");
-                }
-                Debug.WriteLine(faction.ToString() + $" {name}({shipIndexId}) {hp}");
+                m_enemy[shipIndexId].ChangeHP(hp);
+                var message = $"{m_eventName} {m_enemy[shipIndexId].name}({shipIndexId}) {hp}";
+                Debug.WriteLine(message);
             }
             else if (faction == Faction.SELF)
             {
-                string name = "";
-                if (shipIndexId >= 1 && shipIndexId <=6)
-                {
-                    if (m_shipShip1 != null)
-                    {
-                        //name = m_shipShip1["api_ship_data"][shipIndexId]["api_name"].Value<string>();
-                        name = JsonHelper.SelectTokenString(m_shipShip1, $"$.api_ship_data[{shipIndexId}].api_name");
-                    }
-                }
-                else
-                {
-                    if (m_shipShip2 != null)
-                    {
-                        //name = m_shipShip2["api_ship_data"][shipIndexId]["api_name"].Value<string>();
-                        name = JsonHelper.SelectTokenString(m_shipShip2, $"$.api_ship_data[{shipIndexId}].api_name");
-                    }
-                }
-                Debug.WriteLine(faction.ToString() + $" {name}({shipIndexId}) {hp}");
+                m_self[shipIndexId].ChangeHP(hp);
+                var message = $"{m_eventName} {m_self[shipIndexId].name}({shipIndexId}) {hp}";
+                Debug.WriteLine(message);
             }
         }
-
-
-
 
         /// <summary>
         /// 初始化敌方船的数据
@@ -302,25 +301,30 @@ namespace KanColleNote.Core.Prophet
         /// <summary>
         /// 更新炮击伤害
         /// </summary>
-        /// <param name="df">谁攻击了谁</param>
-        /// <param name="damage">造成伤害</param>
+        /// <param name="targets">谁攻击了谁</param>
+        /// <param name="damages">造成伤害</param>
         /// <returns></returns>
-        public void UpdateHouGeKiHP(JArray df, JArray damage, List<int> eflag = null, int selfTeamId = 1, int enemyTeamId = 1) //api_hougeki1
+        public void UpdateHouGeKiHP(JArray targets, JArray damages, JArray attackers, JArray attackTypes, List<int> eflag = null, int selfTeamId = 1, int enemyTeamId = 1) //api_hougeki1
         {
-            if (df == null || damage == null) return;
-            for (int i = 0; i < df.Count; i++)
+            if (targets == null || damages == null) return;
+
+            for (int i = 0; i < targets.Count; i++)
             {
-                var target = df[i];
+                var target = targets[i];
                 //子数组 比如二连则是俩 普通攻击则是一个
                 if (target.Type == JTokenType.Array)
                 {
                     JArray targetArray = (JArray)target;
-                    for (int x = 0; x < targetArray.Count; x++)
+                    for (int x = 0; x < targetArray.Count; x++) //目标子数组 连击？ CI？
                     {
-                        int targetId = targetArray[x].Value<int>(); //攻击到谁
-                        int damageHp = damage[i][x].Value<int>();   //减少多少血量
 
-                        if (eflag != null) //有eflag的处理方式 联合舰队
+                        int targetId = targetArray[x].Value<int>(); //攻击到谁
+                        int damageHp = damages[i][x].Value<int>();   //减少多少血量
+                        int attackerId = attackers[x].Value<int>(); //攻击者
+                        int attackType = attackTypes[x].Value<int>(); //攻击类型
+
+
+                        if (eflag != null) //联合舰队 有eflag的处理方式
                         {
                             //联合舰队战斗
                             if (eflag[i] == 0) //由我方发起的攻击 减少对面的血量
@@ -334,9 +338,8 @@ namespace KanColleNote.Core.Prophet
                                 HPChangeEvent(Faction.SELF, targetId, damageHp);
                             }
                         }
-                        else
+                        else //普通战斗
                         {
-                            //普通战斗
                             if (targetId >= 1 && targetId <= 6)
                             {
                                 //我方第一队伍
