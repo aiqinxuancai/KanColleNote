@@ -12,6 +12,12 @@ using System.Threading.Tasks;
 namespace KanColleNote.Core.Prophet
 {
 
+    public enum BattleTime
+    {
+        Day = 0,
+        Night = 1
+    }
+
     /// <summary>
     /// 战斗先知 根据Battle来计算
     /// </summary>
@@ -25,16 +31,15 @@ namespace KanColleNote.Core.Prophet
         }
 
 
-
-
         public static void SetBattle(string root, string type = "", string from = "")
         {
             JObject json = JObject.Parse(root);
-            SetBattle(json, from);
+            SetBattle(json, type, from);
         }
 
         public static void SetBattle(JObject root, string type = "", string from = "")
         {
+            Debug.WriteLine("SetBattle:" + type + " " + from);
             //初始血量
             if (KanDataCore.m_start == null || KanPort.m_port == null)
             {
@@ -53,7 +58,7 @@ namespace KanColleNote.Core.Prophet
 
                 for (int i = 0; i < api_air_base_attack_array.Count; i++)
                 {
-                    nowhps.SetEventName("第{i+1}轮路基");
+                    nowhps.SetEventName($"第{i+1}轮路基");
                     JObject air_base = (JObject)api_air_base_attack_array[i];
                     if (air_base.SelectToken("api_stage3.api_edam") != null)
                     {
@@ -107,7 +112,7 @@ namespace KanColleNote.Core.Prophet
                 JArray api_damage = (JArray)root.SelectToken("api_data.api_opening_taisen.api_damage", false);
                 JArray api_at_list = (JArray)root.SelectToken("api_data.api_opening_taisen.api_at_list", false);
                 JArray api_at_type = (JArray)root.SelectToken("api_data.api_opening_taisen.api_at_type", false);
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type);
+                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, BattleTime.Day);
             }
 
             nowhps.SetEventName("开幕雷击");
@@ -156,22 +161,23 @@ namespace KanColleNote.Core.Prophet
 
             if (houraiFlag != null) //白天的战斗
             {
-                if (houraiFlag[0] == 1 && root.SelectToken("api_data.api_hougeki1") != null) //第一回合
+                if (houraiFlag[0] == 1 && root.SelectToken("api_data.api_hougeki1", false) != null) //第一回合
                 {
                     HoGeKiBase(root, nowhps, 1, 2);
                 }
                 if (houraiFlag[1] == 1)
                 {
+                    nowhps.SetEventName("闭幕雷击");
                     List<int> api_fdam = root.SelectToken("api_data.api_raigeki.api_fdam").ToObject<List<int>>();
                     List<int> api_edam = root.SelectToken("api_data.api_raigeki.api_edam").ToObject<List<int>>();
                     nowhps.UpdateSelfHP(api_fdam);
                     nowhps.UpdateEnemyHP(api_edam);
                 }
-                if (houraiFlag[2] == 1 && root.SelectToken("api_data.api_hougeki2") != null) //第二回合
+                if (houraiFlag[2] == 1 && root.SelectToken("api_data.api_hougeki2", false) != null) //第二回合
                 {
                     HoGeKiBase(root, nowhps, 2, 1);
                 }
-                if (houraiFlag[3] == 1 && root.SelectToken("api_data.api_hougeki3") != null) //第三回合
+                if (houraiFlag[3] == 1 && root.SelectToken("api_data.api_hougeki3", false) != null) //第三回合
                 {
                     HoGeKiBase(root, nowhps, 3, 1);
                 }
@@ -189,21 +195,22 @@ namespace KanColleNote.Core.Prophet
 
             if (houraiFlag != null) //白天的战斗
             {
-                if (houraiFlag[0] == 1 && root.SelectToken("api_data.api_hougeki1") != null) //第一回合
+                if (houraiFlag[0] == 1 && root.SelectToken("api_data.api_hougeki1", false) != null) //第一回合
                 {
                     HoGeKiBase(root, nowhps, 1);
                 }
-                if (houraiFlag[1] == 1 && root.SelectToken("api_data.api_hougeki2") != null) //第二回合
+                if (houraiFlag[1] == 1 && root.SelectToken("api_data.api_hougeki2", false) != null) //第二回合
                 {
                     HoGeKiBase(root, nowhps, 2);
                 }
-                if (houraiFlag[2] == 1 && root.SelectToken("api_data.api_hougeki3") != null) //第三回合
+                if (houraiFlag[2] == 1 && root.SelectToken("api_data.api_hougeki3", false) != null) //第三回合
                 {
                     HoGeKiBase(root, nowhps, 3, 2);
                 }
                 int raigeki = houraiFlag[3];
                 if (raigeki == 1)
                 {
+                    nowhps.SetEventName("闭幕雷击");
                     List<int> api_fdam = root.SelectToken("api_data.api_raigeki.api_fdam").ToObject<List<int>>();
                     List<int> api_edam = root.SelectToken("api_data.api_raigeki.api_edam").ToObject<List<int>>();
                     nowhps.UpdateSelfHP(api_fdam);
@@ -223,15 +230,15 @@ namespace KanColleNote.Core.Prophet
 
             if (houraiFlag != null) //白天的战斗
             {
-                if (houraiFlag[0] == 1 && root.SelectToken("api_data.api_hougeki1") != null) //第一回合
+                if (houraiFlag[0] == 1 && root.SelectToken("api_data.api_hougeki1", false) != null) //第一回合
                 {
                     HoGeKiBase(root, nowhps, 1);
                 }
-                if (houraiFlag[1] == 1 && root.SelectToken("api_data.api_hougeki2") != null) //第二回合
+                if (houraiFlag[1] == 1 && root.SelectToken("api_data.api_hougeki2", false) != null) //第二回合
                 {
                     HoGeKiBase(root, nowhps, 2);
                 }
-                if (houraiFlag[2] == 1 && root.SelectToken("api_data.api_hougeki3") != null) //第三回合
+                if (houraiFlag[2] == 1 && root.SelectToken("api_data.api_hougeki3", false) != null) //第三回合
                 {
                     HoGeKiBase(root, nowhps, 3);
                 }
@@ -239,6 +246,7 @@ namespace KanColleNote.Core.Prophet
                 int raigeki = houraiFlag[3];
                 if (raigeki == 1)
                 {
+                    nowhps.SetEventName("闭幕雷击");
                     List<int> api_fdam = root.SelectToken("api_data.api_raigeki.api_fdam").ToObject<List<int>>();
                     List<int> api_edam = root.SelectToken("api_data.api_raigeki.api_edam").ToObject<List<int>>();
                     nowhps.UpdateSelfHP(api_fdam);
@@ -261,7 +269,7 @@ namespace KanColleNote.Core.Prophet
             JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki{round}.api_at_type", false);
 
             List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, $"api_data.api_hougeki{round}.api_at_eflag");
-            nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, api_at_eflag, selfTeamId);
+            nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, BattleTime.Day, api_at_eflag, selfTeamId);
         }
 
 
@@ -271,13 +279,15 @@ namespace KanColleNote.Core.Prophet
             List<int> api_active_deck = JsonHelper.SelectTokenIntList(root, "api_data.api_active_deck");
             if (api_active_deck != null)
             {
+                
                 //联合舰队夜战
                 JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list", false);
                 JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage", false);
                 JArray api_at_list = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_list", false);
-                JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_type", false);
+                JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_type", false); //白天CI类型 0=普通 1=？？ 2=连击 3=主炮副炮 4=主炮电探 5=主炮撤甲 6=主炮主炮
+                JArray api_sp_list = (JArray)root.SelectToken($"api_data.api_hougeki.api_sp_list", false); //CI类型 0=普通 1=连击 3=鱼雷鱼雷 4=主炮鱼雷 5=主炮主炮
                 List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki.api_at_eflag");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, api_at_eflag, api_active_deck[0], api_active_deck[1]);
+                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_sp_list, BattleTime.Night, api_at_eflag, api_active_deck[0], api_active_deck[1]);
             }
             else
             {
@@ -285,9 +295,10 @@ namespace KanColleNote.Core.Prophet
                 JArray api_df_list = (JArray)root.SelectToken("api_data.api_hougeki.api_df_list", false);
                 JArray api_damage = (JArray)root.SelectToken("api_data.api_hougeki.api_damage", false);
                 JArray api_at_list = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_list", false);
-                JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_type", false);
+                JArray api_at_type = (JArray)root.SelectToken($"api_data.api_hougeki.api_at_type", false); //白天CI类型 0=普通 1=？？ 2=连击 3=主炮副炮 4=主炮电探 5=主炮撤甲 6=主炮主炮
+                JArray api_sp_list = (JArray)root.SelectToken($"api_data.api_hougeki.api_sp_list", false); //CI类型 0=普通 1=连击 3=鱼雷鱼雷 4=主炮鱼雷 5=主炮主炮
                 List<int> api_at_eflag = JsonHelper.SelectTokenIntList(root, "api_data.api_hougeki.api_at_eflag");
-                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_at_type, api_at_eflag);
+                nowhps.UpdateHouGeKiHP(api_df_list, api_damage, api_at_list, api_sp_list, BattleTime.Night, api_at_eflag);
             }
         }
 

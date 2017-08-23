@@ -19,7 +19,7 @@ namespace KanColleNote.Test
             //PackReload(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果");
 
             Task.Run(() => {
-                PackReload(@" D:\git\KanColleNote\KanColleNote\bin\Debug\pack");
+                PackReload(@"H:\舰队分析\pack配合录像115743");
 
             });
 

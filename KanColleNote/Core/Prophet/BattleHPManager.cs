@@ -172,20 +172,54 @@ namespace KanColleNote.Core.Prophet
             Debug.WriteLine(name);
         }
 
-        public void HPChangeEvent(Faction faction, int shipIndexId, int hp)
+
+
+
+        /// <summary>
+        /// HP变更
+        /// </summary>
+        /// <param name="faction"></param>
+        /// <param name="shipIndexId"></param>
+        /// <param name="hp"></param>
+        public void HPChangeEvent(Faction faction, int attackerId, int shipIndexId, int hp, string attackTypeName = "")
         {
             //记录一套日志
             if (faction == Faction.ENEMY)
             {
-                m_enemy[shipIndexId].ChangeHP(hp);
-                var message = $"{m_eventName} {m_enemy[shipIndexId].name}({shipIndexId}) {hp}";
-                Debug.WriteLine(message);
+                m_enemy[shipIndexId].ChangeHP(hp); //受伤的是敌方
+                var hpShow = $"[{ m_enemy[shipIndexId].nowHP}/{m_enemy[shipIndexId].maxHP}] {GetDamageState(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)}"; //GetDamageState
+                var message = "";
+                if (attackerId == -1)
+                {
+                    if (hp != 0)
+                    {
+                        message = $"{m_eventName} {m_enemy[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                    }  
+                } 
+                else
+                {
+                    message = $"{m_eventName} {attackTypeName} {m_self[attackerId].name}({attackerId}) -> {m_enemy[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                }
+                if (message != string.Empty) Debug.WriteLine(message);
             }
-            else if (faction == Faction.SELF)
+            else if (faction == Faction.SELF) //受伤的是我方
             {
                 m_self[shipIndexId].ChangeHP(hp);
-                var message = $"{m_eventName} {m_self[shipIndexId].name}({shipIndexId}) {hp}";
-                Debug.WriteLine(message);
+
+                var hpShow = $"[{m_self[shipIndexId].nowHP}/{m_self[shipIndexId].maxHP}] {GetDamageState(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)}";
+                var message = "";
+                if (attackerId == -1)
+                {
+                    if (hp != 0)
+                    {
+                        message = $"{m_eventName} {m_self[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                    }
+                }
+                else
+                {
+                    message = $"{m_eventName} {attackTypeName} {m_enemy[attackerId].name}({attackerId}) -> {m_self[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                }
+                if (message != string.Empty) Debug.WriteLine(message);
             }
         }
 
@@ -229,7 +263,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 0; i < updateHps.Count; i++)
             {
                 m_nowhpsSelf[i] -= updateHps[i];
-                HPChangeEvent(Faction.SELF, i, updateHps[i]);
+                HPChangeEvent(Faction.SELF, -1, i, updateHps[i]);
             }
         }
 
@@ -247,7 +281,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 6; i < m_nowhpsSelf.Count; i++)
             {
                 m_nowhpsSelf[i] -= updateHps[i - 6];
-                HPChangeEvent(Faction.SELF, i, updateHps[i]);
+                HPChangeEvent(Faction.SELF, -1, i, updateHps[i - 6]);
             }
         }
 
@@ -266,7 +300,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 0; i < updateHps.Count; i++)
             {
                 m_nowhpsEnemy[i] -= updateHps[i];
-                HPChangeEvent(Faction.ENEMY, i, updateHps[i]);
+                HPChangeEvent(Faction.ENEMY, -1, i, updateHps[i]);
             }
         }
 
@@ -284,7 +318,7 @@ namespace KanColleNote.Core.Prophet
             for (int i = 6; i < m_nowhpsEnemy.Count; i++)
             {
                 m_nowhpsEnemy[i] -= updateHps[i - 6];
-                HPChangeEvent(Faction.ENEMY, i, updateHps[i]);
+                HPChangeEvent(Faction.ENEMY, -1, i, updateHps[i - 6]);
             }
         }
 
@@ -304,25 +338,29 @@ namespace KanColleNote.Core.Prophet
         /// <param name="targets">谁攻击了谁</param>
         /// <param name="damages">造成伤害</param>
         /// <returns></returns>
-        public void UpdateHouGeKiHP(JArray targets, JArray damages, JArray attackers, JArray attackTypes, List<int> eflag = null, int selfTeamId = 1, int enemyTeamId = 1) //api_hougeki1
+        public void UpdateHouGeKiHP(JArray targets, JArray damages, JArray attackers, JArray attackTypes, BattleTime battleTime, List<int> eflag = null, int selfTeamId = 1, int enemyTeamId = 1) //api_hougeki1
         {
             if (targets == null || damages == null) return;
 
             for (int i = 0; i < targets.Count; i++)
             {
                 var target = targets[i];
+                int attackerId = attackers[i].Value<int>(); //攻击者
+                int attackType = 0;
+                string attackTypeName = "";
+                if (attackTypes != null)
+                {
+                    attackType = attackTypes[i].Value<int>(); //攻击类型
+                    attackTypeName = GetAttackTypeName(battleTime, attackType);
+                }
                 //子数组 比如二连则是俩 普通攻击则是一个
                 if (target.Type == JTokenType.Array)
                 {
                     JArray targetArray = (JArray)target;
                     for (int x = 0; x < targetArray.Count; x++) //目标子数组 连击？ CI？
                     {
-
                         int targetId = targetArray[x].Value<int>(); //攻击到谁
                         int damageHp = damages[i][x].Value<int>();   //减少多少血量
-                        int attackerId = attackers[x].Value<int>(); //攻击者
-                        int attackType = attackTypes[x].Value<int>(); //攻击类型
-
 
                         if (eflag != null) //联合舰队 有eflag的处理方式
                         {
@@ -330,35 +368,117 @@ namespace KanColleNote.Core.Prophet
                             if (eflag[i] == 0) //由我方发起的攻击 减少对面的血量
                             {
                                 m_nowhpsEnemy[targetId - 1] -= damageHp;
-                                HPChangeEvent(Faction.ENEMY, targetId, damageHp);
+                                HPChangeEvent(Faction.ENEMY, attackerId - 1, targetId - 1, damageHp, attackTypeName); //传递的id为index 从0开始
                             }
                             else if (eflag[i] == 1) //由敌方发起
                             {
                                 m_nowhpsSelf[targetId - 1] -= damageHp;
-                                HPChangeEvent(Faction.SELF, targetId, damageHp);
+                                HPChangeEvent(Faction.SELF, attackerId - 1, targetId - 1 , damageHp, attackTypeName);
                             }
                         }
-                        else //普通战斗
+                        else //普通战斗|夜战
                         {
+
                             if (targetId >= 1 && targetId <= 6)
                             {
                                 //我方第一队伍
                                 int id = targetId - 1 + (selfTeamId - 1) * 6;
+                                int newAttackerId = -1;
+                                if (attackerId >= 1 && attackerId <= 6)
+                                {
+                                    newAttackerId = attackerId - 1 + (enemyTeamId - 1) * 6; 
+                                }
+                                else
+                                {
+                                    newAttackerId = attackerId - 7 + (enemyTeamId - 1) * 6;
+                                }
+
                                 m_nowhpsSelf[id] -= damageHp;
-                                HPChangeEvent(Faction.SELF, id, damageHp);
+                                HPChangeEvent(Faction.SELF, newAttackerId, id, damageHp, attackTypeName);
                             }
                             if (targetId >= 7 && targetId <= 12)
                             {
                                 //敌方第一队伍
                                 int id = targetId - 7 + (enemyTeamId - 1) * 6;
+                                int newAttackerId = -1;
+                                if (attackerId >= 1 && attackerId <= 6)
+                                {
+                                    newAttackerId = attackerId - 1 + (enemyTeamId - 1) * 6;
+                                }
+                                else
+                                {
+                                    newAttackerId = attackerId - 7 + (enemyTeamId - 1) * 6;
+                                }
                                 m_nowhpsEnemy[id] -= damageHp;
-                                HPChangeEvent(Faction.ENEMY, id, damageHp);
+                                HPChangeEvent(Faction.ENEMY, newAttackerId, id, damageHp, attackTypeName);
                             }
                         }
                         //m_nowhps[targetId] -= damageHp;
                     }
                 }
             }
+        }
+
+
+        public string GetAttackTypeName(BattleTime battleTime, int id)
+        {
+            if (battleTime == BattleTime.Day)
+            {
+                // 0=普通 1=？？ 2=连击 3=主炮副炮 4=主炮电探 5=主炮撤甲 6=主炮主炮
+                switch (id)
+                {
+                    case 0:
+                        return "通常攻击";
+                    case 1:
+                        return "？？攻击";
+                    case 2:
+                        return "连击";
+                    case 3:
+                        return "着弹观测（主+副）";
+                    case 4:
+                        return "着弹观测（主+电）";
+                    case 5:
+                        return "着弹观测（主+弹）";
+                    case 6:
+                        return "着弹观测（主+主）";
+                }
+            }
+            else
+            {
+                switch (id)
+                {
+                    case 0:
+                        return "通常攻击";
+                    case 1:
+                        return "连击";
+                    case 2:
+                        return "CI（主炮+鱼雷）";
+                    case 3:
+                        return "CI（鱼雷+鱼雷）";
+                    case 4:
+                        return "CI（主炮+副炮）";
+                    case 5:
+                        return "CI（主炮+主炮）";
+                }
+            }
+            return "";
+        }
+
+        public string GetDamageState(int nowHP, int maxHP)
+        {
+            double hprate = (double)nowHP / maxHP;
+            if (hprate <= 0.0)
+                return "脱离或击沉";
+            else if (hprate <= 0.25)
+                return "大破";
+            else if (hprate <= 0.5)
+                return "中破";
+            else if (hprate <= 0.75)
+                return "小破";
+            else if (hprate < 1.0)
+                return "擦伤";
+            else
+                return "无伤";
         }
     }
 
