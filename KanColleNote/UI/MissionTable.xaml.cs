@@ -47,9 +47,13 @@ namespace KanColleNote.UI
         public MissionTable()
         {
             InitializeComponent();
-            GlobalNotification.Default.Register(NotificationType.kBattleResultBindingUpdate, typeof(BattleTable), OnBattleResultBindingUpdate);
+            GlobalNotification.Default.Register(NotificationType.kKanMasterIdChangeAfter, typeof(BattleTable), OnKanMasterIdChangeAfter);
             GlobalNotification.Default.Register(NotificationType.kMissionUpdate, typeof(MissionTable), OnMissionUpdate);
         }
+        /// <summary>
+        /// 名字变更完成后
+        /// </summary>
+        /// <param name="msg"></param>
         void OnKanMasterIdChangeAfter(GlobalNotificationMessage msg)
         {
             this.Dispatcher.BeginInvoke(new Action(() =>

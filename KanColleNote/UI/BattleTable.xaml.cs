@@ -37,6 +37,10 @@ namespace KanColleNote.UI
             GlobalNotification.Default.Register(NotificationType.kBattleResultBindingUpdate, typeof(BattleTable), OnBattleResultBindingUpdate);
         }
 
+        /// <summary>
+        /// 名字变更完成后
+        /// </summary>
+        /// <param name="msg"></param>
         void OnKanMasterIdChangeAfter(GlobalNotificationMessage msg)
         {
             this.Dispatcher.BeginInvoke(new Action(() =>
