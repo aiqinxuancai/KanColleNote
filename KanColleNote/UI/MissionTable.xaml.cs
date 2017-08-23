@@ -47,22 +47,27 @@ namespace KanColleNote.UI
         public MissionTable()
         {
             InitializeComponent();
+            GlobalNotification.Default.Register(NotificationType.kBattleResultBindingUpdate, typeof(BattleTable), OnBattleResultBindingUpdate);
             GlobalNotification.Default.Register(NotificationType.kMissionUpdate, typeof(MissionTable), OnMissionUpdate);
-            //dataGridMission.ItemsSource = KanMission.m_mission;
         }
+        void OnKanMasterIdChangeAfter(GlobalNotificationMessage msg)
+        {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                dataGridMission.ItemsSource = null;
+                root = JsonConvert.DeserializeObject<List<MissionData>>(KanMission.m_mission.ToString());
+                dataGridMission.ItemsSource = root;
+            }));
 
-
+        }
         void OnMissionUpdate(GlobalNotificationMessage msg)
         {
             this.Dispatcher.BeginInvoke(new Action(() =>
             {
                 dataGridMission.ItemsSource = null;
-
                 root = JsonConvert.DeserializeObject<List<MissionData>>(KanMission.m_mission.ToString());
-
                 dataGridMission.ItemsSource = root;
-
-            })); 
+            }));
 
         }
     }

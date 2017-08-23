@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="800">
     <Grid>
-        <DataGrid x:Name="dataGridBattle"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF323232" EnableColumnVirtualization="True">
+        <DataGrid x:Name="dataGridBattle"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF323232">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
                 <DataGridTextColumn Binding="{Binding Time}" Header="时间" MinWidth="120"  />

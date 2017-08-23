@@ -64,6 +64,7 @@ namespace KanColleNote.Core
                 if (changeName)
                 {
                     GlobalNotification.Default.Post(NotificationType.kKanMasterIdChange, member_id);
+                    GlobalNotification.Default.Post(NotificationType.kKanMasterIdChangeAfter, member_id);
                 }
             }
         }

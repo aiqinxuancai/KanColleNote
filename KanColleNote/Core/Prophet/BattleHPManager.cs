@@ -193,12 +193,12 @@ namespace KanColleNote.Core.Prophet
                 {
                     if (hp != 0)
                     {
-                        message = $"{m_eventName} {m_enemy[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                        message = $"{m_eventName} {m_enemy[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                     }  
                 } 
                 else
                 {
-                    message = $"{m_eventName} {attackTypeName} {m_self[attackerId].name}({attackerId}) -> {m_enemy[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                    message = $"{m_eventName} {attackTypeName} {m_self[attackerId].name}({attackerId + 1}) -> {m_enemy[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                 }
                 if (message != string.Empty) Debug.WriteLine(message);
             }
@@ -212,12 +212,12 @@ namespace KanColleNote.Core.Prophet
                 {
                     if (hp != 0)
                     {
-                        message = $"{m_eventName} {m_self[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                        message = $"{m_eventName} {m_self[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                     }
                 }
                 else
                 {
-                    message = $"{m_eventName} {attackTypeName} {m_enemy[attackerId].name}({attackerId}) -> {m_self[shipIndexId].name}({shipIndexId}) -{hp} {hpShow}";
+                    message = $"{m_eventName} {attackTypeName} {m_enemy[attackerId].name}({attackerId + 1}) -> {m_self[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                 }
                 if (message != string.Empty) Debug.WriteLine(message);
             }
@@ -384,6 +384,7 @@ namespace KanColleNote.Core.Prophet
                                 //我方第一队伍
                                 int id = targetId - 1 + (selfTeamId - 1) * 6;
                                 int newAttackerId = -1;
+                                //计算正确的攻击者ID
                                 if (attackerId >= 1 && attackerId <= 6)
                                 {
                                     newAttackerId = attackerId - 1 + (enemyTeamId - 1) * 6; 
@@ -401,6 +402,7 @@ namespace KanColleNote.Core.Prophet
                                 //敌方第一队伍
                                 int id = targetId - 7 + (enemyTeamId - 1) * 6;
                                 int newAttackerId = -1;
+                                //计算正确的攻击者ID
                                 if (attackerId >= 1 && attackerId <= 6)
                                 {
                                     newAttackerId = attackerId - 1 + (enemyTeamId - 1) * 6;
@@ -468,7 +470,7 @@ namespace KanColleNote.Core.Prophet
         {
             double hprate = (double)nowHP / maxHP;
             if (hprate <= 0.0)
-                return "脱离或击沉";
+                return "击沉"; //或脱离？
             else if (hprate <= 0.25)
                 return "大破";
             else if (hprate <= 0.5)
@@ -476,9 +478,9 @@ namespace KanColleNote.Core.Prophet
             else if (hprate <= 0.75)
                 return "小破";
             else if (hprate < 1.0)
-                return "擦伤";
+                return ""; //擦伤
             else
-                return "无伤";
+                return ""; //无伤
         }
     }
 

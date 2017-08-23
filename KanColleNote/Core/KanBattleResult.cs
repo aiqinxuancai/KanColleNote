@@ -71,7 +71,7 @@ namespace KanColleNote.Core
             }
 
             //通知界面更新绑定
-            GlobalNotification.Default.Post(NotificationType.kBattleResultBindingUpdate, null);
+            
         }
 
 
@@ -84,7 +84,7 @@ namespace KanColleNote.Core
             Save();
             Debug.WriteLine("得到战斗结果");
             Debug.WriteLine(data);
-            
+            GlobalNotification.Default.Post(NotificationType.kBattleResultBindingUpdate, null);
         }
     }
 }

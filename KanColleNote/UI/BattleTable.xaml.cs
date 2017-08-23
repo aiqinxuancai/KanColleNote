@@ -30,10 +30,22 @@ namespace KanColleNote.UI
         public BattleTable()
         {
             InitializeComponent();
+
+            GlobalNotification.Default.Register(NotificationType.kKanMasterIdChangeAfter, typeof(BattleTable), OnKanMasterIdChangeAfter);
+
+            
             GlobalNotification.Default.Register(NotificationType.kBattleResultBindingUpdate, typeof(BattleTable), OnBattleResultBindingUpdate);
         }
 
+        void OnKanMasterIdChangeAfter(GlobalNotificationMessage msg)
+        {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                dataGridBattle.ItemsSource = null;
+                dataGridBattle.ItemsSource = KanBattleResult.m_battle;
+            }));
 
+        }
 
         void OnBattleResultBindingUpdate(GlobalNotificationMessage msg)
         {
