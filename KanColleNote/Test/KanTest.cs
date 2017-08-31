@@ -19,7 +19,14 @@ namespace KanColleNote.Test
             //PackReload(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果");
 
             Task.Run(() => {
-                PackReload(@"H:\舰队分析\pack配合录像115743");
+                try
+                {
+                    PackReload(@"H:\舰队分析\pack配合录像115743");
+                }
+                catch (System.Exception ex)
+                {
+
+                }
 
             });
 

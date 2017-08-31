@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using KanColleNote.Core.Prophet;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,18 +27,32 @@ namespace KanColleNote.UI
         {
             InitializeComponent();
 
-            JArray arr = new JArray();
-            JObject root = new JObject();
-            root["name"] = "长门改二";
-            root["hp"] = "60/90";
-            root["now"] = 20;
-            arr.Add(root);
-            arr.Add(root);
-            arr.Add(root);
-            arr.Add(root);
-            arr.Add(root);
-            arr.Add(root);
+            //JArray arr = new JArray();
+            //JObject root = new JObject();
+            //root["name"] = "长门改二";
+            //root["hp"] = "60/90";
+            //root["now"] = 20;
+            //arr.Add(root);
+            //arr.Add(root);
+            //arr.Add(root);
+            //arr.Add(root);
+            //arr.Add(root);
+            //arr.Add(root);
+            //dataGridSlef1.ItemsSource = arr;
+
+
+            BattleUnit item = new BattleUnit();
+            item.name = "lalla";
+            ArrayList arr = new ArrayList();
+            arr.Add(item);
+            arr.Add(item);
+            arr.Add(item);
+            arr.Add(item);
+            arr.Add(item);
+            arr.Add(item);
+
             dataGridSlef1.ItemsSource = arr;
+
             //dataGridSlef1.DataContext = arr;
             //负责数据源
         }

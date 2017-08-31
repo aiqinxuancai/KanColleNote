@@ -12,9 +12,6 @@
 
         <StackPanel >
             <Label Content="{Binding name}" Padding="0,3,0,0" MinHeight="16" />
-
-            
-
             <Grid>
                 <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
                     <!--Foreground="{DynamicResource AccentColorBrush}"-->
@@ -23,19 +20,31 @@
                                                        Margin="0 0 0 0"
                                                        VerticalAlignment="Center"
                                                        Background="Transparent"
-                                                       
-                                                       Maximum="100"
+                                                       Maximum="{Binding maxHP}"
                                                        Minimum="0"
-                                                       Value="60" >
+                                                       Value="{Binding nowHP}" MouseEnter="PriceProgressBar_MouseEnter" MouseLeave="PriceProgressBar_MouseLeave" >
                         <Controls:MetroProgressBar.Resources>
                             <local:CutoffConverter x:Key="AgeConverter"  />
                         </Controls:MetroProgressBar.Resources>
+                        <Controls:MetroProgressBar.Foreground>
+                            <MultiBinding Converter="{StaticResource AgeConverter}">
+                                <Binding Path="nowHP"/>
+                                <Binding Path="maxHP"/>
+                            </MultiBinding>
+                        </Controls:MetroProgressBar.Foreground>
+
                         <Controls:MetroProgressBar.Style>
                             <!--BasedOn="{StaticResource MetroProgressBar}"-->
                             <Style TargetType="{x:Type Controls:MetroProgressBar}">
                                 <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding now, Converter={StaticResource AgeConverter}, ConverterParameter=666}" Value="True">
+                                    <DataTrigger Binding="{Binding nowHP, Converter={StaticResource AgeConverter}, ConverterParameter=maxHP}" Value="True">
+                                        <Setter Property="Foreground" Value="Red" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding nowHP, Converter={StaticResource AgeConverter}, ConverterParameter=maxHP}" Value="True">
+                                        <Setter Property="Foreground" Value="Orange" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding nowHP, Converter={StaticResource AgeConverter}, ConverterParameter=maxHP}" Value="True">
                                         <Setter Property="Foreground" Value="Red" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -47,7 +56,12 @@
                     </Controls:MetroProgressBar>
 
                 </Border>
-                <Label Content="{Binding hp}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                    <Label Content="{Binding nowHP}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
+                    <Label Content="/" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
+                    <Label Content="{Binding maxHP}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
+                </StackPanel>
+        
             </Grid>
             
 

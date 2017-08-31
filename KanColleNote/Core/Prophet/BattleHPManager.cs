@@ -90,7 +90,7 @@ namespace KanColleNote.Core.Prophet
             //敌方ID
             List<int> api_ship_ke = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke");
             List<int> api_ship_ke_combined = JsonHelper.SelectTokenIntList(root, "api_data.api_ship_ke_combined");
-;
+
 
             List<int> maxhpsSelf;
             List<int> maxhpsEnemy;
@@ -124,6 +124,7 @@ namespace KanColleNote.Core.Prophet
                 item.nowHP = m_nowhpsEnemy[i];
                 item.maxHP = maxhpsEnemy[i];
                 item.name = JsonHelper.SelectTokenString(m_shipEnemy, $"[{i}].api_name", "");
+                item.changeHP = new List<string>();
                 m_enemy.Add(item);
             }
             Debug.WriteLine("创建BattleUnit-m_nowhpsSelf");
@@ -132,6 +133,7 @@ namespace KanColleNote.Core.Prophet
                 BattleUnit item = new BattleUnit();
                 item.nowHP = m_nowhpsSelf[i];
                 item.maxHP = maxhpsSelf[i];
+                item.changeHP = new List<string>();
                 if (i >= 0 && i <= 5)
                 {
                     item.name = JsonHelper.SelectTokenString(m_shipShip1, $"$.api_ship_full[{i}].api_ship_data.api_name", "");
@@ -200,7 +202,13 @@ namespace KanColleNote.Core.Prophet
                 {
                     message = $"{m_eventName} {attackTypeName} {m_self[attackerId].name}({attackerId + 1}) -> {m_enemy[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                 }
-                if (message != string.Empty) Debug.WriteLine(message);
+
+                if (message != string.Empty)
+                {
+                    Debug.WriteLine(message);
+                    m_enemy[shipIndexId].changeHP.Add(message);
+                }
+                 
             }
             else if (faction == Faction.SELF) //受伤的是我方
             {
@@ -219,7 +227,11 @@ namespace KanColleNote.Core.Prophet
                 {
                     message = $"{m_eventName} {attackTypeName} {m_enemy[attackerId].name}({attackerId + 1}) -> {m_self[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                 }
-                if (message != string.Empty) Debug.WriteLine(message);
+                if (message != string.Empty)
+                {
+                    Debug.WriteLine(message);
+                    m_self[shipIndexId].changeHP.Add(message);
+                }
             }
         }
 

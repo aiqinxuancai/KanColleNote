@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KanColleNote.Core.Prophet;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -18,19 +20,24 @@ using System.Windows.Shapes;
 namespace KanColleNote.UI
 {
 
-    [ValueConversion(typeof(int), typeof(bool))]
-    public class CutoffConverter : IValueConverter
+    [ValueConversion(typeof(int), typeof(Brush))]
+    public class CutoffConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            int valueInt;
-            Int32.TryParse(value.ToString(), out valueInt);
-            int parameterInt;
-            Int32.TryParse(value.ToString(), out parameterInt);
-            return (valueInt > parameterInt);
+            return null;
         }
+        //public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        //{
+        //    int valueInt;
+        //    Int32.TryParse(value.ToString(), out valueInt);
+        //    int parameterInt;
+        //    Int32.TryParse(value.ToString(), out parameterInt);
+        //    return (valueInt > parameterInt);
+        //}
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -53,6 +60,25 @@ namespace KanColleNote.UI
 
         }
 
+        private void PriceProgressBar_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //展示其数据
+            var a = this.BindingGroup.ToString();
+            DataGridRow row = (DataGridRow)BindingGroup.Owner;
+            if (row.Item != null)
+            {
+                if (row.Item.GetType() == typeof(BattleUnit))
+                {
+                    //JObject root = row.Item
+
+                }
+            }
+        }
+
+        private void PriceProgressBar_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 
 
