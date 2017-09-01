@@ -37,17 +37,7 @@
                             <!--BasedOn="{StaticResource MetroProgressBar}"-->
                             <Style TargetType="{x:Type Controls:MetroProgressBar}">
                                 <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding nowHP, Converter={StaticResource AgeConverter}, ConverterParameter=maxHP}" Value="True">
-                                        <Setter Property="Foreground" Value="Red" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding nowHP, Converter={StaticResource AgeConverter}, ConverterParameter=maxHP}" Value="True">
-                                        <Setter Property="Foreground" Value="Orange" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding nowHP, Converter={StaticResource AgeConverter}, ConverterParameter=maxHP}" Value="True">
-                                        <Setter Property="Foreground" Value="Red" />
-                                    </DataTrigger>
-                                </Style.Triggers>
+
                             </Style>
                         </Controls:MetroProgressBar.Style>
 

@@ -25,7 +25,28 @@ namespace KanColleNote.UI
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return null;
+            if (values.Length != 2)
+            {
+                return new SolidColorBrush(Colors.Green);
+            }
+            Int32.TryParse(values[0].ToString(), out int nowHP);
+            Int32.TryParse(values[1].ToString(), out int maxHP);
+            double hprate = (double)nowHP / maxHP;
+            if (hprate <= 0.0)
+                return new SolidColorBrush(Colors.White); //"击沉"; //或脱离？
+            else if (hprate <= 0.25)
+                return new SolidColorBrush(Colors.Red); //"大破";
+            else if (hprate <= 0.5)
+                return new SolidColorBrush(Colors.Orange); //"中破";
+            else if (hprate <= 0.75)
+                return new SolidColorBrush(Colors.Yellow); //"小破";
+            else if (hprate < 1.0)
+                return new SolidColorBrush(Colors.Green); //擦伤
+            else
+                return new SolidColorBrush(Colors.Green); //无伤
+
+
+            return new SolidColorBrush(Colors.Green);
         }
         //public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         //{

@@ -43,12 +43,19 @@ namespace KanColleNote.UI
 
             BattleUnit item = new BattleUnit();
             item.name = "lalla";
+            item.maxHP = 100;
+            item.nowHP = 80;
             ArrayList arr = new ArrayList();
             arr.Add(item);
+            item.nowHP = 70;
             arr.Add(item);
+            item.nowHP = 60;
             arr.Add(item);
+            item.nowHP = 50;
             arr.Add(item);
+            item.nowHP = 40;
             arr.Add(item);
+            item.nowHP = 80;
             arr.Add(item);
 
             dataGridSlef1.ItemsSource = arr;
