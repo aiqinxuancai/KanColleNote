@@ -21,7 +21,7 @@ namespace KanColleNote.UI
 {
 
     [ValueConversion(typeof(int), typeof(Brush))]
-    public class CutoffConverter : IMultiValueConverter
+    public class DamageColorConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

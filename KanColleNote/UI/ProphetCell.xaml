@@ -24,7 +24,7 @@
                                                        Minimum="0"
                                                        Value="{Binding nowHP}" MouseEnter="PriceProgressBar_MouseEnter" MouseLeave="PriceProgressBar_MouseLeave" >
                         <Controls:MetroProgressBar.Resources>
-                            <local:CutoffConverter x:Key="AgeConverter"  />
+                            <local:DamageColorConverter x:Key="AgeConverter"  />
                         </Controls:MetroProgressBar.Resources>
                         <Controls:MetroProgressBar.Foreground>
                             <MultiBinding Converter="{StaticResource AgeConverter}">

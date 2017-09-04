@@ -18,18 +18,42 @@ namespace KanColleNote.Core.Prophet
     {
         public BattleUnit()
         {
+            changeHP = new List<string>();
+            round = new List<BattleRound>();
         }
+
         public string name { set; get; }
         public int maxHP { set; get; }
         public int nowHP { set; get; }
         public List<string> changeHP { set; get; }
-
+        public List<BattleRound> round { set; get; }
         public void ChangeHP(int hp)
         {
             nowHP -= hp;
         }
     }
-
+    /// <summary>
+    /// 战斗回合
+    /// </summary>
+    class BattleRound
+    {
+        /// <summary>
+        /// 输出的信息
+        /// </summary>
+        public string message { set; get; }
+        /// <summary>
+        /// 最大HP
+        /// </summary>
+        public int maxHP { set; get; }
+        /// <summary>
+        /// 被本轮攻击后的HP
+        /// </summary>
+        public int nowHP { set; get; }
+        /// <summary>
+        /// 被本轮攻击后的状态
+        /// </summary>
+        public string state { set; get; }
+    }
     public enum Faction {
         /// <summary>
         /// 我方
@@ -124,7 +148,6 @@ namespace KanColleNote.Core.Prophet
                 item.nowHP = m_nowhpsEnemy[i];
                 item.maxHP = maxhpsEnemy[i];
                 item.name = JsonHelper.SelectTokenString(m_shipEnemy, $"[{i}].api_name", "");
-                item.changeHP = new List<string>();
                 m_enemy.Add(item);
             }
             Debug.WriteLine("创建BattleUnit-m_nowhpsSelf");
@@ -133,7 +156,6 @@ namespace KanColleNote.Core.Prophet
                 BattleUnit item = new BattleUnit();
                 item.nowHP = m_nowhpsSelf[i];
                 item.maxHP = maxhpsSelf[i];
-                item.changeHP = new List<string>();
                 if (i >= 0 && i <= 5)
                 {
                     item.name = JsonHelper.SelectTokenString(m_shipShip1, $"$.api_ship_full[{i}].api_ship_data.api_name", "");
@@ -202,11 +224,17 @@ namespace KanColleNote.Core.Prophet
                 {
                     message = $"{m_eventName} {attackTypeName} {m_self[attackerId].name}({attackerId + 1}) -> {m_enemy[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                 }
-
+                BattleRound round = new BattleRound() {
+                    message = message,
+                    maxHP = m_enemy[shipIndexId].maxHP,
+                    nowHP = m_enemy[shipIndexId].nowHP,
+                    state = GetDamageState(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)
+                };
                 if (message != string.Empty)
                 {
                     Debug.WriteLine(message);
                     m_enemy[shipIndexId].changeHP.Add(message);
+                    m_enemy[shipIndexId].round.Add(round);
                 }
                  
             }
@@ -227,10 +255,20 @@ namespace KanColleNote.Core.Prophet
                 {
                     message = $"{m_eventName} {attackTypeName} {m_enemy[attackerId].name}({attackerId + 1}) -> {m_self[shipIndexId].name}({shipIndexId + 1}) -{hp} {hpShow}";
                 }
+
+                BattleRound round = new BattleRound()
+                {
+                    message = message,
+                    maxHP = m_self[shipIndexId].maxHP,
+                    nowHP = m_self[shipIndexId].nowHP,
+                    state = GetDamageState(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)
+                };
+
                 if (message != string.Empty)
                 {
                     Debug.WriteLine(message);
                     m_self[shipIndexId].changeHP.Add(message);
+                    m_self[shipIndexId].round.Add(round);
                 }
             }
         }
