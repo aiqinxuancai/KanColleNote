@@ -21,7 +21,6 @@ namespace KanColleNote.Core.Prophet
             changeHP = new List<string>();
             round = new List<BattleRound>();
         }
-
         public string name { set; get; }
         public int maxHP { set; get; }
         public int nowHP { set; get; }
@@ -50,7 +49,7 @@ namespace KanColleNote.Core.Prophet
         /// </summary>
         public int nowHP { set; get; }
         /// <summary>
-        /// 被本轮攻击后的状态
+        /// 被本轮攻击后的状态 文本 大破中破小破
         /// </summary>
         public string state { set; get; }
     }

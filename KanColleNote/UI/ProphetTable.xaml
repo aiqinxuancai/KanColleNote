@@ -20,9 +20,39 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="dataGridSlef2" Width="100" Margin="5,0,0,0"/>
-            <DataGrid x:Name="dataGridEnemy2" Width="100" Margin="10,0,0,0"/>
-            <DataGrid x:Name="dataGridEnemy1" Width="100" Margin="5,0,0,0"/>
+            <DataGrid x:Name="dataGridSlef2" Width="100" Margin="10,0,0,0" IsReadOnly="True" HeadersVisibility="None" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" SelectionUnit="Cell">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="资源">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:ProphetCell></local:ProphetCell>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid x:Name="dataGridEnemy2" Width="100" Margin="50,0,0,0" IsReadOnly="True" HeadersVisibility="None" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" SelectionUnit="Cell">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="资源">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:ProphetCell></local:ProphetCell>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid x:Name="dataGridEnemy1" Width="100" Margin="10,0,0,0" IsReadOnly="True" HeadersVisibility="None" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" SelectionUnit="Cell">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="资源">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:ProphetCell></local:ProphetCell>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
 
     </Grid>

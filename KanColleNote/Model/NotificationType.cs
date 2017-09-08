@@ -20,5 +20,10 @@ namespace KanColleNote.Model
         public const string kMissionUpdate = "MissionUpdate";
         public const string kBattleResultUpdate = "BattleResultUpdate";
         public const string kBattleResultBindingUpdate = "BattleResultBindingUpdate";
+
+        /// <summary>
+        /// 先知要刷新
+        /// </summary>
+        public const string kBattleProphetUpdate = "BattleProphetUpdate";
     }
 }

@@ -92,6 +92,7 @@
     <Compile Include="UI\BattleTable.xaml.cs">
       <DependentUpon>BattleTable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Control\OutlinedTextBlock.cs" />
     <Compile Include="UI\MissionTable.xaml.cs">
       <DependentUpon>MissionTable.xaml</DependentUpon>
     </Compile>

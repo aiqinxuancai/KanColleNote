@@ -1,5 +1,6 @@
 ﻿using KanColleNote.Base;
 using KanColleNote.Core.Prophet;
+using KanColleNote.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -149,6 +150,8 @@ namespace KanColleNote.Core.Prophet
             Debug.WriteLine("敌方血量：" + enemy);
 
             //Debug.WriteLine("123".Substring(1, 1));
+
+            GlobalNotification.Default.Post(NotificationType.kBattleProphetUpdate, nowhps);
 
         }
 

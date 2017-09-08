@@ -5,11 +5,63 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KanColleNote.UI"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="35" d:DesignWidth="98" MinWidth="98">
 
-    <Grid>
+    <Grid ToolTipService.ShowDuration="12000">
+        <Grid.ToolTip >
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
+                <DataGrid ItemsSource="{Binding Path=round}"  CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" AutoGenerateColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Path=message}" Header="受伤情况" />
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
+                                            <Controls:MetroProgressBar x:Name="PriceProgressBar"
+                                                           Height="15"
+                                                           Width="80"
+                                                           Margin="0 0 0 0"
+                                                           VerticalAlignment="Center"
+                                                           Background="Transparent"
+                                                           Maximum="{Binding maxHP}"
+                                                           Minimum="0"
+                                                           Value="{Binding nowHP}" MouseEnter="PriceProgressBar_MouseEnter" MouseLeave="PriceProgressBar_MouseLeave" >
+                                                <Controls:MetroProgressBar.Resources>
+                                                    <local:DamageColorConverter x:Key="AgeConverter"  />
+                                                </Controls:MetroProgressBar.Resources>
+                                                <Controls:MetroProgressBar.Foreground>
+                                                    <MultiBinding Converter="{StaticResource AgeConverter}">
+                                                        <Binding Path="nowHP"/>
+                                                        <Binding Path="maxHP"/>
+                                                    </MultiBinding>
+                                                </Controls:MetroProgressBar.Foreground>
+                                                <Controls:MetroProgressBar.Style>
+                                                    <Style TargetType="{x:Type Controls:MetroProgressBar}">
+                                                        <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                                    </Style>
+                                                </Controls:MetroProgressBar.Style>
+                                            </Controls:MetroProgressBar>
+                                        </Border>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                                            <local:OutlinedTextBlock Text="{Binding nowHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="1" Stroke="Black" Fill="White"/>
+                                            <local:OutlinedTextBlock  Text="/" FontSize="9pt" TextWrapping="Wrap" StrokeThickness="1" Stroke="Black" Fill="White"/>
+                                            <local:OutlinedTextBlock Text="{Binding maxHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="1" Stroke="Black" Fill="White"/>
+                                        </StackPanel>
+                                        
+                                    </Grid>
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    
+                </DataGrid>
+            </StackPanel>
+        </Grid.ToolTip>
         <StackPanel >
             <Label Content="{Binding name}" Padding="0,3,0,0" MinHeight="16" />
             <Grid>
@@ -32,26 +84,32 @@
                                 <Binding Path="maxHP"/>
                             </MultiBinding>
                         </Controls:MetroProgressBar.Foreground>
-
                         <Controls:MetroProgressBar.Style>
-                            <!--BasedOn="{StaticResource MetroProgressBar}"-->
                             <Style TargetType="{x:Type Controls:MetroProgressBar}">
                                 <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
-
                             </Style>
                         </Controls:MetroProgressBar.Style>
-
-
-
                     </Controls:MetroProgressBar>
 
                 </Border>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                    <Label Content="{Binding nowHP}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
-                    <Label Content="/" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
-                    <Label Content="{Binding maxHP}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" />
+                    <Label Content="{Binding nowHP}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" >
+                        <Label.Effect>
+                            <DropShadowEffect Color="White" Direction="0" ShadowDepth="1" Opacity="1" />
+                        </Label.Effect>
+                    </Label>
+                    <Label Content="/" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" >
+                        <Label.Effect>
+                            <DropShadowEffect Color="White" Direction="0" ShadowDepth="1" Opacity="1" />
+                        </Label.Effect>
+                    </Label>
+                    <Label Content="{Binding maxHP}" Padding="0,1,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" >
+                        <Label.Effect>
+                            <DropShadowEffect Color="White" Direction="0" ShadowDepth="1" Opacity="1" />
+                        </Label.Effect>
+                    </Label>
                 </StackPanel>
-        
+
             </Grid>
             
 
