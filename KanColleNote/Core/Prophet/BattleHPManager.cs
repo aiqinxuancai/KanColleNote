@@ -210,7 +210,7 @@ namespace KanColleNote.Core.Prophet
             if (faction == Faction.ENEMY)
             {
                 m_enemy[shipIndexId].ChangeHP(hp); //受伤的是敌方
-                var hpShow = $"[{ m_enemy[shipIndexId].nowHP}/{m_enemy[shipIndexId].maxHP}] {GetDamageState(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)}"; //GetDamageState
+                var hpShow = $"{GetDamageState(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)}"; //GetDamageState
                 var message = "";
                 if (attackerId == -1)
                 {
@@ -241,7 +241,7 @@ namespace KanColleNote.Core.Prophet
             {
                 m_self[shipIndexId].ChangeHP(hp);
 
-                var hpShow = $"[{m_self[shipIndexId].nowHP}/{m_self[shipIndexId].maxHP}] {GetDamageState(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)}";
+                var hpShow = $"{GetDamageState(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)}";
                 var message = "";
                 if (attackerId == -1)
                 {
