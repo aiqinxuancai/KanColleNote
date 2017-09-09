@@ -107,7 +107,7 @@
             </StackPanel>
         </Grid.ToolTip>
         <StackPanel >
-            <Label Content="{Binding name}" Padding="0,3,0,0" MinHeight="16" />
+            <Label Content="{Binding name}" Padding="0,3,0,0" MinHeight="16"  />
             <Grid>
                 <Border Margin="0,0,0,0" BorderBrush="#20000000" BorderThickness="1,1,1,1" CornerRadius="0">
                     <!--Foreground="{DynamicResource AccentColorBrush}"-->

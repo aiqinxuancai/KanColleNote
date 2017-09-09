@@ -210,7 +210,7 @@ namespace KanColleNote.Core.Prophet
             if (faction == Faction.ENEMY)
             {
                 m_enemy[shipIndexId].ChangeHP(hp); //受伤的是敌方
-                var hpShow = $"{GetDamageState(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)}"; //GetDamageState
+                var hpShow = $"{GetDamageStateString(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)}"; //GetDamageState
                 var message = "";
                 if (attackerId == -1)
                 {
@@ -227,7 +227,7 @@ namespace KanColleNote.Core.Prophet
                     message = message,
                     maxHP = m_enemy[shipIndexId].maxHP,
                     nowHP = m_enemy[shipIndexId].nowHP,
-                    state = GetDamageState(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)
+                    state = GetDamageStateString(m_enemy[shipIndexId].nowHP, m_enemy[shipIndexId].maxHP)
                 };
                 if (message != string.Empty)
                 {
@@ -241,7 +241,7 @@ namespace KanColleNote.Core.Prophet
             {
                 m_self[shipIndexId].ChangeHP(hp);
 
-                var hpShow = $"{GetDamageState(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)}";
+                var hpShow = $"{GetDamageStateString(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)}";
                 var message = "";
                 if (attackerId == -1)
                 {
@@ -260,7 +260,7 @@ namespace KanColleNote.Core.Prophet
                     message = message,
                     maxHP = m_self[shipIndexId].maxHP,
                     nowHP = m_self[shipIndexId].nowHP,
-                    state = GetDamageState(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)
+                    state = GetDamageStateString(m_self[shipIndexId].nowHP, m_self[shipIndexId].maxHP)
                 };
 
                 if (message != string.Empty)
