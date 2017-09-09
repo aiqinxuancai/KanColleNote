@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using static KanColleNote.Core.Prophet.BattleHPManager;
 
 namespace KanColleNote.UI
 {
@@ -31,19 +31,23 @@ namespace KanColleNote.UI
             }
             Int32.TryParse(values[0].ToString(), out int nowHP);
             Int32.TryParse(values[1].ToString(), out int maxHP);
-            double hprate = (double)nowHP / maxHP;
-            if (hprate <= 0.0)
-                return new SolidColorBrush(Colors.White); //"击沉"; //或脱离？
-            else if (hprate <= 0.25)
-                return new SolidColorBrush(Colors.Red); //"大破";
-            else if (hprate <= 0.5)
-                return new SolidColorBrush(Colors.Orange); //"中破";
-            else if (hprate <= 0.75)
-                return new SolidColorBrush(Colors.Yellow); //"小破";
-            else if (hprate < 1.0)
-                return new SolidColorBrush(Colors.Green); //擦伤 //Colors.Green
-            else
-                return new SolidColorBrush(Colors.Green); //无伤
+            var state = BattleHPManager.GetDamageState(nowHP, maxHP);
+            switch (state)
+            {
+                case DamageState.DIE:
+                    return new SolidColorBrush(Colors.White); //"击沉"; //或脱离？
+                case DamageState.MAXDAMAGE:
+                    return new SolidColorBrush(Colors.Red); //"大破";
+                case DamageState.MIDDAMAGE:
+                    return new SolidColorBrush(Colors.Orange); //"中破";
+                case DamageState.MINDAMAGE:
+                    return new SolidColorBrush(Colors.Yellow); //"小破";
+                case DamageState.MILDLY:
+                    return new SolidColorBrush(Colors.Green); //擦伤
+                case DamageState.FULL:
+                    return new SolidColorBrush(Colors.Green); //无伤
+            }
+            return new SolidColorBrush(Colors.Green); //无伤
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -64,19 +68,15 @@ namespace KanColleNote.UI
             }
             Int32.TryParse(values[0].ToString(), out int nowHP);
             Int32.TryParse(values[1].ToString(), out int maxHP);
-            double hprate = (double)nowHP / maxHP;
-            if (hprate <= 0.0)
-                return new SolidColorBrush(Color.FromArgb(0xBF, 0, 0, 0)); //"中破";
-            else if (hprate <= 0.25)
-                return new SolidColorBrush(Color.FromArgb(0xBF, 0, 0, 0)); //"中破";
-            else if (hprate <= 0.5)
-                return new SolidColorBrush(Color.FromArgb(0xBF, 0, 0, 0)); //"中破";
-            else if (hprate <= 0.75)
-                return new SolidColorBrush(Color.FromArgb(0xBF, 0, 0, 0)); //"中破";
-            else if (hprate < 1.0)
-                return new SolidColorBrush(Colors.White); //擦伤
+            var state = BattleHPManager.GetDamageState(nowHP, maxHP);
+            if (state >= BattleHPManager.DamageState.MINDAMAGE)
+            {
+                return new SolidColorBrush(Color.FromArgb(0xBF, 0, 0, 0));
+            }
             else
+            {
                 return new SolidColorBrush(Colors.White); //无伤
+            }
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -97,19 +97,15 @@ namespace KanColleNote.UI
             }
             Int32.TryParse(values[0].ToString(), out int nowHP);
             Int32.TryParse(values[1].ToString(), out int maxHP);
-            double hprate = (double)nowHP / maxHP;
-            if (hprate <= 0.0)
-                return new SolidColorBrush(Colors.White); //"中破";
-            else if (hprate <= 0.25)
-                return new SolidColorBrush(Colors.White); //"中破";
-            else if (hprate <= 0.5)
-                return new SolidColorBrush(Colors.White); //"中破";
-            else if (hprate <= 0.75)
-                return new SolidColorBrush(Colors.White); //"中破";
-            else if (hprate < 1.0)
-                return new SolidColorBrush(Color.FromArgb(100, 0, 0, 0)); //擦伤
+            var state = BattleHPManager.GetDamageState(nowHP, maxHP);
+            if (state >= BattleHPManager.DamageState.MINDAMAGE)
+            {
+                return new SolidColorBrush(Colors.White);
+            }
             else
-                return new SolidColorBrush(Color.FromArgb(100, 0, 0, 0)); //无伤
+            {
+                return new SolidColorBrush(Color.FromArgb(100, 0, 0, 0));
+            }
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -118,6 +114,7 @@ namespace KanColleNote.UI
         }
         public int Cutoff { get; set; }
     }
+
     /// <summary>
     /// ProphetCell.xaml 的交互逻辑
     /// </summary>
@@ -126,30 +123,6 @@ namespace KanColleNote.UI
         public ProphetCell()
         {
             InitializeComponent();
-
-
-
-
-        }
-
-        private void PriceProgressBar_MouseEnter(object sender, MouseEventArgs e)
-        {
-            //展示其数据
-            var a = this.BindingGroup.ToString();
-            DataGridRow row = (DataGridRow)BindingGroup.Owner;
-            if (row.Item != null)
-            {
-                if (row.Item.GetType() == typeof(BattleUnit))
-                {
-                    //JObject root = row.Item
-
-                }
-            }
-        }
-
-        private void PriceProgressBar_MouseLeave(object sender, MouseEventArgs e)
-        {
-
         }
     }
 

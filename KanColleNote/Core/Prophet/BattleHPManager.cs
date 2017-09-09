@@ -515,22 +515,65 @@ namespace KanColleNote.Core.Prophet
             return "";
         }
 
-        public string GetDamageState(int nowHP, int maxHP)
+        public enum DamageState
+        {
+            /// <summary>
+            /// 满血
+            /// </summary>
+            FULL = 0,
+            /// <summary>
+            /// 轻度损伤
+            /// </summary>
+            MILDLY = 1,
+            MINDAMAGE = 2,
+            MIDDAMAGE = 3,
+            MAXDAMAGE = 4,
+            DIE = 5
+
+        };
+
+
+        public string GetDamageStateString(int nowHP, int maxHP)
+        {
+            DamageState state = GetDamageState(nowHP, maxHP);
+
+            switch (state)
+            {
+                case DamageState.DIE:
+                    return "击沉"; //或脱离？
+                case DamageState.MAXDAMAGE:
+                    return "大破";
+                case DamageState.MIDDAMAGE:
+                    return "中破";
+                case DamageState.MINDAMAGE:
+                    return "小破";
+                case DamageState.MILDLY:
+                    break;
+                case DamageState.FULL:
+                    break;
+            }
+            return "";
+        }
+
+        public static DamageState GetDamageState(int nowHP, int maxHP)
         {
             double hprate = (double)nowHP / maxHP;
             if (hprate <= 0.0)
-                return "击沉"; //或脱离？
+                return DamageState.DIE;
             else if (hprate <= 0.25)
-                return "大破";
+                return DamageState.MAXDAMAGE;
             else if (hprate <= 0.5)
-                return "中破";
+                return DamageState.MIDDAMAGE;
             else if (hprate <= 0.75)
-                return "小破";
+                return DamageState.MINDAMAGE;
             else if (hprate < 1.0)
-                return ""; //擦伤
+                return DamageState.MILDLY;
             else
-                return ""; //无伤
+                return DamageState.FULL;
         }
+
+
+
     }
 
 }

@@ -34,7 +34,7 @@
                                                            Background="Transparent"
                                                            Maximum="{Binding maxHP}"
                                                            Minimum="0"
-                                                           Value="{Binding nowHP}" MouseEnter="PriceProgressBar_MouseEnter" MouseLeave="PriceProgressBar_MouseLeave" >
+                                                           Value="{Binding nowHP}"  >
                                                 <Controls:MetroProgressBar.Resources>
                                                     <local:DamageColorConverter x:Key="AgeConverter"  />
                                                 </Controls:MetroProgressBar.Resources>
@@ -118,7 +118,7 @@
                                                        Background="Transparent"
                                                        Maximum="{Binding maxHP}"
                                                        Minimum="0"
-                                                       Value="{Binding nowHP}" MouseEnter="PriceProgressBar_MouseEnter" MouseLeave="PriceProgressBar_MouseLeave" >
+                                                       Value="{Binding nowHP}">
 
                         <Controls:MetroProgressBar.Foreground>
                             <MultiBinding Converter="{StaticResource DamageColorConverter}">
