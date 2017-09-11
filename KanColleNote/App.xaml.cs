@@ -1,5 +1,6 @@
 ﻿using KanColleNote.Base;
 using KanColleNote.Core;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,13 +21,23 @@ namespace KanColleNote
         public static string m_runPath;
         App () 
         {
+
+
+
             m_runPath = Directory.GetCurrentDirectory();
+
+            const string keyName = @"HKEY_CURRENT_USER\Software\KanColleNote";
+            Registry.SetValue(keyName, "Path", m_runPath, RegistryValueKind.String);
+
             SpeedConfig.Load($@"{m_runPath}\Config.json");
 
             NekoProxy.InitNekoxy();
             KanSource.Init();
             KanMission.Init();
             KanBattleResult.Init();
+
+
+
 
 #if DEBUG
             var api_start2 = File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果\636372285289622-kcsapi-api_start2.json");

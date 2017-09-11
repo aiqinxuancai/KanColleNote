@@ -79,6 +79,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Base\GlobalNotification.cs" />
+    <Compile Include="Base\User32.cs" />
     <Compile Include="Core\Prophet\BattleBase.cs" />
     <Compile Include="Core\Prophet\BattleProphet.cs" />
     <Compile Include="Core\KanBattleResult.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Core\Prophet\BattleHPManager.cs" />
     <Compile Include="Model\NotificationType.cs" />
     <Compile Include="Services\AutoProxyService.cs" />
+    <Compile Include="Services\AutoToKanColleViewer.cs" />
     <Compile Include="Test\KanTest.cs" />
     <Compile Include="UI\BattleTable.xaml.cs">
       <DependentUpon>BattleTable.xaml</DependentUpon>
@@ -132,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\MissionTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\NoteStyleDark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

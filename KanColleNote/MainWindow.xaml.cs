@@ -19,6 +19,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using KanColleNote.Core;
 using KanColleNote.Core.Prophet;
+using KanColleNote.Base;
 
 namespace KanColleNote
 {
@@ -78,6 +79,10 @@ namespace KanColleNote
             Test.KanTest.StartTest();
             //BattleProphet.test();
 #endif
+            //嵌入提督忙
+
+
+
 
         }
     }
