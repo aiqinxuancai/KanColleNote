@@ -30,8 +30,8 @@
                                                            Height="15"
                                                            Width="80"
                                                            Margin="0 0 0 0"
-                                                           VerticalAlignment="Center"
-                                                           Background="Transparent"
+                                                           VerticalAlignment="Center"      
+                                                           Background="#33FFFFFF"
                                                            Maximum="{Binding maxHP}"
                                                            Minimum="0"
                                                            Value="{Binding nowHP}"  >
@@ -52,7 +52,7 @@
                                             </Controls:MetroProgressBar>
                                         </Border>
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                                            <local:OutlinedTextBlock Text="{Binding nowHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="1" >
+                                            <local:OutlinedTextBlock Text="{Binding nowHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="2" FontWeight="Bold" >
                                                 <local:OutlinedTextBlock.Fill>
                                                     <MultiBinding Converter="{StaticResource DamageFillConverter}">
                                                         <Binding Path="nowHP"/>
@@ -66,7 +66,7 @@
                                                     </MultiBinding>
                                                 </local:OutlinedTextBlock.Stroke>
                                             </local:OutlinedTextBlock>
-                                            <local:OutlinedTextBlock  Text="/" FontSize="9pt" TextWrapping="Wrap" StrokeThickness="1" >
+                                            <local:OutlinedTextBlock  Text="/" FontSize="9pt" TextWrapping="Wrap" StrokeThickness="2"  FontWeight="Bold" >
                                                 <local:OutlinedTextBlock.Fill>
                                                     <MultiBinding Converter="{StaticResource DamageFillConverter}">
                                                         <Binding Path="nowHP"/>
@@ -80,7 +80,7 @@
                                                     </MultiBinding>
                                                 </local:OutlinedTextBlock.Stroke>
                                             </local:OutlinedTextBlock>
-                                            <local:OutlinedTextBlock Text="{Binding maxHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="1">
+                                            <local:OutlinedTextBlock Text="{Binding maxHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="2" FontWeight="Bold" >
                                                 <local:OutlinedTextBlock.Fill>
                                                     <MultiBinding Converter="{StaticResource DamageFillConverter}">
                                                         <Binding Path="nowHP"/>
@@ -115,7 +115,7 @@
                                                        Height="15"
                                                        Margin="0 0 0 0"
                                                        VerticalAlignment="Center"
-                                                       Background="Transparent"
+                                                       Background="#33FFFFFF"
                                                        Maximum="{Binding maxHP}"
                                                        Minimum="0"
                                                        Value="{Binding nowHP}">
@@ -135,7 +135,7 @@
 
                 </Border>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                    <local:OutlinedTextBlock Text="{Binding nowHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="1" >
+                    <local:OutlinedTextBlock Text="{Binding nowHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="2" FontWeight="Bold" >
                         <local:OutlinedTextBlock.Fill>
                             <MultiBinding Converter="{StaticResource DamageFillConverter}">
                                 <Binding Path="nowHP"/>
@@ -149,7 +149,7 @@
                             </MultiBinding>
                         </local:OutlinedTextBlock.Stroke>
                     </local:OutlinedTextBlock>
-                    <local:OutlinedTextBlock  Text="/" FontSize="9pt" TextWrapping="Wrap" StrokeThickness="1" >
+                    <local:OutlinedTextBlock  Text="/" FontSize="9pt" TextWrapping="Wrap" StrokeThickness="2"  FontWeight="Bold" >
                         <local:OutlinedTextBlock.Fill>
                             <MultiBinding Converter="{StaticResource DamageFillConverter}">
                                 <Binding Path="nowHP"/>
@@ -163,7 +163,7 @@
                             </MultiBinding>
                         </local:OutlinedTextBlock.Stroke>
                     </local:OutlinedTextBlock>
-                    <local:OutlinedTextBlock Text="{Binding maxHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="1">
+                    <local:OutlinedTextBlock Text="{Binding maxHP}" FontSize="9pt"  TextWrapping="Wrap" StrokeThickness="2" FontWeight="Bold" >
                         <local:OutlinedTextBlock.Fill>
                             <MultiBinding Converter="{StaticResource DamageFillConverter}">
                                 <Binding Path="nowHP"/>

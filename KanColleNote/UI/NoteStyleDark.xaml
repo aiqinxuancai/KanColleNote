@@ -2,9 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:KanColleNote.UI">
 
-    <!--<Color x:Key="BlackColor">#DD000000</Color>
-    <SolidColorBrush x:Key="BlackBrush">#DD000000</SolidColorBrush>-->
+    <Color x:Key="BlackColor">#60FFFFFF</Color>
+    <SolidColorBrush x:Key="BlackBrush">#70FFFFFF</SolidColorBrush>
 
+
+    <SolidColorBrush x:Key="GridCellBrush">#70FFFFFF</SolidColorBrush>
 
     <Style x:Key="LinkButton" TargetType="Button">
         <Setter Property="Cursor" Value="Hand" />

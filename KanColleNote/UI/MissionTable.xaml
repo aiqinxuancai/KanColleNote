@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="KanColleNote.UI.MissionTable"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KanColleNote.UI"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="KanColleNote.UI.MissionTable"
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="600">
     <Grid>
-        <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF323232" EnableColumnVirtualization="True">
+        <DataGrid x:Name="dataGridMission"  AutoGenerateColumns="False" IsReadOnly="True" EnableColumnVirtualization="True" Foreground="{DynamicResource GridCellBrush}"  >
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
                 <DataGridTextColumn Binding="{Binding Time}" Header="时间" MinWidth="120" />
@@ -16,10 +17,10 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" >
-                                <Label Content="{Binding Path=Material[0]}" />
-                                <Label Content="{Binding Path=Material[1]}" />
-                                <Label Content="{Binding Path=Material[2]}" />
-                                <Label Content="{Binding Path=Material[3]}" />
+                                <Label Content="{Binding Material[0]}"  Foreground="{DynamicResource GridCellBrush}"/>
+                                <Label Content="{Binding Material[1]}"  Foreground="{DynamicResource GridCellBrush}"/>
+                                <Label Content="{Binding Material[2]}"  Foreground="{DynamicResource GridCellBrush}"/>
+                                <Label Content="{Binding Material[3]}"  Foreground="{DynamicResource GridCellBrush}"/>
                             </StackPanel>
                             <!--<Controls:MetroProgressBar x:Name="PriceProgressBar"
                                                        Height="20"
@@ -34,6 +35,18 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Self}}" Value="true" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Foreground" Value="#FFFFFF" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
 
     </Grid>

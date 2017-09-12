@@ -4,8 +4,8 @@
 
     <Color x:Key="BlackColor">#DD000000</Color>
     <SolidColorBrush x:Key="BlackBrush">#DD000000</SolidColorBrush>
-
-
+    <SolidColorBrush x:Key="GridCellBrush">#DD000000</SolidColorBrush>
+    
     <Style x:Key="LinkButton" TargetType="Button">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Foreground" Value="Orange" />

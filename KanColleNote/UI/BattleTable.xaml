@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="800">
     <Grid>
-        <DataGrid x:Name="dataGridBattle"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="#FF323232">
+        <DataGrid x:Name="dataGridBattle"  AutoGenerateColumns="False" IsReadOnly="True" Foreground="{DynamicResource GridCellBrush}" RowHeight="27">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
                 <DataGridTextColumn Binding="{Binding Time}" Header="时间" MinWidth="120"  />
@@ -37,6 +37,18 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
             </DataGrid.Columns>
+            <!--<DataGrid.RowStyle>
+                <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Background" Value="#FFBDBD" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>-->
         </DataGrid>
     </Grid>
 </UserControl>
