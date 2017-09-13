@@ -14,8 +14,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="UI\NoteStyle.xaml"/>-->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
-                <ResourceDictionary Source="UI\NoteStyleDark.xaml"/>
+                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />-->
+                <ResourceDictionary Source="UI\Style\NoteStyleDark.xaml"/>
+                <ResourceDictionary Source="UI\Style\StyleLinkButton.xaml"/>
+                <ResourceDictionary Source="UI\Style\TabItemSubStyle.xaml"/>
+                
                 <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

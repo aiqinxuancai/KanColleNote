@@ -40,10 +40,10 @@ namespace KanColleNote
 
 
 #if DEBUG
-            var api_start2 = File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果\636372285289622-kcsapi-api_start2.json");
-            KanDataCore.SetGameStartData(api_start2);
-            var name = KanDataCore.GetFurnitureWithId(45);
-            Debug.WriteLine(name);
+            //var api_start2 = File.ReadAllText(@"D:\git\KanColleNote\KanColleNote\PackData\pack1-5出击+远征结果\636372285289622-kcsapi-api_start2.json");
+            //KanDataCore.SetGameStartData(api_start2);
+            //var name = KanDataCore.GetFurnitureWithId(45);
+            //Debug.WriteLine(name);
 #endif
 
 

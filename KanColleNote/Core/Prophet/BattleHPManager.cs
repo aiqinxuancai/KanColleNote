@@ -492,6 +492,10 @@ namespace KanColleNote.Core.Prophet
                         return "着弹观测（主+弹）";
                     case 6:
                         return "着弹观测（主+主）";
+                    case 7:
+                        return "航空CI";
+                    default:
+                        return $"未知({id})";
                 }
             }
             else
@@ -510,6 +514,8 @@ namespace KanColleNote.Core.Prophet
                         return "CI（主炮+副炮）";
                     case 5:
                         return "CI（主炮+主炮）";
+                    default:
+                        return $"未知({id})";
                 }
             }
             return "";
