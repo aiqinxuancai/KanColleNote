@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using System.Xml;
+using System.Security.Principal;
 
 namespace KanColleNote.Services
 {
@@ -18,6 +19,12 @@ namespace KanColleNote.Services
     /// </summary>
     class AutoProxyService
     {
+        public bool IsAdministrator()
+        {
+            WindowsIdentity current = WindowsIdentity.GetCurrent();
+            WindowsPrincipal windowsPrincipal = new WindowsPrincipal(current);
+            return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
 
         const string ACGPOWER = "ACGPower";
         const string SHIMAKAZEGO = "ShimakazeGo";
@@ -36,6 +43,8 @@ namespace KanColleNote.Services
                 shex.WorkingDirectory = Directory.GetCurrentDirectory();
 
                 process.StartInfo = shex;
+
+                var IsAdmin = IsAdministrator();
 
                 if (File.Exists(shex.FileName))
                 {
