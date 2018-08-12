@@ -40,7 +40,7 @@ namespace KanColleNote
             //
             bool open = SpeedConfig.Get<bool>(ConfigName.CONFIG_PROXY_OPEN, false);
             string ip = SpeedConfig.Get<string>(ConfigName.CONFIG_PROXY_IP, "127.0.0.1");
-            int port = SpeedConfig.Get<int>(ConfigName.CONFIG_PROXY_PORT, 8123);
+            int port = SpeedConfig.Get<int>(ConfigName.CONFIG_PROXY_PORT, 1080);
             int selfPort = SpeedConfig.Get<int>(ConfigName.CONFIG_PROXY_SELFPORT, 37180);
 
             if (open)

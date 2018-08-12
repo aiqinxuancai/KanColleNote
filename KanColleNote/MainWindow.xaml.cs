@@ -20,6 +20,8 @@ using LiveCharts.Wpf;
 using KanColleNote.Core;
 using KanColleNote.Core.Prophet;
 using KanColleNote.Base;
+using System.IO;
+using CefSharp;
 
 namespace KanColleNote
 {
@@ -33,11 +35,13 @@ namespace KanColleNote
 
         public MainWindow()
         {
-
+            InitChromeBrowser();
             InitializeComponent();
 
-
             DataContext = this;
+            
+
+
 
             JArray array = new JArray();
             JObject test = new JObject();
@@ -72,6 +76,28 @@ namespace KanColleNote
             });
 
         }
+
+
+        private void InitChromeBrowser()
+        {
+            var setting = new CefSettings()
+            {
+                CachePath = Directory.GetCurrentDirectory() + @"\Cache",
+            };
+            setting.Locale = "zh-CN";
+            setting.CefCommandLineArgs.Add("enable-npapi", "1");
+            setting.CefCommandLineArgs.Add("--proxy-server", "http://127.0.0.1:" + SpeedConfig.Get<int>(ConfigName.CONFIG_PROXY_SELFPORT, 37180));
+            setting.CefCommandLineArgs.Add("--enable-media-stream", "1");
+            setting.CefCommandLineArgs.Add("enable-media-stream", "1");
+
+            if (!Cef.Initialize(setting))
+            {
+                throw new Exception("Unable to Initialize Cef");
+            }
+
+            CefSharpSettings.SubprocessExitIfParentProcessClosed = true;
+        }
+
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
