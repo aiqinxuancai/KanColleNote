@@ -43,40 +43,43 @@ namespace KanColleNote
 
 
 
-            JArray array = new JArray();
-            JObject test = new JObject();
-            test["id"] = 100000000000;
-            array.Add(test);
+            //JArray array = new JArray();
+            //JObject test = new JObject();
+            //test["id"] = 100000000000;
+            //array.Add(test);
 
-            array.Add(test);
-            array.Add(test);
-            array.Add(test);
+            //array.Add(test);
+            //array.Add(test);
+            //array.Add(test);
 
-            //dataGridMission.ItemsSource = array;
-            //listViewMission.ItemsSource = array;
-
-
-            Task.Run(() =>
-            {
-                Thread.Sleep(3000);
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    array.Add(test);
+            ////dataGridMission.ItemsSource = array;
+            ////listViewMission.ItemsSource = array;
 
 
-                }));
+            //Task.Run(() =>
+            //{
+            //    Thread.Sleep(3000);
+            //    this.Dispatcher.BeginInvoke(new Action(() =>
+            //    {
+            //        array.Add(test);
 
-                Thread.Sleep(3000);
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    array[3]["wowo"] = "8888";
+
+            //    }));
+
+            //    Thread.Sleep(3000);
+            //    this.Dispatcher.BeginInvoke(new Action(() =>
+            //    {
+            //        array[3]["wowo"] = "8888";
 
 
-                }));
-            });
+            //    }));
+            //});
 
         }
-
+        ~MainWindow()
+        {
+            
+        }
 
         private void InitChromeBrowser()
         {
@@ -90,12 +93,17 @@ namespace KanColleNote
             setting.CefCommandLineArgs.Add("--enable-media-stream", "1");
             setting.CefCommandLineArgs.Add("enable-media-stream", "1");
 
+            CefSharpSettings.SubprocessExitIfParentProcessClosed = true;
+            CefSharpSettings.ShutdownOnExit = true;
+
+
+
             if (!Cef.Initialize(setting))
             {
                 throw new Exception("Unable to Initialize Cef");
             }
 
-            CefSharpSettings.SubprocessExitIfParentProcessClosed = true;
+            
         }
 
 

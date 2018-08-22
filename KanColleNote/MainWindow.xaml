@@ -9,10 +9,10 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
-        Title="KanColleNote Alpha" Height="780" Width="800" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal" Loaded="MetroWindow_Loaded" >
+        Title="KanColleNote Alpha" Height="1020" Width="1200" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal" Loaded="MetroWindow_Loaded" >
     <Grid>
         <StackPanel Height="Auto" VerticalAlignment="Stretch" >
-            <cefSharp:ChromiumWebBrowser Height="480" Address="https://www.dmm.com/" />
+            <cefSharp:ChromiumWebBrowser x:Name="chrome" Height="720" Address="https://www.dmm.com/" />
             <Grid Height="270">
                 <TabControl TabStripPlacement="Left">
                     <TabItem Header="基础" Controls:ControlsHelper.HeaderFontSize="20">
