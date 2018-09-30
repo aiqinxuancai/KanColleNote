@@ -17,7 +17,6 @@
         </Grid.Resources>
         <Grid.ToolTip >
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-
                 <DataGrid ItemsSource="{Binding Path=round}"  CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" AutoGenerateColumns="False" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Path=message}" Header="受伤情况" />
